@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>我的第一篇博客文章 | DoSp</title>
+  <title>t | DoSp</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第一章内容  第二章内容  参考文献测试测试">
+  <meta name="description" content="分类test">
 <meta property="og:type" content="article">
-<meta property="og:title" content="我的第一篇博客文章">
-<meta property="og:url" content="http://yoursite.com/2020/04/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/index.html">
+<meta property="og:title" content="t">
+<meta property="og:url" content="http://yoursite.com/t">
 <meta property="og:site_name" content="DoSp">
-<meta property="og:description" content="第一章内容  第二章内容  参考文献测试测试">
+<meta property="og:description" content="分类test">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-04-08T06:01:23.000Z">
-<meta property="article:modified_time" content="2020-12-06T02:29:10.980Z">
+<meta property="article:published_time" content="2021-02-18T14:26:01.000Z">
+<meta property="article:modified_time" content="2021-02-18T14:26:35.485Z">
 <meta property="article:author" content="Dopamine">
 <meta name="twitter:card" content="summary">
   
@@ -154,31 +154,27 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-我的第一篇博客文章" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-t" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      我的第一篇博客文章
+      t
     </h1>
   
 
         
-        <a href="/2020/04/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" class="archive-article-date">
-  	<time datetime="2020-04-08T06:01:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-08</time>
+        <a href="/t" class="archive-article-date">
+  	<time datetime="2021-02-18T14:26:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-18</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h2><p>内容</p>
-<hr>
-<h2 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h2><p>内容</p>
-<hr>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>测试测试</p>
+        <p>分类test</p>
 
       
 
@@ -258,7 +254,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/04/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/t" alt="微信分享二维码">
     </div>
 </div>
 
@@ -272,18 +268,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/02/15/epoll%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          epoll学习
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/04/08/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/%E6%91%B8%E4%BB%99%E5%A0%A1" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">摸仙堡</div>
       <i class="icon-circle-right"></i>
     </a>
   
