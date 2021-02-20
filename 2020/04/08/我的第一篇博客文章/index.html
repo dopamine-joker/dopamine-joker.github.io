@@ -325,6 +325,33 @@
 
 
   
+    <section id="comments" class="comments">
+      <style>
+        .comments{margin:30px;padding:10px;background:#fff}
+        @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+      </style>
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'true' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "6xSQNU87imxTE1OlELHnXNsi-gzGzoHsz",
+            app_key: "0S7qV5AbYvJrLdywmnX24mzf",
+            placeholder: "有话要说？",
+            avatar:""
+        });
+    }
+</script>
+  </section>
+
+
+  
   <div class="duoshuo">
 	<!-- 多说评论框 start -->
 	<div class="ds-thread" data-thread-key="我的第一篇博客文章" data-title="我的第一篇博客文章" data-url="http://yoursite.com/2020/04/08/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2%E6%96%87%E7%AB%A0/"></div>
@@ -371,28 +398,6 @@
 </script>
   
 
-  
-
-
-  <div id="gitalk-container" style="padding: 0px 30px 0px 30px;"></div> 
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-<script type="text/javascript">
-
-if(true){
-	var gitalk = new Gitalk({
-  	clientID: 'ddf3c201f7244a40cd6f',
-  	clientSecret: 'fcc8ed4f2ab21ffc14b58a418cca9cd4acc5a9bb',
-  	repo: 'dopamine-joker.github.io',
-  	owner: 'dopamine-joker',
-  	admin: ['dopamine-joker'],
-  	id: 'Wed Apr 08 2020 14:01:23 GMT+0800',
-  	distractionFreeMode: 'true'
-})
-gitalk.render('gitalk-container') 
-}
-</script>
   
 
   
