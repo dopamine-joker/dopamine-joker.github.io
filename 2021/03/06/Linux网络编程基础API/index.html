@@ -17,7 +17,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.loli.net/2021/03/07/MeRUwlmXSz9fGC1.png">
 <meta property="article:published_time" content="2021-03-06T12:41:48.000Z">
-<meta property="article:modified_time" content="2021-03-07T06:10:38.160Z">
+<meta property="article:modified_time" content="2021-03-07T06:13:32.019Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="服务器">
 <meta name="twitter:card" content="summary">
@@ -237,11 +237,11 @@
 </tr>
 </tbody></table>
 <p>14字节的sa_data不能容纳协议族的地址值。定义如下新的通用socket地址结构体:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/socket.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_storage</span> &#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span> 		sa_family;								<span class="comment">//地址族类型变量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> 	__ss_align;								<span class="comment">//用来内存对齐</span></span><br><span class="line">    <span class="keyword">char</span> 				__ss_padding[<span class="number">128</span>-<span class="keyword">sizeof</span>(__ss_align)];	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/socket.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_storage</span> &#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span> sa_family;						<span class="comment">//地址族类型变量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> __ss_align;				<span class="comment">//用来内存对齐</span></span><br><span class="line">    <span class="keyword">char</span> __ss_padding[<span class="number">128</span>-<span class="keyword">sizeof</span>(__ss_align)];	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="3-专用socket地址"><a href="#3-专用socket地址" class="headerlink" title="3.专用socket地址"></a>3.专用socket地址</h2><p><font color=red size=6><strong>这个比较常用</strong></font></p>
 <p><strong>UNIX本地域协议族</strong>使用如下专用socket地址结构体:</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/un.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_un</span> &#123;</span></span><br><span class="line">	sa_family 	sin_family;				<span class="comment">//地址族: AF_UNIX</span></span><br><span class="line">    <span class="keyword">char</span> 		sun_path[<span class="number">108</span>];			<span class="comment">//文件路径名</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/un.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_un</span> &#123;</span></span><br><span class="line">	sa_family sin_family;				<span class="comment">//地址族: AF_UNIX</span></span><br><span class="line">    <span class="keyword">char</span> sun_path[<span class="number">108</span>];					<span class="comment">//文件路径名</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>TCP/IP协议族</strong>有<strong>sockaddr_in</strong>和<strong>socketaddr_in6</strong>,分别用于<strong>Ipv4</strong>和<strong>Ipv6</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>		sin_family;			<span class="comment">//地址族: AF_INET</span></span><br><span class="line">	<span class="keyword">u_int16_t</span> 		sin_port;			<span class="comment">//端口号，用网络字节序表示</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>	<span class="title">sin_addr</span>;</span>			<span class="comment">//IPv4地址结构体</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> &#123;</span></span><br><span class="line">    <span class="keyword">u_int32_t</span>		s_addr;				<span class="comment">//IPv4地址，要用网络字节序表示</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -756,7 +756,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">STL</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -764,11 +768,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
