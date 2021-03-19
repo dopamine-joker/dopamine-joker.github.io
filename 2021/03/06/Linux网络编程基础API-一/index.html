@@ -248,7 +248,7 @@
 
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in6</span> &#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>		sin6_family;		<span class="comment">//地址族: AF_INET6</span></span><br><span class="line">    <span class="keyword">u_int16_t</span>		sin6_port;			<span class="comment">//端口号，用网络字节序表示</span></span><br><span class="line">    <span class="keyword">u_int32_t</span>		sin6_flowinfo;		<span class="comment">//流信息，应设置为0</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in6_addr</span>	<span class="title">sin6_addr</span>;</span>			<span class="comment">//IPv6地址结构体</span></span><br><span class="line">    <span class="keyword">u_int32_t</span>		sin6_scopt_16;		<span class="comment">//scope ID,尚处于实验阶段</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in6_addr</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span>	sa_addr[<span class="number">16</span>];		<span class="comment">//IPv6地址，要用网络字节序表示</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>实际使用时(包括sockaddr_storage)都需要将其转化为通用的<strong>socket地址类型sockaddr(强制转换即可)</strong>，所以的socket编程接口使用的类型都是sockaddr。</p>
+<p>实际使用时(包括sockaddr_storage)都需要将其转化为通用的**socket地址类型sockaddr(强制转换即可)**，所以的socket编程接口使用的类型都是sockaddr。</p>
 <h1 id="4-IP地址转换函数"><a href="#4-IP地址转换函数" class="headerlink" title="4. IP地址转换函数"></a>4. IP地址转换函数</h1><p>我们习惯上都是使用<strong>点分十进制（Dotted Decimal Notation）</strong>表示IP地址，实际上使用的得把它们转换为<strong>整数(二进制数)</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">in_addr_t</span> <span class="title">inet_addr</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* strptr)</span></span>;				</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">inet_aton</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* cp, struct in_addr* inp)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">inet_ntoa</span><span class="params">(struct in_addr in)</span></span>;</span><br></pre></td></tr></table></figure>
 
@@ -281,7 +281,7 @@
 <p>参数:</p>
 <p><strong>sockfd</strong>: 要绑定的<strong>socket文件描述符</strong></p>
 <p><strong>my_addr</strong>: socket地址，一般来说为<strong>sockaddr_un</strong>, <strong>sockaddr_in</strong>, <strong>sockaddr_in6</strong>的地址，传入参数时要强制转换为<strong>sockaddr*指针</strong>类型。</p>
-<p><strong>addrlen</strong>: 第二个参数my_addr所指向的<strong>socket地址的长度</strong>。通常使用<strong>sizeof()</strong>来获取。</p>
+<p><strong>addrlen</strong>: 第二个参数my_addr所指向的<strong>socket地址的长度</strong>。通常使用**sizeof()**来获取。</p>
 <h1 id="7-监听socket"><a href="#7-监听socket" class="headerlink" title="7. 监听socket"></a>7. 监听socket</h1><p>socket被命名，即绑定后要使用<strong>listen</strong>函数<strong>创建监听队列</strong>存放待处理的用户连接</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">listen</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> backlog)</span></span>;</span><br></pre></td></tr></table></figure>
 
@@ -427,7 +427,7 @@
 <p><strong>msg_flags</strong>: 会复制recvmsg和sendmsg的flags参数的内容。</p>
 <h1 id="12-带外标记"><a href="#12-带外标记" class="headerlink" title="12. 带外标记"></a>12. 带外标记</h1><p>内核通知应用程序带外数据到达的两种常见方法:I/O复用产生的异常事件，SIGURG信号。</p>
 <p>应用程序得到了有带外数据需要接收的通知，还需要知道带外数据在数据流中的具体位置。</p>
-<p><strong>sockatmark</strong>判断<strong>sockfd是否处于带外标记</strong>，即<strong><font color=red>下一个被读取到的数据是否是带外数据</font></strong></p>
+<p><strong>sockatmark</strong>判断<strong>sockfd是否处于带外标记</strong>，即**<font color=red>下一个被读取到的数据是否是带外数据</font>**</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回1，失败返回0</span></span><br><span class="line"><span class="comment">//若成功了，我们就可以利用带MSG_OOB标志的recv调用来接收带外数据</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sockatmark</span><span class="params">(<span class="keyword">int</span> sockfd)</span></span>;</span><br></pre></td></tr></table></figure>
 
 <h1 id="13-地址信息函数"><a href="#13-地址信息函数" class="headerlink" title="13. 地址信息函数"></a>13. 地址信息函数</h1><p>想知道连接socket的<strong>本端socket地址</strong>，以及<strong>远端的socket地址</strong>，可以使用如下函数</p>
@@ -470,13 +470,13 @@
 <ol start="3">
 <li>getaddrinfo</li>
 </ol>
-<p>getaddrinfo函数能<strong>通过主机名获得IP地址(内部使用gethostbyname)</strong>，<strong>也能通过服务名获得端口号(内部使用getservbyname)</strong></p>
+<p>getaddrinfo函数能<strong>通过主机名获得IP地址(内部使用gethostbyname)<strong>，</strong>也能通过服务名获得端口号(内部使用getservbyname)</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getaddrinfo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* hostname, <span class="keyword">const</span> <span class="keyword">char</span>* service, <span class="keyword">const</span> struct addrinfo* hints, struct addrinfo** result)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//由于getaddrin隐式分配堆内存到result,因此需要使用这个函数释放内存</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">freeaddrinfo</span><span class="params">(struct addrinfo* res)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">addrinfo</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span>			ai_flags;		<span class="comment">//见后文</span></span><br><span class="line">    <span class="keyword">int</span>			ai_family;		<span class="comment">//地址族</span></span><br><span class="line">    <span class="keyword">int</span>			ai_socktype;	<span class="comment">//服务类型，SOCK_STREAM或SOCK_DGRAM</span></span><br><span class="line">    <span class="keyword">int</span>			ai_protocal;	<span class="comment">//见后文</span></span><br><span class="line">    <span class="keyword">socklen_t</span>		ai_addrlen;		<span class="comment">//socket地址ai_addr的长度</span></span><br><span class="line">    <span class="keyword">char</span>*		ai_canonname;	<span class="comment">//主机的别名</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span>*	<span class="title">ai_addr</span>;</span>		<span class="comment">//指向socket地址</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">addrinfo</span>*	<span class="title">ai_next</span>;</span>		<span class="comment">//指向下一个socketinfo结构对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ol start="4">
 <li>getnameinfo</li>
 </ol>
-<p>getnameinfo函数能通过<strong>socket地址</strong>同时获得以<strong>字符串表示的主机名(内部使用gethostbyaddr)</strong>和<strong>服务名(内部使用的是getservbyport)</strong></p>
+<p>getnameinfo函数能通过<strong>socket地址</strong>同时获得以<strong>字符串表示的主机名(内部使用gethostbyaddr)<strong>和</strong>服务名(内部使用的是getservbyport)</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getnameinfo</span><span class="params">(<span class="keyword">const</span> struct sockaddr* sockaddr, <span class="keyword">socklen_t</span> addrlen, <span class="keyword">char</span>* host, <span class="keyword">socklen_t</span> hostlen, <span class="keyword">char</span>* serv, <span class="keyword">socklen_t</span> servlen, <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
 
 
@@ -785,19 +785,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
@@ -942,5 +942,21 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

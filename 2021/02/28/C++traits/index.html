@@ -179,16 +179,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>​        在STL中，其中心思想是将<strong>数据容器(containers)</strong>和<strong>算法(algorithms)</strong>分开设计的，在算法中它并不清楚会被传进什么。而<strong>traits</strong>萃取技术则可以获取被传进来的对象的类型，从而让算法的设计有一个统一的实现，即可以不用根据传入类型分开实现，要更好地明白traits技术的作用还是得看例子。</p>
+        <p>​        在STL中，其中心思想是将<strong>数据容器(containers)<strong>和</strong>算法(algorithms)<strong>分开设计的，在算法中它并不清楚会被传进什么。而</strong>traits</strong>萃取技术则可以获取被传进来的对象的类型，从而让算法的设计有一个统一的实现，即可以不用根据传入类型分开实现，要更好地明白traits技术的作用还是得看例子。</p>
 <p>​        有错指正，不喜勿喷。</p>
 <a id="more"></a>
 
 <p>​        <a href="https://github.com/steveLauwh/SGI-STL" target="_blank" rel="noopener">SGI_STL V3.3源代码</a></p>
 <p>​        以下解析及例子参考《STL源码剖析》</p>
-<h1 id="Traits"><a href="#Traits" class="headerlink" title="Traits"></a>Traits</h1><h1 id="1-迭代器类型"><a href="#1-迭代器类型" class="headerlink" title="1. 迭代器类型"></a>1. 迭代器类型</h1><p>​        在算法运用迭代器时，我们很可能会需要使用这个迭代器的<strong>相应型别(associated type)</strong>。</p>
+<h1 id="Traits"><a href="#Traits" class="headerlink" title="Traits"></a>Traits</h1><h1 id="1-迭代器类型"><a href="#1-迭代器类型" class="headerlink" title="1. 迭代器类型"></a>1. 迭代器类型</h1><p>​        在算法运用迭代器时，我们很可能会需要使用这个迭代器的**相应型别(associated type)**。</p>
 <p>​        相应型别其实就是其字面意思，它可以获取迭代器所指对象的类型。</p>
 <p>​        <font color=red>(网上有很多对迭代器的相应型别的理解，但个人理解这里的<strong>迭代器的相应型别</strong>更像是对迭代器所指对象的<strong>多方面属性描述</strong>，包括所指对象类别，迭代器间距离，迭代器所指之物，迭代器所指之物地址等，然后通过<strong>traits萃取</strong>可以很方便的获得迭代器的这些属性)</font></p>
-<p>​        <strong>相应型别其中之一</strong>便是<strong>迭代器所指向的型别(指数据类型)</strong>。假如算法中需要声明一个变量，并且这个变量是以“<strong>迭代器所指向的型别</strong>”为型别。我们首先想到的很可能是C++的<strong>函数模板(function template)</strong>的<strong>参数推导(argument deducation)</strong>机制，那先借此看个例子:</p>
+<p>​        <strong>相应型别其中之一</strong>便是<strong>迭代器所指向的型别(指数据类型)<strong>。假如算法中需要声明一个变量，并且这个变量是以“</strong>迭代器所指向的型别</strong>”为型别。我们首先想到的很可能是C++的**函数模板(function template)<strong>的</strong>参数推导(argument deducation)**机制，那先借此看个例子:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">I</span>, <span class="title">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">func_impl</span>(<span class="title">I</span> <span class="title">iter</span>, <span class="title">T</span> <span class="title">t</span>) &#123;</span></span><br><span class="line">	T tmp; <span class="comment">// 这里的T就能得到迭代器所指之物的类型，这里是int</span></span><br><span class="line">	<span class="comment">// ... 具体实现</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">I</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span></span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">func</span>(<span class="title">I</span> <span class="title">iter</span>) &#123;</span></span><br><span class="line">    <span class="comment">//这里*iter传入func_imp1，通过参数推导获取变量i的数据类型</span></span><br><span class="line">	func_impl(iter, *iter); <span class="comment">// 原本func的工作移交func_imp1实现</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    func(&amp;i);				<span class="comment">//这里传入的是变量i的地址,不一定是i的数据类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>​        这样做看起来没什么问题，通过函数模板我们可以成功推出传入的对象的类型，并且在func_imp1()中我们可以通过参数推导的T声明变量tmp(这里类型为int)。</p>
@@ -213,7 +213,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">struct</span> <span class="title">iterator_traits</span>&lt;T*&gt; &#123;</span>			<span class="comment">//偏特化，指针类型</span></span><br><span class="line">    <span class="keyword">typedef</span> T value_type;				<span class="comment">//为原生指针类型其一个别名value_type</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>​        这样即使我们在函数func()中传入一个<strong>原生指针</strong>，那么他就会先在iterator_traits的<strong>偏特化版本</strong>中萃取出其具体类型，并作为返回值类型。若我们传入的是一个class type，那么他就会在iterator_traits的<strong>普通模板版本</strong>中萃取出这个class type里面的value_type，作为返回值类型。</p>
-<p>​        若我们传入的是“<strong>指向常数的对象的指针(pointer-to-const)</strong>”，即</p>
+<p>​        若我们传入的是“**指向常数的对象的指针(pointer-to-const)**”，即</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iterator_traits&lt;<span class="keyword">const</span> <span class="keyword">int</span>*&gt;::value_type</span><br></pre></td></tr></table></figure>
 
 <p>那么我们得到的是const int而不是int，现在我们根据萃取得到的类型去声明的变量就无法进行赋值(const的原因)，那为了解决这个问题我们可以再设计一份偏特化版本:</p>
@@ -237,7 +237,7 @@
 <li><strong>Input Iterator</strong>: 这种迭代器所指的对象，不允许外界改变。只读(<strong>read only</strong>)，并且它只允许单步向前，即只允许操作<strong>operator++</strong></li>
 <li><strong>Ouput Iterator</strong>: 唯写(<strong>write only</strong>)，同样只允许<strong>operator++</strong></li>
 <li><strong>Forward Iterator</strong>: 它可以在一个正确的区间上进行<strong>读写操作</strong>，它拥有Input Iterator的所有特性，和Output Iterator的部分特性，同样只允许<strong>operator++</strong></li>
-<li><strong>Bidirectional Iterator:</strong> 在<strong>Forward Iterator</strong>的基础上增加了单步后退的能力，即可双向移动。支持<strong>operator++</strong>和<strong>operator–</strong></li>
+<li><strong>Bidirectional Iterator:</strong> 在<strong>Forward Iterator</strong>的基础上增加了单步后退的能力，即可双向移动。支持<strong>operator++<strong>和</strong>operator–</strong></li>
 <li><strong>Random Access Iterator:</strong> 该类迭代器能完成上面所有迭代器的工作，并且它涵盖了所有指针算能力，包括p+n,p-n,p[n],p1-p2等。</li>
 </ul>
 <p>这些迭代器的关系如下(摘自《STL源码剖析》):</p>
@@ -250,7 +250,7 @@
 <p>​        现在我们要实现对不同类别迭代器的某种相同操作，我们定义为<strong>fun_II</strong>,<strong>fun_BI</strong>,<strong>fun_RAI</strong>,分别对应迭代器类型是<strong>Input Iterator</strong>，<strong>Bidirectional Iterator</strong>和<strong>Random Access Iterator</strong>的对应实现。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">InputIterator</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">fun_II</span>(<span class="title">InputIterator</span> &amp;<span class="title">i</span>)&#123;</span></span><br><span class="line">    <span class="comment">//具体操作</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">BidirectionalIteratorr</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">fun_BI</span>(<span class="title">BidirectionalIterator</span> &amp;<span class="title">i</span>)&#123;</span></span><br><span class="line">    <span class="comment">//具体操作</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">RandomAccessIterator</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">fun_RAI</span>(<span class="title">RandomAccessIterator</span> &amp;<span class="title">i</span>)&#123;</span></span><br><span class="line">    <span class="comment">//具体操作</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>​        那么当我们在客端调用其同一接口<strong>func()</strong>时候，我们可以这样实现</p>
+<p>​        那么当我们在客端调用其同一接口**func()**时候，我们可以这样实现</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">Iterator</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">func</span>(<span class="title">Iterator</span>&amp; <span class="title">i</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (is_random_access_iterator(i))		<span class="comment">//此函数有待设计，判断i是否是类型Random Access Iterator</span></span><br><span class="line">        fun_RAI(i);</span><br><span class="line">    <span class="keyword">if</span> (is_bidirectional_iterator(i))		<span class="comment">//此函数有待设计，与上同理</span></span><br><span class="line">        fun_BI(i);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        fun_II(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>​        这样固然可以实现，但是具体调用了哪个版本的函数得再具体<strong>运行时</strong>才能确定，这会降低程序的效率，如果我们能在<strong>编译时</strong>确定具体要调用哪个版本的函数，那效率就更高。为了满足这个需求我们可以使用<strong>函数重载机制</strong>。</p>
@@ -572,19 +572,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
@@ -729,5 +729,21 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

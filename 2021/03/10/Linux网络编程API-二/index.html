@@ -214,7 +214,7 @@
 <p><strong>count</strong>: vector数组的长度</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//eg</span></span><br><span class="line"><span class="keyword">char</span> buf1[<span class="number">1024</span>], buf2[<span class="number">1024</span>];</span><br><span class="line"><span class="comment">//...往buf1填充数据</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iv</span>[2];</span></span><br><span class="line">iv[<span class="number">0</span>].iov_base = buf1;</span><br><span class="line">iv[<span class="number">0</span>].iov_len = <span class="keyword">sizeof</span>(buf1);</span><br><span class="line">iv[<span class="number">1</span>].iov_base = buf2;</span><br><span class="line">iv[<span class="number">1</span>].iov_len = <span class="keyword">sizeof</span>(buf2);</span><br><span class="line"><span class="comment">//writev,集中写，把buf1,buf2中的数据写到connfd</span></span><br><span class="line">ret = writev(connfd, iv, <span class="number">2</span>);</span><br><span class="line"><span class="comment">//readv,分散读，把键盘的输入读出并放入到buf1,buf2中</span></span><br><span class="line">ret = readv(STDIN_FILENO, iv, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
 
-<h1 id="3-sendfile"><a href="#3-sendfile" class="headerlink" title="3. sendfile"></a>3. sendfile</h1><p>sendfile函数在<strong>两个文件描述符之间直接传递数据(完全在内核中操作)</strong>，避免在内核缓冲区和用户缓冲区之间的数据拷贝，效率很高，称为<strong>零拷贝</strong></p>
+<h1 id="3-sendfile"><a href="#3-sendfile" class="headerlink" title="3. sendfile"></a>3. sendfile</h1><p>sendfile函数在<strong>两个文件描述符之间直接传递数据(完全在内核中操作)<strong>，避免在内核缓冲区和用户缓冲区之间的数据拷贝，效率很高，称为</strong>零拷贝</strong></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/sendfile.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回传输的字节数，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendfile</span><span class="params">(<span class="keyword">int</span> out_fd, <span class="keyword">int</span> in_fd, <span class="keyword">off_t</span>* offset, <span class="keyword">size_t</span> count)</span></span>;</span><br></pre></td></tr></table></figure>
 
 <p><strong>参数</strong>:</p>
@@ -600,19 +600,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
@@ -757,5 +757,21 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>
