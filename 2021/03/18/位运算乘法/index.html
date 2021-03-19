@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>位运算乘法 | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一. 位运算乘法面试题 08.05. 递归乘法 若有两个数字A和B，要求不使用乘法的情况下完成$A*B$操作。 方法一：递归+加法 12345int multiply(int A, int B) &amp;#123;    if(A&#x3D;&#x3D;0)        return 0;    return multiply(A-1,B)+B;&amp;#125;  这种做法固然可以求出AB，但是当A的数值特别大时就会*爆栈*">
+  <meta name="description" content="一. 位运算乘法面试题 08.05. 递归乘法 若有两个数字$A$和$B$，要求不使用乘法的情况下完成$A*B$操作。 方法一：递归+加法 12345int multiply(int A, int B) &amp;#123;    if(A&#x3D;&#x3D;0)        return 0;    return multiply(A-1,B)+B;&amp;#125;  这种做法固然可以求出$AB$，但是当$A$的数值特别">
 <meta property="og:type" content="article">
 <meta property="og:title" content="位运算乘法">
 <meta property="og:url" content="http://yoursite.com/2021/03/18/%E4%BD%8D%E8%BF%90%E7%AE%97%E4%B9%98%E6%B3%95/index.html">
 <meta property="og:site_name" content="Dopaminer">
-<meta property="og:description" content="一. 位运算乘法面试题 08.05. 递归乘法 若有两个数字A和B，要求不使用乘法的情况下完成$A*B$操作。 方法一：递归+加法 12345int multiply(int A, int B) &amp;#123;    if(A&#x3D;&#x3D;0)        return 0;    return multiply(A-1,B)+B;&amp;#125;  这种做法固然可以求出AB，但是当A的数值特别大时就会*爆栈*">
+<meta property="og:description" content="一. 位运算乘法面试题 08.05. 递归乘法 若有两个数字$A$和$B$，要求不使用乘法的情况下完成$A*B$操作。 方法一：递归+加法 12345int multiply(int A, int B) &amp;#123;    if(A&#x3D;&#x3D;0)        return 0;    return multiply(A-1,B)+B;&amp;#125;  这种做法固然可以求出$AB$，但是当$A$的数值特别">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-03-18T15:58:01.000Z">
-<meta property="article:modified_time" content="2021-03-19T01:34:28.128Z">
+<meta property="article:modified_time" content="2021-03-19T01:42:58.835Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="c&#x2F;c++">
 <meta property="article:tag" content="算法">
@@ -177,55 +177,55 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="一-位运算乘法"><a href="#一-位运算乘法" class="headerlink" title="一. 位运算乘法"></a>一. 位运算乘法</h1><p><a href="https://leetcode-cn.com/problems/recursive-mulitply-lcci/" target="_blank" rel="noopener">面试题 08.05. 递归乘法</a></p>
-<p>若有两个数字A和B，要求不使用乘法的情况下完成$A*B$操作。</p>
+<p>若有两个数字$A$和$B$，要求不使用乘法的情况下完成$A*B$操作。</p>
 <p><strong>方法一：递归+加法</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">multiply</span><span class="params">(<span class="keyword">int</span> A, <span class="keyword">int</span> B)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(A==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> multiply(A<span class="number">-1</span>,B)+B;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>这种做法固然可以求出A<em>B，但是当A的数值特别大时就会*</em>爆栈**。并且如果不爆栈，也会因为A的数之过大而导致计算速度过慢。</p>
+<p>这种做法固然可以求出$A<em>B$，但是当$A$的数值特别大时就会*</em>爆栈**。并且如果不爆栈，也会因为$A$的数值过大而导致计算速度过慢。</p>
 <hr>
 <p><strong>方法二：递归+位运算</strong></p>
 <p>这种方法利用了<strong>位运算</strong>，相比方法一很大程度提高了计算速度，其计算思想如下:</p>
 <p><strong>问题</strong>:</p>
-<p>现有数字A和数字B，欲计算$A*B$，并将结果保存到变量$ret$中</p>
+<p>现有数字$A$和数字$B$，欲计算$A*B$，并将结果保存到变量$ret$中</p>
 <p><strong>具体步骤</strong>:</p>
 <ol>
-<li>先将A和B转换为<strong>二进制</strong>表示</li>
-<li>若A的最后一个位是<strong>1</strong>，$ret$ = $ret + B$，若A的最后一个位是<strong>0</strong>，则不对$ret$做任何处理</li>
-<li>将A位右移一个位，将B位左移一个位</li>
-<li>重复步骤2，3只到A变成0，此时$ret$保存的即为A*B的结果</li>
+<li>先将$A$和$B$转换为<strong>二进制</strong>表示</li>
+<li>若$A$的最后一个位是<strong>1</strong>，$ret$ = $ret + B$，若A的最后一个位是<strong>0</strong>，则不对$ret$做任何处理</li>
+<li>将$A$位右移一个位，将$B$位左移一个位</li>
+<li>重复步骤2，3直到$A$变成0，此时$ret$保存的即为$A*B$的结果</li>
 </ol>
 <p><strong>算法的c语言递归描述如下:</strong></p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">multiply</span><span class="params">(<span class="keyword">int</span> A, <span class="keyword">int</span> B)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(A == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(A &amp; <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> multiply(A&gt;&gt;<span class="number">1</span>, B&lt;&lt;<span class="number">1</span>) + B;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> multiply(A&gt;&gt;<span class="number">1</span>, B&lt;&lt;<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h3>举个例子</h3>
 
-<p>假设现在要计算<strong>5*2</strong>，数字5和2分别表示为<strong>A</strong>和<strong>B</strong>:</p>
+<p>假设现在要计算$5*2$，数字5和2分别表示为$A$和$B$:</p>
 <ol>
-<li>将<strong>A</strong>转换为二进制表示(<strong>0000 0101</strong>)，将<strong>B</strong>转换为二进制表示(<strong>0000 0010</strong>)</li>
-<li>此时<strong>A</strong>的最后一个位是1(<strong>0000 010<font color=red>1</font></strong>)，则ret = ret + 2 = 2. 将<strong>B</strong>右移一个位得到<strong>2</strong>(<strong>0000 0010</strong>)，将2左移一个位得到<strong>4</strong>(<strong>0000 0100</strong>)</li>
-<li>此时<strong>A</strong>的最后一个位是1(<strong>0000 001<font color=red>0</font></strong>)，则ret不做处理，其值仍等于2. 将<strong>B</strong>右移一个位得到<strong>1</strong>(<strong>0000 0001</strong>)，将2左移一个位得到<strong>8</strong>(<strong>0000 1000</strong>)</li>
-<li>此时<strong>A</strong>的最后一个位是1(<strong>0000 000<font color=red>1</font></strong>)，则ret = ret + 8 = 10. 将<strong>B</strong>右移一个位得到<strong>0</strong>(<strong>0000 0000</strong>)，将2左移一个位得到<strong>16</strong>(<strong>0001 0000</strong>)</li>
-<li>由于<strong>A</strong>已经等于0，退出循环步骤，得到A*B的结果ret，即10</li>
+<li>将$A$转换为二进制表示(<strong>0000 0101</strong>)，将$B$转换为二进制表示(<strong>0000 0010</strong>)</li>
+<li>此时$A$的最后一个位是1(<strong>0000 010<font color=red>1</font></strong>)，则$ret = ret + 2 = 2$. 将$A$右移一个位得到<strong>2</strong>(<strong>0000 0010</strong>)，将$B$左移一个位得到<strong>4</strong>(<strong>0000 0100</strong>)</li>
+<li>此时$A$的最后一个位是1(<strong>0000 001<font color=red>0</font></strong>)，则$ret$不做处理，其值仍等于2. 将$A$右移一个位得到<strong>1</strong>(<strong>0000 0001</strong>)，将$B$左移一个位得到<strong>8</strong>(<strong>0000 1000</strong>)</li>
+<li>此时$A$的最后一个位是1(<strong>0000 000<font color=red>1</font></strong>)，则$ret = ret + 8 = 10$. 将$A$右移一个位得到<strong>0</strong>(<strong>0000 0000</strong>)，将$B$左移一个位得到<strong>16</strong>(<strong>0001 0000</strong>)</li>
+<li>由于<strong>A</strong>已经等于0，跳出循环，得到$A*B$的结果$ret$，即10</li>
 </ol>
 <h3>缺点</h3>
 
 <p><font color=red>当数字B特别大时，左移还是会造成数据溢出</font></p>
-<h1 id="二-位运算的其他应用"><a href="#二-位运算的其他应用" class="headerlink" title="二. 位运算的其他应用"></a>二. 位运算的其他应用</h1><h2 id="1-大数相乘取模"><a href="#1-大数相乘取模" class="headerlink" title="1. 大数相乘取模"></a>1. 大数相乘取模</h2><p>现有三个大数A和B，m，求$(A*B)\ mod\ m$</p>
+<h1 id="二-位运算的其他应用"><a href="#二-位运算的其他应用" class="headerlink" title="二. 位运算的其他应用"></a>二. 位运算的其他应用</h1><h2 id="1-大数相乘取模"><a href="#1-大数相乘取模" class="headerlink" title="1. 大数相乘取模"></a>1. 大数相乘取模</h2><p>现有三个大数$A$和$B$，$m$，求$(A*B)\ mod\ m$</p>
 <p>如果我们直接使用乘法运算符将数字相乘后再取模则肯定会<strong>数据溢出</strong>，如求<strong>314882150829468584</strong>和<strong>427197303358170108</strong>相乘后对<strong>2009731336725594113</strong>取模的结果</p>
 <p>这时可用大数相乘取模算法计算</p>
 <p><strong>原理</strong>:<br>$$<br>(a<em>b)\ mod\ p=(a\ mod\ p)</em>(b\ mod\ p)\ mod\ p<br>$$<br><strong>算法的c语言描述如下:</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">f</span><span class="params">(ll a,ll b,ll m)</span></span>&#123;</span><br><span class="line">	ll ret = <span class="number">0</span>;		<span class="comment">//保存答案</span></span><br><span class="line">	<span class="keyword">while</span>(b != <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="keyword">if</span>(b &amp; <span class="number">1</span>)					</span><br><span class="line">			ret = (ret + a) % m;			</span><br><span class="line">		a = (a &lt;&lt; <span class="number">1</span>) % m;					</span><br><span class="line">		b &gt;&gt;= <span class="number">1</span>;							</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">f</span><span class="params">(ll a,ll b,ll m)</span></span>&#123;</span><br><span class="line">	ll ret = <span class="number">0</span>;	<span class="comment">//保存答案</span></span><br><span class="line">	<span class="keyword">while</span>(b != <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="keyword">if</span>(b &amp; <span class="number">1</span>)					</span><br><span class="line">			ret = (ret + a) % m;			</span><br><span class="line">		a = (a &lt;&lt; <span class="number">1</span>) % m;					</span><br><span class="line">		b &gt;&gt;= <span class="number">1</span>;							</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <hr>
-<h2 id="2-快速幂"><a href="#2-快速幂" class="headerlink" title="2. 快速幂"></a>2. <strong>快速幂</strong></h2><p>现有数字A和B，求$A^B$，答案保存在变量$ret$中</p>
+<h2 id="2-快速幂"><a href="#2-快速幂" class="headerlink" title="2. 快速幂"></a>2. <strong>快速幂</strong></h2><p>现有数字$A$和$B$，求$A^B$，答案保存在变量$ret$中</p>
 <p><strong>原理</strong>:<br>$$<br>B=n_1+n_2+n_3+…+n_m\<br>A^B=A^{n_1+n_2+n_3+…+n_m}=A^{n_1}<em>A^{n_2}*A^{n_3}</em>…<em>A^{n_m}<br>$$<br>*</em>具体步骤**:</p>
 <ol>
 <li><p>将$B$转换为二进制表示，此时有$B=2^a+2^b+…+2^k$，如$11=(0000 \ 1011)_2=$$2^0+2^1+2^3=1+2+8$</p>
 </li>
 <li><p>若$B$的最后一个位是$1$，则$ret=ret*A$，若为$0$，则$ret$不做任何处理</p>
 </li>
-<li><p>令$A=A*A$,$B=B&gt;&gt;1$</p>
+<li><p>令$A=A*A$，$B=B&gt;&gt;1$</p>
 </li>
 <li><p>重复步骤2，3直到$B=0$</p>
 </li>
@@ -241,16 +241,18 @@
 <li>$B=0$，跳出循环</li>
 </ol>
 <p>上述过程即为<br>$$<br>2^5=2^{1+4}=2<em>4^2=2</em>16^1=32<br>$$<br><strong>算法的c语言描述如下:</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">fastPower</span><span class="params">(ll base, ll <span class="built_in">exp</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">1</span>;				<span class="comment">//保存答案</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">exp</span> != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">exp</span> &amp; <span class="number">1</span>) ret *= base;</span><br><span class="line">        base *= base;</span><br><span class="line">        <span class="built_in">exp</span> &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">fastPower</span><span class="params">(ll base, ll <span class="built_in">exp</span>)</span></span>&#123;</span><br><span class="line">    ll ret = <span class="number">1</span>;	<span class="comment">//保存答案</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">exp</span> != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">exp</span> &amp; <span class="number">1</span>) ret *= base;</span><br><span class="line">        base *= base;</span><br><span class="line">        <span class="built_in">exp</span> &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h2 id="3-快速幂取模"><a href="#3-快速幂取模" class="headerlink" title="3. 快速幂取模"></a>3. <strong>快速幂取模</strong></h2><p>现有三个大数A和B，m，求$(A^B)\ mod\ m$</p>
+<h2 id="3-快速幂取模"><a href="#3-快速幂取模" class="headerlink" title="3. 快速幂取模"></a>3. <strong>快速幂取模</strong></h2><p>现有三个大数$A$和$B$，$m$，求$(A^B)\ mod\ m$</p>
 <p>针对大数，若直接使用幂运算符计算再取模则很可能会会<strong>数据溢出</strong></p>
 <p><strong>原理</strong>:</p>
 <p><a href="https://blog.csdn.net/qq_36760780/article/details/80092665" target="_blank" rel="noopener">这篇关于快速幂取模的原理推理写的很好</a></p>
 <p><strong>算法的c语言描述如下:</strong></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">f</span><span class="params">(ll base, ll <span class="built_in">exp</span>, ll m)</span></span>&#123;</span><br><span class="line">    ll ret = <span class="number">1</span>;			<span class="comment">//保存答案</span></span><br><span class="line">    base = base % m;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">exp</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">exp</span> &amp; <span class="number">1</span>) ret = (ret * base) % m;</span><br><span class="line">        <span class="built_in">exp</span> &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        base = (base * base) % m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">f</span><span class="params">(ll base, ll <span class="built_in">exp</span>, ll m)</span></span>&#123;</span><br><span class="line">    ll ret = <span class="number">1</span>;	<span class="comment">//保存答案</span></span><br><span class="line">    base = base % m;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">exp</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">exp</span> &amp; <span class="number">1</span>) ret = (ret * base) % m;</span><br><span class="line">        <span class="built_in">exp</span> &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        base = (base * base) % m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h1 id="三-参考与推荐"><a href="#三-参考与推荐" class="headerlink" title="三. 参考与推荐"></a>三. 参考与推荐</h1><p><a href="https://blog.csdn.net/qq_19782019/article/details/85621386" target="_blank" rel="noopener">https://blog.csdn.net/qq_19782019/article/details/85621386</a></p>
+<p><a href="https://blog.csdn.net/qq_36760780/article/details/80092665" target="_blank" rel="noopener">https://blog.csdn.net/qq_36760780/article/details/80092665</a></p>
 
       
 
@@ -388,7 +390,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一-位运算乘法"><span class="toc-number">1.</span> <span class="toc-text">一. 位运算乘法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">1.0.1.</span> <span class="toc-text">举个例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">1.0.2.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二-位运算的其他应用"><span class="toc-number">2.</span> <span class="toc-text">二. 位运算的其他应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-大数相乘取模"><span class="toc-number">2.1.</span> <span class="toc-text">1. 大数相乘取模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-快速幂"><span class="toc-number">2.2.</span> <span class="toc-text">2. 快速幂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">2.2.1.</span> <span class="toc-text">举个例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-快速幂取模"><span class="toc-number">2.3.</span> <span class="toc-text">3. 快速幂取模</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一-位运算乘法"><span class="toc-number">1.</span> <span class="toc-text">一. 位运算乘法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">1.0.1.</span> <span class="toc-text">举个例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">1.0.2.</span> <span class="toc-text">缺点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二-位运算的其他应用"><span class="toc-number">2.</span> <span class="toc-text">二. 位运算的其他应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-大数相乘取模"><span class="toc-number">2.1.</span> <span class="toc-text">1. 大数相乘取模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-快速幂"><span class="toc-number">2.2.</span> <span class="toc-text">2. 快速幂</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#"><span class="toc-number">2.2.1.</span> <span class="toc-text">举个例子</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-快速幂取模"><span class="toc-number">2.3.</span> <span class="toc-text">3. 快速幂取模</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三-参考与推荐"><span class="toc-number">3.</span> <span class="toc-text">三. 参考与推荐</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -526,15 +528,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -542,11 +536,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
