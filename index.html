@@ -64,7 +64,7 @@
 			</ul>
 		</nav>
 		<nav>
-    			总文章数 9
+    			总文章数 10
 		</nav>
 		<nav class="header-smart-menu">
     		
@@ -146,6 +146,161 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-位运算乘法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/18/%E4%BD%8D%E8%BF%90%E7%AE%97%E4%B9%98%E6%B3%95/">位运算乘法</a>
+    </h1>
+  
+
+	
+        
+        <a href="/2021/03/18/%E4%BD%8D%E8%BF%90%E7%AE%97%E4%B9%98%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2021-03-18T15:58:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-18</time>
+</a>
+        
+
+	<!-- 添加代码，阅读量 -->
+    	
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="一-位运算乘法"><a href="#一-位运算乘法" class="headerlink" title="一. 位运算乘法"></a>一. 位运算乘法</h1><p><a href="https://leetcode-cn.com/problems/recursive-mulitply-lcci/" target="_blank" rel="noopener">面试题 08.05. 递归乘法</a></p>
+<p>若有两个数字A和B，要求不使用乘法的情况下完成$A*B$操作。</p>
+<p><strong>方法一：递归+加法</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">multiply</span><span class="params">(<span class="keyword">int</span> A, <span class="keyword">int</span> B)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(A==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> multiply(A<span class="number">-1</span>,B)+B;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种做法固然可以求出A<em>B，但是当A的数值特别大时就会*</em>爆栈**。并且如果不爆栈，也会因为A的数之过大而导致计算速度过慢。</p>
+<hr>
+<p><strong>方法二：递归+位运算</strong></p>
+<p>这种方法利用了<strong>位运算</strong>，相比方法一很大程度提高了计算速度，其计算思想如下:</p>
+<p><strong>问题</strong>:</p>
+<p>现有数字A和数字B，欲计算$A*B$，并将结果保存到变量$ret$中</p>
+<p><strong>具体步骤</strong>:</p>
+<ol>
+<li>先将A和B转换为<strong>二进制</strong>表示</li>
+<li>若A的最后一个位是<strong>1</strong>，$ret$ = $ret + B$，若A的最后一个位是<strong>0</strong>，则不对$ret$做任何处理</li>
+<li>将A位右移一个位，将B位左移一个位</li>
+<li>重复步骤2，3只到A变成0，此时$ret$保存的即为A*B的结果</li>
+</ol>
+<p><strong>算法的c语言递归描述如下:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">multiply</span><span class="params">(<span class="keyword">int</span> A, <span class="keyword">int</span> B)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(A == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span>(A &amp; <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> multiply(A&gt;&gt;<span class="number">1</span>, B&lt;&lt;<span class="number">1</span>) + B;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> multiply(A&gt;&gt;<span class="number">1</span>, B&lt;&lt;<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3>举个例子</h3>
+
+<p>假设现在要计算<strong>5*2</strong>，数字5和2分别表示为<strong>A</strong>和<strong>B</strong>:</p>
+<ol>
+<li>将<strong>A</strong>转换为二进制表示(<strong>0000 0101</strong>)，将<strong>B</strong>转换为二进制表示(<strong>0000 0010</strong>)</li>
+<li>此时<strong>A</strong>的最后一个位是1(<strong>0000 010<font color=red>1</font></strong>)，则ret = ret + 2 = 2. 将<strong>B</strong>右移一个位得到<strong>2</strong>(<strong>0000 0010</strong>)，将2左移一个位得到<strong>4</strong>(<strong>0000 0100</strong>)</li>
+<li>此时<strong>A</strong>的最后一个位是1(<strong>0000 001<font color=red>0</font></strong>)，则ret不做处理，其值仍等于2. 将<strong>B</strong>右移一个位得到<strong>1</strong>(<strong>0000 0001</strong>)，将2左移一个位得到<strong>8</strong>(<strong>0000 1000</strong>)</li>
+<li>此时<strong>A</strong>的最后一个位是1(<strong>0000 000<font color=red>1</font></strong>)，则ret = ret + 8 = 10. 将<strong>B</strong>右移一个位得到<strong>0</strong>(<strong>0000 0000</strong>)，将2左移一个位得到<strong>16</strong>(<strong>0001 0000</strong>)</li>
+<li>由于<strong>A</strong>已经等于0，退出循环步骤，得到A*B的结果ret，即10</li>
+</ol>
+<h3>缺点</h3>
+
+<p><font color=red>当数字B特别大时，左移还是会造成数据溢出</font></p>
+<h1 id="二-位运算的其他应用"><a href="#二-位运算的其他应用" class="headerlink" title="二. 位运算的其他应用"></a>二. 位运算的其他应用</h1><h2 id="1-大数相乘取模"><a href="#1-大数相乘取模" class="headerlink" title="1. 大数相乘取模"></a>1. 大数相乘取模</h2><p>现有三个大数A和B，m，求$(A*B)\ mod\ m$</p>
+<p>如果我们直接使用乘法运算符将数字相乘后再取模则肯定会<strong>数据溢出</strong>，如求<strong>314882150829468584</strong>和<strong>427197303358170108</strong>相乘后对<strong>2009731336725594113</strong>取模的结果</p>
+<p>这时可用大数相乘取模算法计算</p>
+<p><strong>原理</strong>:<br>$$<br>(a<em>b)\ mod\ p=(a\ mod\ p)</em>(b\ mod\ p)\ mod\ p<br>$$<br><strong>算法的c语言描述如下:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">f</span><span class="params">(ll a,ll b,ll m)</span></span>&#123;</span><br><span class="line">	ll ret = <span class="number">0</span>;		<span class="comment">//保存答案</span></span><br><span class="line">	<span class="keyword">while</span>(b != <span class="number">0</span>)&#123;</span><br><span class="line">		<span class="keyword">if</span>(b &amp; <span class="number">1</span>)					</span><br><span class="line">			ret = (ret + a) % m;			</span><br><span class="line">		a = (a &lt;&lt; <span class="number">1</span>) % m;					</span><br><span class="line">		b &gt;&gt;= <span class="number">1</span>;							</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<hr>
+<h2 id="2-快速幂"><a href="#2-快速幂" class="headerlink" title="2. 快速幂"></a>2. <strong>快速幂</strong></h2><p>现有数字A和B，求$A^B$，答案保存在变量$ret$中</p>
+<p><strong>原理</strong>:<br>$$<br>B=n_1+n_2+n_3+…+n_m\<br>A^B=A^{n_1+n_2+n_3+…+n_m}=A^{n_1}<em>A^{n_2}*A^{n_3}</em>…<em>A^{n_m}<br>$$<br>*</em>具体步骤**:</p>
+<ol>
+<li><p>将$B$转换为二进制表示，此时有$B=2^a+2^b+…+2^k$，如$11=(0000 \ 1011)_2=$$2^0+2^1+2^3=1+2+8$</p>
+</li>
+<li><p>若$B$的最后一个位是$1$，则$ret=ret*A$，若为$0$，则$ret$不做任何处理</p>
+</li>
+<li><p>令$A=A*A$,$B=B&gt;&gt;1$</p>
+</li>
+<li><p>重复步骤2，3直到$B=0$</p>
+</li>
+</ol>
+<h3>举个例子</h3>
+
+<p>$A=2,B=5$，计算$A^B$，答案保存在$ret$</p>
+<ol>
+<li>$5=(0000\ 0101)_2=2^0+2^2=1+4$</li>
+<li>$B$的最后一位是$1$，则$ret=ret<em>A=2$，$A=2</em>2=4,B=5&gt;&gt;1=2$</li>
+<li>$B$的最后一位是$0$，则$ret$不做处理，$A=4*4=16,B=2&gt;&gt;1=1$</li>
+<li>$B$的最后一位是$1$，则$ret=ret<em>A=32$，$A=16</em>16=256,B=1&gt;&gt;1=0$</li>
+<li>$B=0$，跳出循环</li>
+</ol>
+<p>上述过程即为<br>$$<br>2^5=2^{1+4}=2<em>4^2=2</em>16^1=32<br>$$<br><strong>算法的c语言描述如下:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">fastPower</span><span class="params">(ll base, ll <span class="built_in">exp</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ret = <span class="number">1</span>;				<span class="comment">//保存答案</span></span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">exp</span> != <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">exp</span> &amp; <span class="number">1</span>) ret *= base;</span><br><span class="line">        base *= base;</span><br><span class="line">        <span class="built_in">exp</span> &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-快速幂取模"><a href="#3-快速幂取模" class="headerlink" title="3. 快速幂取模"></a>3. <strong>快速幂取模</strong></h2><p>现有三个大数A和B，m，求$(A^B)\ mod\ m$</p>
+<p>针对大数，若直接使用幂运算符计算再取模则很可能会会<strong>数据溢出</strong></p>
+<p><strong>原理</strong>:</p>
+<p><a href="https://blog.csdn.net/qq_36760780/article/details/80092665" target="_blank" rel="noopener">这篇关于快速幂取模的原理推理写的很好</a></p>
+<p><strong>算法的c语言描述如下:</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> ll;</span><br><span class="line"><span class="function">ll <span class="title">f</span><span class="params">(ll base, ll <span class="built_in">exp</span>, ll m)</span></span>&#123;</span><br><span class="line">    ll ret = <span class="number">1</span>;			<span class="comment">//保存答案</span></span><br><span class="line">    base = base % m;</span><br><span class="line">    <span class="keyword">while</span>(<span class="built_in">exp</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">exp</span> &amp; <span class="number">1</span>) ret = (ret * base) % m;</span><br><span class="line">        <span class="built_in">exp</span> &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">        base = (base * base) % m;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">c/c++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">算法</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/03/18/%E4%BD%8D%E8%BF%90%E7%AE%97%E4%B9%98%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
     <article id="post-Linux网络编程API-二" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -225,20 +380,20 @@
 
 
   
-    <article id="post-Linux网络编程基础API" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Linux网络编程基础API-一" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API/">Linux网络编程API(一)</a>
+      <a class="article-title" href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API-%E4%B8%80/">Linux网络编程API(一)</a>
     </h1>
   
 
 	
         
-        <a href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API/" class="archive-article-date">
+        <a href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API-%E4%B8%80/" class="archive-article-date">
   	<time datetime="2021-03-06T12:41:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-06</time>
 </a>
         
@@ -251,7 +406,7 @@
       
         <h1 id="相关API笔记（一）"><a href="#相关API笔记（一）" class="headerlink" title="相关API笔记（一）"></a>相关API笔记（一）</h1><p>Linux网络编程<strong>基础API</strong></p>
         
-          <a class="article-more-a" href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API/#more">more >></a>
+          <a class="article-more-a" href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API-%E4%B8%80/#more">more >></a>
         
       
 
@@ -275,7 +430,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API/">展开全文 >></a>
+          <a class="article-more-a" href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API-%E4%B8%80/">展开全文 >></a>
         </p>
       
 
@@ -926,15 +1081,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -942,7 +1097,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
             
             <div class="clearfix"></div>
