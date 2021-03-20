@@ -6,26 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Linux网络编程API(二) | Dopaminer</title>
+  <title>Linux网络编程API(一) | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="相关API笔记(二)Linux网络编程高级I&#x2F;O函数">
+  <meta name="description" content="相关API笔记（一）Linux网络编程基础API">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux网络编程API(二)">
-<meta property="og:url" content="http://yoursite.com/2021/03/10/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8BAPI-%E4%BA%8C/index.html">
+<meta property="og:title" content="Linux网络编程API(一)">
+<meta property="og:url" content="http://yoursite.com/2021/03/06/LinuxSPAPI-%E4%B8%80/index.html">
 <meta property="og:site_name" content="Dopaminer">
-<meta property="og:description" content="相关API笔记(二)Linux网络编程高级I&#x2F;O函数">
+<meta property="og:description" content="相关API笔记（一）Linux网络编程基础API">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/GSDmv2zZbUwd7Ri.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/wSlBD2nUObroafc.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/plb5OaWTiD3orkd.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/96YEnfhbPiORVUy.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/pTmkxNyXMjJKzor.png">
-<meta property="article:published_time" content="2021-03-10T12:06:59.000Z">
-<meta property="article:modified_time" content="2021-03-19T17:18:01.087Z">
+<meta property="og:image" content="https://i.loli.net/2021/03/07/MeRUwlmXSz9fGC1.png">
+<meta property="article:published_time" content="2021-03-06T12:41:48.000Z">
+<meta property="article:modified_time" content="2021-03-19T17:14:57.997Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="服务器">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/03/10/GSDmv2zZbUwd7Ri.png">
+<meta name="twitter:image" content="https://i.loli.net/2021/03/07/MeRUwlmXSz9fGC1.png">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
   
@@ -153,21 +149,21 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Linux网络编程API-二" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-LinuxSPAPI-一" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Linux网络编程API(二)
+      Linux网络编程API(一)
     </h1>
   
 
 	
         
-        <a href="/2021/03/10/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8BAPI-%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2021-03-10T12:06:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-10</time>
+        <a href="/2021/03/06/LinuxSPAPI-%E4%B8%80/" class="archive-article-date">
+  	<time datetime="2021-03-06T12:41:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-06</time>
 </a>
         
 
@@ -181,109 +177,295 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="相关API笔记-二"><a href="#相关API笔记-二" class="headerlink" title="相关API笔记(二)"></a>相关API笔记(二)</h1><p>Linux网络编程<strong>高级I/O函数</strong></p>
+        <h1 id="相关API笔记（一）"><a href="#相关API笔记（一）" class="headerlink" title="相关API笔记（一）"></a>相关API笔记（一）</h1><p>Linux网络编程<strong>基础API</strong></p>
 <a id="more"></a>
-<h1 id="1-pipe"><a href="#1-pipe" class="headerlink" title="1. pipe"></a>1. pipe</h1><p>pipe函数用于创建一个管道，实现<strong>进程间通信</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd</strong>: pipe函数创建的两个文件描述符对应管道两端，分别为<strong>“读”端</strong>和<strong>“写端”</strong>(可记忆为读写),即fd[0]为管道的读端，fd[1]为管道的写端。</p>
-<p>默认情况下这对<strong>文件描述符</strong>是阻塞的,<strong>对空的fd[0]执行读操作</strong>或<strong>对满的fd[1]执行写操作</strong>会阻塞。</p>
-<p><strong><font color=red>创建双向管道</font></strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socketpair</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol, <span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p>前三个参数与<strong>socket系统调用</strong>的三个参数完全相同，但是<strong>domian只能使用UNIX本地域协议族AF_UNIX</strong>，因为<strong>仅能在本地使用这个双向管道</strong></p>
-<p><strong>fd</strong>: 与pipe系统调用的参数一样，不过这里创建的文件描述符都是<strong>即可读又可写的</strong></p>
-<h1 id="2-dup和dup2"><a href="#2-dup和dup2" class="headerlink" title="2. dup和dup2"></a>2. dup和dup2</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">//二者都是失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> file_descriptor)</span></span>;</span><br><span class="line"><span class="comment">//dup2可理解为后者重定向到前者</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> file_descriptor_one, <span class="keyword">int</span> file_descriptor_two)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p>dup和dup2的参数都是<strong>文件描述符</strong>，具体作用如下:</p>
-<p>dup函数<strong>创建一个新的文件描述符</strong>，该新的描述符和原有<strong>文件描述符file_descriptor</strong>指向<strong>相同文件，管道或者网络连接</strong>， 并且dup返回的文件描述符总是<strong>取系统当前可用的最小整数值</strong>。</p>
-<p>dup2函数与dup类似，不过它返回的是<strong>第一个不小于file_descriptor_tow的整数值</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例子。重定向STDOUT</span></span><br><span class="line"><span class="comment">//使用dup</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dup_out</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="built_in">close</span>(STDOUT);</span><br><span class="line">    dup(fd);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"dup"</span>);</span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用dup2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dup2_out</span><span class="params">()</span></span>&#123;</span><br><span class="line">    dup2(fd, STDOUT);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"dup2"</span>);</span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="3-readv和writev"><a href="#3-readv和writev" class="headerlink" title="3. readv和writev"></a>3. readv和writev</h1><p>readv函数<strong>将数据从文件描述符读到分散的内存块中</strong>，即分散读</p>
-<p>writev函数则<strong>将多块分散的内存数据一并写入文件描述符中</strong>，即集中写</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">readv</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec* <span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">writev</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec* <span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br><span class="line"><span class="comment">//iovec封装了一块内存的起始位置和长度</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>&#123;</span></span><br><span class="line">    <span class="keyword">void</span>*		iov_base;				<span class="comment">//内存起始地址</span></span><br><span class="line">    <span class="keyword">size_t</span> 		iov_len;				<span class="comment">//这块内存的长度</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd</strong>: 被操作的目标文件描述符</p>
-<p><strong>vector</strong>: iovec结构数组</p>
-<p><strong>count</strong>: vector数组的长度</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//eg</span></span><br><span class="line"><span class="keyword">char</span> buf1[<span class="number">1024</span>], buf2[<span class="number">1024</span>];</span><br><span class="line"><span class="comment">//...往buf1填充数据</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iv</span>[2];</span></span><br><span class="line">iv[<span class="number">0</span>].iov_base = buf1;</span><br><span class="line">iv[<span class="number">0</span>].iov_len = <span class="keyword">sizeof</span>(buf1);</span><br><span class="line">iv[<span class="number">1</span>].iov_base = buf2;</span><br><span class="line">iv[<span class="number">1</span>].iov_len = <span class="keyword">sizeof</span>(buf2);</span><br><span class="line"><span class="comment">//writev,集中写，把buf1,buf2中的数据写到connfd</span></span><br><span class="line">ret = writev(connfd, iv, <span class="number">2</span>);</span><br><span class="line"><span class="comment">//readv,分散读，把键盘的输入读出并放入到buf1,buf2中</span></span><br><span class="line">ret = readv(STDIN_FILENO, iv, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
-<h1 id="3-sendfile"><a href="#3-sendfile" class="headerlink" title="3. sendfile"></a>3. sendfile</h1><p>sendfile函数在<strong>两个文件描述符之间直接传递数据(完全在内核中操作)</strong>，避免在内核缓冲区和用户缓冲区之间的数据拷贝，效率很高，称为<strong>零拷贝</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/sendfile.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回传输的字节数，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendfile</span><span class="params">(<span class="keyword">int</span> out_fd, <span class="keyword">int</span> in_fd, <span class="keyword">off_t</span>* offset, <span class="keyword">size_t</span> count)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>out_fd</strong>: <strong>待写入内容</strong>的文件描述符，可理解为数据进入到out_fd输出，流到in_fd，我们需要把数据写给它让它又得输出。</p>
-<p><strong>in_fd</strong>: <strong>待读出内容</strong>的文件描述符，可理解为文件流入到in_fd中，我们需要从它这里读出数据。</p>
-<p><strong>offset</strong>: 指定从读入文件流的<strong>哪个位置</strong>开始读，如果为空，则使用读入文件流默认的起始位置。</p>
-<p><strong>count</strong>: 指定在文件描述符in_fd和out_fd之间传输的字节数</p>
-<h1 id="4-mmap和munmap"><a href="#4-mmap和munmap" class="headerlink" title="4. mmap和munmap"></a>4. mmap和munmap</h1><p>mmap用于<strong>申请一段内存空间</strong>，这段内存可以作为进程间通信的共享内存，可以将文件直接映射到其中。</p>
-<p>munmap函数则<strong>释放mmap创建的这段内存空间</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回指向目标区域的指针，失败返回MAP_FAILED((void*)-1)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *start, <span class="keyword">size_t</span> length, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd)</span></span>;</span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *start, <span class="keyword">size_t</span> length)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>start</strong>: 用户<strong>指定某个特定的地址</strong>作为这段内存的起始地址，如果设置为NULL，则系统自动分配一个地址。</p>
-<p><strong>length</strong>: 指定<strong>内存段的长度</strong></p>
-<p><strong>prot</strong>: 设置<strong>内存段的访问权限</strong></p>
+<h1 id="1-主机字节序和网络字节序"><a href="#1-主机字节序和网络字节序" class="headerlink" title="1. 主机字节序和网络字节序"></a>1. 主机字节序和网络字节序</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">htonl</span><span class="params">( <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> hostlong )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> short <span class="keyword">int</span> <span class="title">htons</span><span class="params">( <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> hostlong )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> <span class="title">ntohl</span><span class="params">( <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> netlong )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> short <span class="keyword">int</span> <span class="title">ntohs</span><span class="params">( <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> netlong )</span></span>;</span><br></pre></td></tr></table></figure>
+<p><strong>htonl</strong>即”host to network long”, 即<strong>长整型</strong>(32bit)的主机字节序转换未网络字节序数据。</p>
+<p><strong><font color=red> 长整型函数</font></strong><font color=red> (htonl,ntohl)通常用来转换IP地址 </font></p>
+<p><strong><font color=red>短整型函数</font></strong><font color=red> (htonl,ntohl)通常用来转换端口号</font></p>
+<h1 id="2-通用socket地址"><a href="#2-通用socket地址" class="headerlink" title="2. 通用socket地址"></a>2. 通用socket地址</h1><p><strong><font color=red size=6>这个比较少用</font></strong></p>
+<p>socket网络编程接口中表示socket地址的是结构体sockaddr</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/socket.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span>&#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>	sa_family;	<span class="comment">//地址族类型变量</span></span><br><span class="line">    <span class="keyword">char</span>	sa_data[<span class="number">14</span>];	<span class="comment">//存放socket地址值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>地址族类型</strong>通常与<strong>协议族类型</strong>对应。</p>
 <div class="table-container">
 <table>
 <thead>
 <tr>
-<th>值</th>
+<th style="text-align:center">协议族</th>
+<th style="text-align:center">地址族</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>PF_UNIX</strong></td>
+<td style="text-align:center"><strong>AF_UNIX</strong></td>
+<td style="text-align:center">UNIX本地域协议族</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>PF_INET</strong></td>
+<td style="text-align:center"><strong>AF_INET</strong></td>
+<td style="text-align:center">TCP/IPv4协议族</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>PF_INET6</strong></td>
+<td style="text-align:center"><strong>AF_INET6</strong></td>
+<td style="text-align:center">TCP/Ipv6协议族</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>宏PF_*和AF_*都定在bits/socket.h头文件中，且后者与前者有完全相同的值，所以<strong>二者通常混用</strong></p>
+<p><strong>sa_data</strong>存放<strong>socket地址值</strong>，不同的协议族的地址具有不同的长度</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>协议族</th>
+<th>地址值含义和长度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PF_UNIX</td>
+<td>文件的路径名，长度可达到108字节</td>
+</tr>
+<tr>
+<td>PF_INET</td>
+<td><strong>16bit端口号</strong>和<strong>32bit IPv4</strong>地址，共6字节</td>
+</tr>
+<tr>
+<td>PF_INET6</td>
+<td><strong>16bit端口号</strong>,<strong>32bit流标识</strong>，<strong>128bitIpv6地址</strong>，<strong>32bit范围ID</strong>，共26字节</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>14字节的sa_data不能容纳协议族的地址值。定义如下新的通用socket地址结构体:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/socket.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_storage</span> &#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>		sa_family;	<span class="comment">//地址族类型变量</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span>	__ss_align;	<span class="comment">//用来内存对齐</span></span><br><span class="line">    <span class="keyword">char</span>		__ss_padding[<span class="number">128</span>-<span class="keyword">sizeof</span>(__ss_align)];	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="3-专用socket地址"><a href="#3-专用socket地址" class="headerlink" title="3.专用socket地址"></a>3.专用socket地址</h1><p><strong><font color=red size=6>这个比较常用</font></strong></p>
+<p><strong>UNIX本地域协议族</strong>使用如下专用socket地址结构体:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/un.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_un</span> &#123;</span></span><br><span class="line">	<span class="keyword">sa_family_t</span>	sin_family;	<span class="comment">//地址族: AF_UNIX</span></span><br><span class="line">	<span class="keyword">char</span>		sun_path[<span class="number">108</span>];	<span class="comment">//文件路径名</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>TCP/IP协议族</strong>有<strong>sockaddr_in</strong>和<strong>socketaddr_in6</strong>,分别用于<strong>Ipv4</strong>和<strong>Ipv6</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> &#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>		sin_family;			<span class="comment">//地址族: AF_INET</span></span><br><span class="line">    <span class="keyword">u_int16_t</span>		sin_port;			<span class="comment">//端口号，用网络字节序表示</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span>	<span class="title">sin_addr</span>;</span>			<span class="comment">//IPv4地址结构体</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in_addr</span> &#123;</span></span><br><span class="line">    <span class="keyword">u_int32_t</span>		s_addr;				<span class="comment">//IPv4地址，要用网络字节序表示</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in6</span> &#123;</span></span><br><span class="line">    <span class="keyword">sa_family_t</span>		sin6_family;		<span class="comment">//地址族: AF_INET6</span></span><br><span class="line">    <span class="keyword">u_int16_t</span>		sin6_port;			<span class="comment">//端口号，用网络字节序表示</span></span><br><span class="line">    <span class="keyword">u_int32_t</span>		sin6_flowinfo;		<span class="comment">//流信息，应设置为0</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">in6_addr</span>	<span class="title">sin6_addr</span>;</span>			<span class="comment">//IPv6地址结构体</span></span><br><span class="line">    <span class="keyword">u_int32_t</span>		sin6_scopt_16;		<span class="comment">//scope ID,尚处于实验阶段</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">in6_addr</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span>	sa_addr[<span class="number">16</span>];		<span class="comment">//IPv6地址，要用网络字节序表示</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际使用时(包括sockaddr_storage)都需要将其转化为通用的<strong>socket地址类型sockaddr(强制转换即可)</strong>，所以的socket编程接口使用的类型都是sockaddr。</p>
+<h1 id="4-IP地址转换函数"><a href="#4-IP地址转换函数" class="headerlink" title="4. IP地址转换函数"></a>4. IP地址转换函数</h1><p>我们习惯上都是使用<strong>点分十进制（Dotted Decimal Notation）</strong>表示IP地址，实际上使用的得把它们转换为<strong>整数(二进制数)</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">in_addr_t</span> <span class="title">inet_addr</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* strptr)</span></span>;				</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">inet_aton</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* cp, struct in_addr* inp)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">inet_ntoa</span><span class="params">(struct in_addr in)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>inet_addr</strong>: <strong>点分十进制表示的IPv4</strong>转换为<strong>网络字节序整数表示的IPv4地址</strong>，失败返回INADDR_NONE</p>
+<p><strong>inet_aton</strong>: 完成与inet_addr相同功能，结果保存在Inp数组中。成功返回1，失败返回0</p>
+<p><strong>inet_ntoa</strong>: <strong>网络字节序整数表示的IPv4地址</strong>转换为<strong>点分十进制表示的IPv4</strong>。但是该函数内部使用一个<strong>静态变量</strong>来<strong>保存结果</strong>的，函数的<strong>返回值是这个静态内存</strong>，多次调用会覆盖到之前调用产生的结果。</p>
+<p><strong><font color=red size=6>下面的更好用，适应于IPv6</font></strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">inet_pton</span><span class="params">(<span class="keyword">int</span> af, <span class="keyword">const</span> <span class="keyword">char</span>* src, <span class="keyword">void</span>* dst)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">inet_ntop</span><span class="params">(<span class="keyword">int</span> af, <span class="keyword">const</span> <span class="keyword">void</span>* src, <span class="keyword">char</span>* dst, <span class="keyword">socketlen_t</span> cnt)</span></span>;</span><br></pre></td></tr></table></figure>
+<p><strong><font color=red>inet_pton</font></strong>（IP地址src-&gt;网络字节序IP，成功返回1，失败返回0并设置errno）</p>
+<p>参数:</p>
+<p><strong>af</strong>: 地址族,<strong>AF_INET</strong>或者<strong>AF_INET6</strong></p>
+<p><strong>src</strong>: 点分十进制表示的<strong>IPv4地址</strong>或者十六进制表示的**IPv6地址</p>
+<p><strong>dst</strong>: 转换的结果指向dst指向的内存</p>
+<p><strong><font color=red>inet_ntop</font></strong>:（与inet_pton相反，成功返回<strong>目标存储单元的地址</strong>，失败返回NULL并设置errno）</p>
+<p>前三个参数与上述相同</p>
+<p><strong>cnt</strong>: 指定目标存储单元的大小，<strong>使用如下两个宏能指定这个大小</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>	INET_ADDRSTRLEN 	16</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>	INET6_ADDRSTRLEN	46</span></span><br></pre></td></tr></table></figure>
+<h1 id="5-创建socket"><a href="#5-创建socket" class="headerlink" title="5. 创建socket"></a>5. 创建socket</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回socket文件描述符,失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socket</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>domain</strong>: 使用哪个<strong>底层协议族</strong>，TCP/IP协议: <strong>PF_INET</strong>,<strong>PF_INET6</strong>, UNIX本地协议族: <strong>PF_UNIX</strong></p>
+<p><strong>type</strong>: 服务类型，取值有<strong>SOCK_STREAM</strong>，<strong>SOCK_DGRAM</strong>,在TCP/IP中，SOCK_STREAM表示使用<strong>TCP</strong>,SOCK_DGRAM表示使用<strong>UDP</strong>。同时也可以传入上述服务类型与下面两个标志的相与的值: <strong>SOCK_NONBLOCK</strong>和<strong>SOCK_CLOEXEC</strong>。分别表示<strong>非阻塞</strong>，fork调用创建子进程后<strong>在子进程关闭该socket</strong>。</p>
+<p><strong>protocol</strong>: 在前两个参数构成的协议集合下再选择一个具体协议。<strong>一般情况设置为0即可</strong>。</p>
+<h1 id="6-命名socket"><a href="#6-命名socket" class="headerlink" title="6. 命名socket"></a>6. 命名socket</h1><p>创建了socket后，我们还需要将对应的地址与其绑定。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="comment">//errno的类型: EACCES,表示被绑定地址是受保护的</span></span><br><span class="line"><span class="comment">//			  EADDRINUSE, 被绑定地址正在使用中</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bind</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">const</span> struct sockaddr* my_addr, <span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: 要绑定的<strong>socket文件描述符</strong></p>
+<p><strong>my_addr</strong>: socket地址，一般来说为<strong>sockaddr_un</strong>, <strong>sockaddr_in</strong>, <strong>sockaddr_in6</strong>的地址，传入参数时要强制转换为<strong>sockaddr*指针</strong>类型。</p>
+<p><strong>addrlen</strong>: 第二个参数my_addr所指向的<strong>socket地址的长度</strong>。通常使用<strong>sizeof()</strong>来获取。</p>
+<h1 id="7-监听socket"><a href="#7-监听socket" class="headerlink" title="7. 监听socket"></a>7. 监听socket</h1><p>socket被命名，即绑定后要使用<strong>listen</strong>函数<strong>创建监听队列</strong>存放待处理的用户连接</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">listen</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> backlog)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: 被监听的socket文件描述符。</p>
+<p><strong>backlog</strong>: 内核监听队列的<strong>最大长度</strong>。</p>
+<h1 id="8-接受连接"><a href="#8-接受连接" class="headerlink" title="8. 接受连接"></a>8. 接受连接</h1><p>下面系统调用从listen监听队列中<strong>接受一个连接</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回一个新的socket文件描述符，用来唯一标识被接受的这个连接，服务器可以通过读写该socket来与被连接的客户端通信</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">accept</span><span class="params">(<span class="keyword">int</span> sockfd, struct sockaddr *addr, <span class="keyword">socklen_t</span> *addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: 执行过listen系统调用的socket文件描述符。</p>
+<p><strong>addr</strong>: 获取被接受连接的远端socket地址</p>
+<p><strong>addrlen</strong>: 第二个参数my_addr所指向的<strong>socket地址的长度</strong>，可以提前声明一个socklen_t类型变量并赋值socket地址的长度,然后传入这个变量的地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">client</span>;</span></span><br><span class="line"><span class="keyword">socklen_t</span> client_addrlength = <span class="keyword">sizeof</span>(client);</span><br><span class="line"><span class="keyword">int</span> connfd = accept(sock, (struct sockaddr*)&amp;client, &amp;client_addrlength);</span><br></pre></td></tr></table></figure>
+<h1 id="9-发起连接"><a href="#9-发起连接" class="headerlink" title="9. 发起连接"></a>9. 发起连接</h1><p>服务器通过listen被动接受连接，那么客户端就需要通过connect来<strong>主动与服务器建立连接</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">connect</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">const</span> struct sockaddr *serv_addr, <span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: 通过socket系统调用，唯一标识与服务器连接的<strong>socket文件描述符</strong></p>
+<p><strong>serv_addr</strong>: <strong>服务器</strong>监听的<strong>socket地址</strong></p>
+<p><strong>addrlen</strong>: 参数二的地址长度</p>
+<h1 id="10-关闭连接"><a href="#10-关闭连接" class="headerlink" title="10. 关闭连接"></a>10. 关闭连接</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">close</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>fd</strong>: 要关闭的socket文件描述符</p>
+<p><font color=red>close并非立刻关闭一个连接，只是是把fd的引用计数减1</font>，<strong><font color=red>当fd的引用数完全减为0时，才算真正关闭连接。</font></strong></p>
+<p>多进程中，一个fork系统调用默认会让父进程中打开的socket文件描述符的引用数加一，因此得再父子进程中都调用close才能真正关闭一个连接。</p>
+<p><strong>下面系统调用可以<font color=red>立刻终止连接</font></strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">shutdown</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> howto)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: 要立刻关闭的socket文件描述符</p>
+<p><strong>howto</strong>: 决定了shutdown的行为，取值如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>可选值</th>
 <th>含义</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PROT_READ</td>
-<td>内存段可读</td>
+<td>SHUT_RD</td>
+<td>关闭sockfd读的这一半。应用程序不能再针对socket文件描述符执行读操作，并且该socket接收缓冲区中的数据都被丢弃</td>
 </tr>
 <tr>
-<td>PROT_WRITE</td>
-<td>内存段可写</td>
+<td>SHUT_WR</td>
+<td>关闭sockfd写的这一半。sockfd的发送缓冲区中的数据会在真正关闭连接之前全部发送出去，应用程序不可再对该socket文件描述符执行写操作。这种情况下，连接处于半关闭状态。</td>
 </tr>
 <tr>
-<td>PROT_EXEC</td>
-<td>内存段可执行</td>
-</tr>
-<tr>
-<td>PROT_NONE</td>
-<td>内存段不能访问</td>
+<td>SHUT_RDWR</td>
+<td>同时关闭sockfd上的读和写</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p><strong>flags</strong>:可控制<strong>内存段内容被修改后程序的行为</strong></p>
-<p><img src="https://i.loli.net/2021/03/10/GSDmv2zZbUwd7Ri.png" alt="mmap.png"></p>
-<h1 id="5-splice"><a href="#5-splice" class="headerlink" title="5. splice"></a>5. splice</h1><p>splice函数用于<strong>在两个文件描述符之间移动数据</strong>，也是<strong>零拷贝操作</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回移动字节的数量，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">splice</span><span class="params">(<span class="keyword">int</span> fd_in, <span class="keyword">loof_t</span>* off_in, <span class="keyword">int</span> fd_out, <span class="keyword">loff_t</span>* off_out, <span class="keyword">size_t</span> len, <span class="keyword">unsigned</span> <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd_in</strong>: 待输入数据的文件描述符</p>
-<p><strong>off_in</strong>: 如果fd_in是<strong>管道文件描述符</strong>，则必须设置为NULL，若不是(如socket),则off_in表示从输入数据流的何处开始读取数据。</p>
-<p><strong>fd_out</strong>: 待输出数据的文件描述符</p>
-<p><strong>off_out</strong>: 同off_in</p>
-<p><strong>len</strong>: 指定<strong>移动数据的长度</strong></p>
-<p><strong>flags</strong>: 可被设置为如下某些值的<strong>按位或</strong></p>
-<p><img src="https://i.loli.net/2021/03/10/wSlBD2nUObroafc.png" alt="ff22.png"></p>
-<p><strong><font color = red>使用splice时，fd_in和fd_out至少有一个是管道文件描述符</font></strong></p>
-<p>其常见errno:</p>
-<p><img src="https://i.loli.net/2021/03/10/plb5OaWTiD3orkd.png" alt="errno.png"></p>
-<h1 id="6-tee"><a href="#6-tee" class="headerlink" title="6. tee"></a>6. tee</h1><p>tee函数用于在<strong>两个管道文件描述符</strong>之间<strong>复制数据</strong>，也是<strong>零拷贝操作</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回复制的数据量，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">tee</span><span class="params">(<span class="keyword">int</span> fd_in, <span class="keyword">int</span> fd_out, <span class="keyword">size_t</span> len, <span class="keyword">unsigned</span> <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p>与splice相同，但是<strong>fd_in</strong>和<strong>fd_out</strong>必须<strong>都是管道文件描述符</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//eg</span></span><br><span class="line"><span class="comment">//把管道pipe1的输出端数据复制到管道pipe2的输入端</span></span><br><span class="line"><span class="keyword">int</span> ret = tee(pipe1[<span class="number">0</span>], pipe2[<span class="number">1</span>], <span class="number">32768</span>, SPLICE_F_NONBLOCK);</span><br></pre></td></tr></table></figure>
-<h1 id="7-fcntl"><a href="#7-fcntl" class="headerlink" title="7. fcntl"></a>7. fcntl</h1><p>fctnl(file control), 提供<strong>对文件描述符的各种控制操作</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fctnl.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回值见后面表格，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fcntl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> cmd, ...)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd</strong>: 被操作的文件描述符</p>
-<p><strong>cmd</strong>: 操作类型，根据操作类型可能还需要第三个可选参数arg</p>
-<p><img src="https://i.loli.net/2021/03/10/96YEnfhbPiORVUy.png" alt="fctnl1.png"></p>
-<p><img src="https://i.loli.net/2021/03/10/pTmkxNyXMjJKzor.png" alt="fctnl2.png"></p>
-<p>对于<strong>F_SETFL</strong>,可更改的几个标志如下面的描述：</p>
-<ul>
-<li><strong>O_NONBLOCK</strong>  非阻塞I/O，如果read(2)调用没有可读取的数据，或者如果write(2)操作将阻塞，则read或write调用将返回-1和EAGAIN错误</li>
-<li><strong>O_APPEND</strong>   强制每次写(write)操作都添加在文件大的末尾，相当于open(2)的O_APPEND标志</li>
-<li><strong>O_DIRECT</strong>   最小化或去掉reading和writing的缓存影响。系统将企图避免缓存你的读或写的数据。如果不能够避免缓存，那么它将最小化已经被缓存了的数据造成的影响。如果这个标志用的不够好，将大大的降低性能</li>
-<li><strong>O_ASYNC</strong>   当I/O可用的时候，允许SIGIO信号发送到进程组，例如：当有数据可以读的时候</li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//eg</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setnonblocking</span><span class="params">(<span class="keyword">int</span> fd)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> old_option = fctnl(fd, F_GETFL);	<span class="comment">/* 获取文件描述符旧的状态标志 */</span></span><br><span class="line">    <span class="keyword">int</span> new_option = old_option | O_NONBLOCK;	<span class="comment">/* 设置非阻塞标志 */</span></span><br><span class="line">    fcntl(fd, F_SETFL, new_option);</span><br><span class="line">    <span class="keyword">return</span> old_option;	<span class="comment">/* 返回文件描述符旧的状态标志，以便日后恢复该状态标志 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="11-数据读写"><a href="#11-数据读写" class="headerlink" title="11. 数据读写"></a>11. 数据读写</h1><h2 id="1-TCP数据读写"><a href="#1-TCP数据读写" class="headerlink" title="1. TCP数据读写"></a>1. TCP数据读写</h2><p>对文件的读写read和write同样适用于socket。下列系统调用专门用于对socket数据读写</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//函数返回实际读(写)的数据长度，返回0的话意味对方已关闭连接，出错时返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">recv</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">send</span><span class="params">(<span class="keyword">int</span> sockfd, cons <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: 要读或写的socker文件描述符</p>
+<p><strong>buf</strong>: 读写缓冲区的位置</p>
+<p><strong>len</strong>: 读写缓冲区的大小</p>
+<p><strong>flags</strong>: 控制参数，如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>选项名</th>
+<th>含义</th>
+<th>send</th>
+<th>revc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MSG_CONFIRM</td>
+<td>指示数据链路层协议持续监听对方的回应，直到得到发育。它仅能用于SOCK_DGRAM和SOCK_RAW类型的socket</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>MSG_DONTROUTE</td>
+<td>不查看路由表，直接将数据发送给本地局域网络内的主机。这表示发送者确切地知道目标主机就在本地网络上</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>MSG_DONTWAIT</td>
+<td>对socket的此次操作将是非阻塞的</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>MSG_MORE</td>
+<td>告诉内核应用程序还有更多数据要发送，内核将<strong>超时等待</strong>新数据写入TCP发送缓冲区后一并发送。这样可以防止TCP发送过多小的报文段，从而提高传输效率</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>MSG_WAITALL</td>
+<td>读操作仅在读取到指定数量的字节后才返回</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>MSG_PEEK</td>
+<td>窥探读缓存中的数据，此次读操作不会导致这些数据被清楚</td>
+<td>N</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><strong>MSG_OOB</strong></td>
+<td>发送或接收<strong>紧急数据</strong></td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>MSG_NOSIGNAL</td>
+<td>往读端关闭的管道或者socket连接中写数据时不引发SIGPIPE信号</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="2-UDP数据读写"><a href="#2-UDP数据读写" class="headerlink" title="2. UDP数据读写"></a>2. UDP数据读写</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//函数返回实际读(写)的数据长度</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">recvfrom</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags, struct sockaddr* src_addr, <span class="keyword">socklen_t</span>* addrlen)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendto</span><span class="params">(<span class="keyword">int</span> sockfd, cons <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> len, <span class="keyword">int</span> flags, <span class="keyword">const</span> struct sockaddr* dest_addr, <span class="keyword">socklen_t</span> addrlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p>前四个同TCP读写函数一样</p>
+<p><strong>src_addr</strong>: UDP没有连接的概念，所以每次读数据都要<strong>获取发送端(接收端)的socket地址</strong></p>
+<p><strong>addrlen</strong>: src_addr或dest_addr地址的长度</p>
+<p>这两个函数也可用于面向连接(STREAM)的socket的数据读写，只需要把最后两个参数设置为NULL即可。</p>
+<h2 id="3-通用数据读写函数"><a href="#3-通用数据读写函数" class="headerlink" title="3. 通用数据读写函数"></a>3. 通用数据读写函数</h2><p>下面这组接口可以用于<strong>TCP流数据</strong>，也可用于<strong>UDP数据报</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">recvmsg</span><span class="params">(<span class="keyword">int</span> sockfd, struct msghdr* msg, <span class="keyword">int</span> flags)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendmsg</span><span class="params">(<span class="keyword">int</span> sockfd, struct msghdr* msg, <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: 被操作的目标socket文件描述符</p>
+<p><strong>msg</strong>: <strong>msgaddr</strong>结构体类型指针</p>
+<p><strong>flags</strong>: 控制参数，具体取值同上</p>
+<p><strong>msgaddr</strong>结构体定义如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">msghdr</span>&#123;</span></span><br><span class="line">    <span class="keyword">void</span>*		msg_name;				<span class="comment">//socket地址</span></span><br><span class="line">    <span class="keyword">socklen_t</span> 		msg_namelen;				<span class="comment">//socket地址的长度</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>* 	<span class="title">msg_iov</span>;</span>				<span class="comment">//分散的内存块，见后文</span></span><br><span class="line">    <span class="keyword">int</span> 		msg_iovlen;				<span class="comment">//分散内存块的数量</span></span><br><span class="line">    <span class="keyword">void</span>* 		msg_control;			<span class="comment">//指向辅助数据的起使位置</span></span><br><span class="line">    <span class="keyword">socklen_t</span> 		msg_controllen;			<span class="comment">//辅助数据的大小</span></span><br><span class="line">    <span class="keyword">int</span> 		msg_flags;				<span class="comment">//复制函数中的flags参数，并在调用过程中更新</span></span><br><span class="line">&#125;;``</span><br><span class="line"><span class="comment">//iovec封装了一块内存的起始位置和长度</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>&#123;</span></span><br><span class="line">    <span class="keyword">void</span>*		iov_base;				<span class="comment">//内存起始地址</span></span><br><span class="line">    <span class="keyword">size_t</span> 		iov_len;				<span class="comment">//这块内存的长度</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>msghdr成员变量:</p>
+<p><strong>msg_name</strong>: 指向一个socket地址结构变量，指定通信对方的socket地址。对于面向连接的TCP协议他必须设置为NULL。</p>
+<p><strong>msg_name</strong>: socket地址的长度</p>
+<p><strong>msg_iovlen</strong>: iovec结构对象的个数</p>
+<p><strong>msg_control</strong>和<strong>msg_controllen</strong>: 用于辅助数据的传送</p>
+<p><strong>msg_flags</strong>: 会复制recvmsg和sendmsg的flags参数的内容。</p>
+<h1 id="12-带外标记"><a href="#12-带外标记" class="headerlink" title="12. 带外标记"></a>12. 带外标记</h1><p>内核通知应用程序带外数据到达的两种常见方法:I/O复用产生的异常事件，SIGURG信号。</p>
+<p>应用程序得到了有带外数据需要接收的通知，还需要知道带外数据在数据流中的具体位置。</p>
+<p><strong>sockatmark</strong>判断<strong>sockfd是否处于带外标记</strong>，即<strong><font color=red>下一个被读取到的数据是否是带外数据</font></strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回1，失败返回0</span></span><br><span class="line"><span class="comment">//若成功了，我们就可以利用带MSG_OOB标志的recv调用来接收带外数据</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sockatmark</span><span class="params">(<span class="keyword">int</span> sockfd)</span></span>;</span><br></pre></td></tr></table></figure>
+<h1 id="13-地址信息函数"><a href="#13-地址信息函数" class="headerlink" title="13. 地址信息函数"></a>13. 地址信息函数</h1><p>想知道连接socket的<strong>本端socket地址</strong>，以及<strong>远端的socket地址</strong>，可以使用如下函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//获取sockfd对应的本端socket地址,成功返回1，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getsockname</span><span class="params">(<span class="keyword">int</span> sockfd, struct sockaddr* address, <span class="keyword">socklen_t</span>* address_len)</span></span>;</span><br><span class="line"><span class="comment">//获取sockfd对应的远端socket地址,成功返回1，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getpeername</span><span class="params">(<span class="keyword">int</span> sockfd, struct sockaddr* address, <span class="keyword">socklen_t</span>* address_len)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: socket文件描述符</p>
+<p><strong>address</strong>: 存储对应的socket地址</p>
+<p><strong>address_len</strong>: socket地址的长度，注意其要传入一个socklen_t的指针变量</p>
+<p>如果实际socket的地址长度<strong>大于</strong>address所指内存区的大小，则地址会被截断。</p>
+<h1 id="14-socket选项"><a href="#14-socket选项" class="headerlink" title="14. socket选项"></a>14. socket选项</h1><p>下面两个函数用来<strong>读取</strong>和<strong>设置</strong>socket文件描述符属性</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//两个函数都是成功返回1，失败返回0并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getsockopt</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> level, <span class="keyword">int</span> option_name, <span class="keyword">void</span>* option_value, <span class="keyword">socklen_t</span>* <span class="keyword">restrict</span> option_len)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setsockopt</span><span class="params">(<span class="keyword">int</span> sockfd, <span class="keyword">int</span> level, <span class="keyword">int</span> option_name, <span class="keyword">const</span> <span class="keyword">void</span>* option_value, <span class="keyword">socklen_t</span>* <span class="keyword">restrict</span> option_len)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>sockfd</strong>: socket文件描述符</p>
+<p><strong>level</strong>: 要操作哪个协议的选项(属性)，如IPv4,IPv6,TCP等</p>
+<p><strong>option_name</strong>: 指定选项的名字</p>
+<p><strong>option_value</strong>: 被操作的选项的值</p>
+<p><strong>option_len</strong>: 被操作的选项的长度</p>
+<p><img src="https://i.loli.net/2021/03/07/MeRUwlmXSz9fGC1.png" alt="mmexport1615097154410.png"></p>
+<h1 id="15-网络信息API"><a href="#15-网络信息API" class="headerlink" title="15. 网络信息API"></a>15. 网络信息API</h1><ol>
+<li>gethostbyname和gethostbyaddr</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="comment">//根据主机名获取主机的完整信息</span></span><br><span class="line"><span class="function">struct hostnet* <span class="title">gethostbyname</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* name)</span></span>;</span><br><span class="line"><span class="comment">//根据IP地址获取主机的完整信息</span></span><br><span class="line"><span class="function">struct hostnet* <span class="title">gethostbyaddr</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span>* addr, <span class="keyword">size_t</span> len, <span class="keyword">int</span> type)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">hostnet</span>&#123;</span></span><br><span class="line">    <span class="keyword">char</span>*	h_name;			<span class="comment">//主机名</span></span><br><span class="line">    <span class="keyword">char</span>**	h_aliases;		<span class="comment">//主机别名列表，可能有多个</span></span><br><span class="line">    <span class="keyword">int</span>		h_addrtype;		<span class="comment">//地址类型(地址族)</span></span><br><span class="line">    <span class="keyword">int</span>		h_length;		<span class="comment">//地址长度</span></span><br><span class="line">    <span class="keyword">char</span>**	h_addr_list;	<span class="comment">//按网络字节序 列出的主机IP地址列表</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>name</strong>: 指定目标主机的主机名(如localhost)</p>
+<p><strong>addr</strong>: 指定<strong>目标主机的IP地址</strong></p>
+<p><strong>len</strong>: addr所指IP地址的长度</p>
+<p><strong>type</strong>: addr所指IP地址的类型，包括<strong>AF_INET</strong>和<strong>AF_INET6</strong></p>
+<ol>
+<li>getservbyname和getservbyport</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="comment">//根据服务名称获取某个服务的完整信息</span></span><br><span class="line"><span class="function">struct servent* <span class="title">getservbyname</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* name, <span class="keyword">const</span> <span class="keyword">char</span>* proto)</span></span>;</span><br><span class="line"><span class="comment">//根据服务端口号获取某个服务的完整信息</span></span><br><span class="line"><span class="function">struct servent* <span class="title">getservbyport</span><span class="params">(<span class="keyword">int</span> port, <span class="keyword">const</span> <span class="keyword">char</span>* proto)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">servent</span>&#123;</span></span><br><span class="line">    <span class="keyword">char</span>*	s_name;			<span class="comment">//服务名称</span></span><br><span class="line">    <span class="keyword">char</span>**	s_aliases;		<span class="comment">//服务的别名列表，可能有多个</span></span><br><span class="line">    <span class="keyword">int</span>		s_port;			<span class="comment">//服务对应的端口号</span></span><br><span class="line">    <span class="keyword">char</span>*	s_proto;		<span class="comment">//服务的类型，通常是tcp或者udp</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参数:</p>
+<p><strong>name</strong>: 目标服务的名字</p>
+<p><strong>proto</strong>: 指定<strong>服务类型</strong>，如传递”<strong>tcp</strong>“表示获取流服务，传递“<strong>udp</strong>”表示获取数据报服务，传递NULL表示获取所有类型的服务</p>
+<p><strong>port</strong>: 目标服务对应的端口号</p>
+<ol>
+<li>getaddrinfo</li>
+</ol>
+<p>getaddrinfo函数能<strong>通过主机名获得IP地址(内部使用gethostbyname)</strong>，<strong>也能通过服务名获得端口号(内部使用getservbyname)</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getaddrinfo</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* hostname, <span class="keyword">const</span> <span class="keyword">char</span>* service, <span class="keyword">const</span> struct addrinfo* hints, struct addrinfo** result)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//由于getaddrin隐式分配堆内存到result,因此需要使用这个函数释放内存</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">freeaddrinfo</span><span class="params">(struct addrinfo* res)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">addrinfo</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span>			ai_flags;		<span class="comment">//见后文</span></span><br><span class="line">    <span class="keyword">int</span>			ai_family;		<span class="comment">//地址族</span></span><br><span class="line">    <span class="keyword">int</span>			ai_socktype;	<span class="comment">//服务类型，SOCK_STREAM或SOCK_DGRAM</span></span><br><span class="line">    <span class="keyword">int</span>			ai_protocal;	<span class="comment">//见后文</span></span><br><span class="line">    <span class="keyword">socklen_t</span>		ai_addrlen;		<span class="comment">//socket地址ai_addr的长度</span></span><br><span class="line">    <span class="keyword">char</span>*		ai_canonname;	<span class="comment">//主机的别名</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr</span>*	<span class="title">ai_addr</span>;</span>		<span class="comment">//指向socket地址</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">addrinfo</span>*	<span class="title">ai_next</span>;</span>		<span class="comment">//指向下一个socketinfo结构对象</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>getnameinfo</li>
+</ol>
+<p>getnameinfo函数能通过<strong>socket地址</strong>同时获得以<strong>字符串表示的主机名(内部使用gethostbyaddr)</strong>和<strong>服务名(内部使用的是getservbyport)</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getnameinfo</span><span class="params">(<span class="keyword">const</span> struct sockaddr* sockaddr, <span class="keyword">socklen_t</span> addrlen, <span class="keyword">char</span>* host, <span class="keyword">socklen_t</span> hostlen, <span class="keyword">char</span>* serv, <span class="keyword">socklen_t</span> servlen, <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -374,7 +556,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/03/10/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8BAPI-%E4%BA%8C/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/03/06/LinuxSPAPI-%E4%B8%80/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -388,18 +570,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/03/18/%E4%BD%8D%E8%BF%90%E7%AE%97%E4%B9%98%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/03/10/LinuxSPAPI-%E4%BA%8C/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          位运算相关
+          Linux网络编程API(二)
         
       </div>
     </a>
   
   
-    <a href="/2021/03/06/Linux%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%9F%BA%E7%A1%80API-%E4%B8%80/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Linux网络编程API(一)</div>
+    <a href="/2021/02/28/C++traits/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C++traits</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -426,7 +608,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#相关API笔记-二"><span class="toc-number">1.</span> <span class="toc-text">相关API笔记(二)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-pipe"><span class="toc-number">2.</span> <span class="toc-text">1. pipe</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-dup和dup2"><span class="toc-number">3.</span> <span class="toc-text">2. dup和dup2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-readv和writev"><span class="toc-number">4.</span> <span class="toc-text">3. readv和writev</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-sendfile"><span class="toc-number">5.</span> <span class="toc-text">3. sendfile</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-mmap和munmap"><span class="toc-number">6.</span> <span class="toc-text">4. mmap和munmap</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-splice"><span class="toc-number">7.</span> <span class="toc-text">5. splice</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-tee"><span class="toc-number">8.</span> <span class="toc-text">6. tee</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-fcntl"><span class="toc-number">9.</span> <span class="toc-text">7. fcntl</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#相关API笔记（一）"><span class="toc-number">1.</span> <span class="toc-text">相关API笔记（一）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-主机字节序和网络字节序"><span class="toc-number">2.</span> <span class="toc-text">1. 主机字节序和网络字节序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-通用socket地址"><span class="toc-number">3.</span> <span class="toc-text">2. 通用socket地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-专用socket地址"><span class="toc-number">4.</span> <span class="toc-text">3.专用socket地址</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-IP地址转换函数"><span class="toc-number">5.</span> <span class="toc-text">4. IP地址转换函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-创建socket"><span class="toc-number">6.</span> <span class="toc-text">5. 创建socket</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-命名socket"><span class="toc-number">7.</span> <span class="toc-text">6. 命名socket</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-监听socket"><span class="toc-number">8.</span> <span class="toc-text">7. 监听socket</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#8-接受连接"><span class="toc-number">9.</span> <span class="toc-text">8. 接受连接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#9-发起连接"><span class="toc-number">10.</span> <span class="toc-text">9. 发起连接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#10-关闭连接"><span class="toc-number">11.</span> <span class="toc-text">10. 关闭连接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#11-数据读写"><span class="toc-number">12.</span> <span class="toc-text">11. 数据读写</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-TCP数据读写"><span class="toc-number">12.1.</span> <span class="toc-text">1. TCP数据读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-UDP数据读写"><span class="toc-number">12.2.</span> <span class="toc-text">2. UDP数据读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-通用数据读写函数"><span class="toc-number">12.3.</span> <span class="toc-text">3. 通用数据读写函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#12-带外标记"><span class="toc-number">13.</span> <span class="toc-text">12. 带外标记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#13-地址信息函数"><span class="toc-number">14.</span> <span class="toc-text">13. 地址信息函数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#14-socket选项"><span class="toc-number">15.</span> <span class="toc-text">14. socket选项</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#15-网络信息API"><span class="toc-number">16.</span> <span class="toc-text">15. 网络信息API</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -585,6 +767,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
               </li>
              
@@ -593,15 +779,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
