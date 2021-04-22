@@ -16,8 +16,9 @@
 <meta property="og:description" content="《Linux就该这么学》学习笔记 《Linux就该这么学》    -刘遄">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-22T13:08:47.000Z">
-<meta property="article:modified_time" content="2021-04-22T13:12:15.331Z">
+<meta property="article:modified_time" content="2021-04-22T13:15:50.551Z">
 <meta property="article:author" content="Dopaminer">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
@@ -177,22 +178,58 @@
         <p>《Linux就该这么学》学习笔记</p>
 <p>《Linux就该这么学》    -刘遄<br><a id="more"></a></p>
 <h2 id="一-常用系统工作命令"><a href="#一-常用系统工作命令" class="headerlink" title="一. 常用系统工作命令"></a>一. 常用系统工作命令</h2><ol>
-<li><p>echo命令</p>
+<li>echo命令</li>
+</ol>
 <p>echo命令用于<strong>在终端输出字符串</strong>或<strong>变量</strong>,格式”echo [字符串|$变量]”</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# echo Linuxprobe.Com</span><br><span class="line">Linuxprobe.Com</span><br><span class="line">[root@localhost ~]# echo $SHELL</span><br><span class="line">&#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>date命令</p>
+<ol>
+<li>date命令</li>
+</ol>
 <p>date命令用于显示及设置系统的时间或日期，格式”date [选项] [+指定的格式]”</p>
 <p>在date命令中<strong>输入以”+”号开头的参数</strong>，即可<strong>按照指定格式来输出系统的时间</strong>或<strong>日期</strong>。</p>
-<p>| 参数 | 作用           |<br>| —— | ——————— |<br>| %t   | 跳格[Tab键]    |<br>| %H   | 小时(00~23)    |<br>| %I   | 小时(00~12)    |<br>| %M   | 分钟(00~59)    |<br>| %S   | 秒(00~59)      |<br>| %j   | 今年中的第几天 |</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%t</td>
+<td>跳格[Tab键]</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>小时(00~23)</td>
+</tr>
+<tr>
+<td>%I</td>
+<td>小时(00~12)</td>
+</tr>
+<tr>
+<td>%M</td>
+<td>分钟(00~59)</td>
+</tr>
+<tr>
+<td>%S</td>
+<td>秒(00~59)</td>
+</tr>
+<tr>
+<td>%j</td>
+<td>今年中的第几天</td>
+</tr>
+</tbody>
+</table>
+</div>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# date</span><br><span class="line">Thu Apr 22 18:07:48 CST 2021</span><br><span class="line">[root@localhost ~]# date &quot;+%Y-%m-%d%t%H:%M:%S&quot;</span><br><span class="line">2021-04-22	18:08:20</span><br><span class="line">[root@localhost ~]# date &quot;+%j&quot;		#今年第几天</span><br><span class="line">112</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>reboot命令</p>
+<ol>
+<li>reboot命令</li>
+</ol>
 <p>reboot命令用于<strong>重启系统</strong>，其格式为reboot</p>
 <p>该命令只能使用<strong>root管理员</strong>来重启</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# reboot</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
 
       
 
@@ -222,6 +259,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -474,15 +522,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">面经</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">面经</a>
               </li>
              
               <li class="article-tag-list-item">
