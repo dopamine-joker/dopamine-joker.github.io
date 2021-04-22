@@ -16,7 +16,7 @@
 <meta property="og:description" content="《Linux就该这么学》学习笔记  《Linux就该这么学》    -刘遄">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-21T15:50:09.000Z">
-<meta property="article:modified_time" content="2021-04-22T13:00:51.035Z">
+<meta property="article:modified_time" content="2021-04-22T13:06:07.732Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -188,18 +188,18 @@
 <li>12</li>
 <li>321</li>
 <li>321</li>
-<li></li>
+<li>123</li>
 </ol>
 <h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><h2 id="一-常用系统工作命令"><a href="#一-常用系统工作命令" class="headerlink" title="一. 常用系统工作命令"></a>一. 常用系统工作命令</h2><ol>
-<li>echo命令</li>
+<li><p>echo命令</p>
+<p> echo命令用于<strong>在终端输出字符串</strong>或<strong>变量</strong>,格式”echo [字符串|$变量]”</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# echo Linuxprobe.Com</span><br><span class="line">Linuxprobe.Com</span><br><span class="line">[root@localhost ~]# echo $SHELL</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>date命令</p>
+<p> date命令用于显示及设置系统的时间或日期，格式”date [选项] [+指定的格式]”</p>
+<p> 在date命令中<strong>输入以”+”号开头的参数</strong>，即可<strong>按照指定格式来输出系统的时间</strong>或<strong>日期</strong>。</p>
+</li>
 </ol>
-<p>echo命令用于<strong>在终端输出字符串</strong>或<strong>变量</strong>,格式”echo [字符串|$变量]”</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# echo Linuxprobe.Com</span><br><span class="line">Linuxprobe.Com</span><br><span class="line">[root@localhost ~]# echo $SHELL</span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure>
-<ol>
-<li>date命令</li>
-</ol>
-<p>date命令用于显示及设置系统的时间或日期，格式”date [选项] [+指定的格式]”</p>
-<p>在date命令中<strong>输入以”+”号开头的参数</strong>，即可<strong>按照指定格式来输出系统的时间</strong>或<strong>日期</strong>。</p>
 <div class="table-container">
 <table>
 <thead>
@@ -236,14 +236,15 @@
 </tbody>
 </table>
 </div>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# date</span><br><span class="line">Thu Apr 22 18:07:48 CST 2021</span><br><span class="line">[root@localhost ~]# date "+%Y-%m-%d%t%H:%M:%S"</span><br><span class="line">2021-04-22	18:08:20</span><br><span class="line">[root@localhost ~]# date "+%j"		#今年第几天</span><br><span class="line">112</span><br></pre></td></tr></table></figure>
-<ol>
-<li>reboot命令</li>
-</ol>
+<pre><code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# date</span><br><span class="line">Thu Apr 22 18:07:48 CST 2021</span><br><span class="line">[root@localhost ~]# date "+%Y-%m-%d%t%H:%M:%S"</span><br><span class="line">2021-04-22	18:08:20</span><br><span class="line">[root@localhost ~]# date "+%j"		#今年第几天</span><br><span class="line">112</span><br></pre></td></tr></table></figure>
+</code></pre><ol>
+<li><p>reboot命令</p>
 <p>reboot命令用于<strong>重启系统</strong>，其格式为reboot</p>
 <p>该命令只能使用<strong>root管理员</strong>来重启</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# reboot</span><br></pre></td></tr></table></figure>
-<ol>
+</li>
+</ol>
+<pre><code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# reboot</span><br></pre></td></tr></table></figure>
+</code></pre><ol>
 <li><p><strong>poweroff命令</strong></p>
 <p>poweroff命令用于<strong>关闭系统</strong>，其格式为poweroff</p>
 <p>该命令只能使用<strong>root管理员</strong>来关闭</p>
@@ -252,10 +253,8 @@
 <p> poweroff就是掉电关机了，但实际过程依然是先关闭系统，然后掉电的。</p>
 <p> halt是停掉系统而已，并没有掉电，主板是通电的。</p>
 <p> shutdown -h now就是halt，后边不写now而是写一个具体时间可以设置几秒后执行这一语句，实际上halt后是掉电关机的。</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# poweroff</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# poweroff</span><br></pre></td></tr></table></figure>
-<ol>
 <li><p><strong>wget命令</strong></p>
 <p>wget命令用于<strong>在终端中下载网络文件</strong>，格式为”wget [参数] 下载地址”</p>
 <p>| 参数 | 作用                                 |<br>| :—: | :—————————————————- |<br>|  -b  | 后台下载模式                         |<br>|  -P  | 下载到指定目录                       |<br>|  -t  | 最大尝试次数                         |<br>|  -c  | 断点续传                             |<br>|  -p  | 下载页面内所有资源，包括图片，视频等 |<br>|  -r  | 递归下载                             |</p>
@@ -687,6 +686,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
               </li>
              
@@ -695,7 +698,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -703,15 +706,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
             
             <div class="clearfix"></div>
@@ -856,21 +855,5 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
 </body>
 </html>
