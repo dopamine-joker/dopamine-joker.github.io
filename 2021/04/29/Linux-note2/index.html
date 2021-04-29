@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Linux-note2 | Dopaminer</title>
+  <title>Linux硬链接，软链接 | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Linux硬链接，软链接  参考网上其他博客整理的内容">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux-note2">
+<meta property="og:title" content="Linux硬链接，软链接">
 <meta property="og:url" content="http://yoursite.com/2021/04/29/Linux-note2/index.html">
 <meta property="og:site_name" content="Dopaminer">
 <meta property="og:description" content="Linux硬链接，软链接  参考网上其他博客整理的内容">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-29T07:08:05.000Z">
-<meta property="article:modified_time" content="2021-04-29T09:34:16.045Z">
+<meta property="article:modified_time" content="2021-04-29T15:47:47.869Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -150,7 +150,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Linux-note2
+      Linux硬链接，软链接
     </h1>
   
 
@@ -167,9 +167,9 @@
 
 <p>参考网上其他博客整理的内容</p>
 <a id="more"></a>
-<h1 id="一-inode"><a href="#一-inode" class="headerlink" title="一. inode"></a>一. inode</h1><h2 id="1-1-文件存储"><a href="#1-1-文件存储" class="headerlink" title="1.1. 文件存储"></a>1.1. 文件存储</h2><p>文件是存储在硬盘上的，硬盘最小单位叫<strong>扇区(sector)</strong>，每个扇区存储<strong>512字节</strong>。操作系统读取硬盘的时候，如果一个一个读取那效率很低，因此一次性读取多个扇区，即一次性读取一个<strong>块(block)</strong>。这种多个扇区组成的块，就是文件存取的最小单位。<code>block</code>的大小最常见的是4KB，即连续8个<code>sector</code>组成一个<code>block</code>。</p>
+<h1 id="一-inode"><a href="#一-inode" class="headerlink" title="一. inode"></a>一. inode</h1><h2 id="1-文件存储"><a href="#1-文件存储" class="headerlink" title="1. 文件存储"></a>1. 文件存储</h2><p>文件是存储在硬盘上的，硬盘最小单位叫<strong>扇区(sector)</strong>，每个扇区存储<strong>512字节</strong>。操作系统读取硬盘的时候，如果一个一个读取那效率很低，因此一次性读取多个扇区，即一次性读取一个<strong>块(block)</strong>。这种多个扇区组成的块，就是文件存取的最小单位。<code>block</code>的大小最常见的是4KB，即连续8个<code>sector</code>组成一个<code>block</code>。</p>
 <p><strong>文件数据存储在块中</strong>，那么必须得有一个区域来存储文件的元信息，比如文件的创建者，修改日期，大小等等。这种存储文件元信息的区域就是<strong>inode</strong>，中文译<code>“索引节点”</code>，也称<code>i节点</code>。因为一次文件必须要占有一个inode，<strong>至少</strong>占用一个block。</p>
-<h2 id="1-2-inode的内容"><a href="#1-2-inode的内容" class="headerlink" title="1.2. inode的内容"></a>1.2. inode的内容</h2><p><strong>inode</strong>包含了文件的元信息，其中有:</p>
+<h2 id="2-inode的内容"><a href="#2-inode的内容" class="headerlink" title="2. inode的内容"></a>2. inode的内容</h2><p><strong>inode</strong>包含了文件的元信息，其中有:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.文件的字节数</span><br><span class="line">2.文件的拥有者user ID</span><br><span class="line">3.文件的组Group ID</span><br><span class="line">4.文件的读，写，执行权限</span><br><span class="line">5.文件的时间戳，共有三个:ctime指inode上一次改动的时间，mtime指文件内容上一次改动的时间，atime指文件上一次打开的时间</span><br><span class="line">6.链接数，即有多少个文件名指向这个inode</span><br><span class="line">7.文件数据block的位置</span><br></pre></td></tr></table></figure>
 <p>可以用<strong>stat</strong>命令，查看文件的inode信息</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# stat hello.txt </span><br><span class="line">  File: hello.txt</span><br><span class="line">  Size: 120       	Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: fd00h/64768d	Inode: 36199745    Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)</span><br><span class="line">Context: unconfined_u:object_r:admin_home_t:s0</span><br><span class="line">Access: 2021-04-29 16:19:11.408074363 +0800</span><br><span class="line">Modify: 2021-04-29 16:19:11.408074363 +0800</span><br><span class="line">Change: 2021-04-29 16:19:11.408074363 +0800</span><br><span class="line"> Birth: -</span><br></pre></td></tr></table></figure>
@@ -183,10 +183,10 @@
 <p>其实文件系统还要根据inode的信息，来判断用户是否有访问权限，有就指向对应数据的block，没有就返回权限拒绝。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls -li hello.txt </span><br><span class="line">36199745 -rw-r--r--. 1 root root 120 Apr 29 16:19 hello.txt</span><br></pre></td></tr></table></figure>
 <p>其中<strong>36199745</strong>就是inode号码</p>
-<h2 id="1-3-inode的大小"><a href="#1-3-inode的大小" class="headerlink" title="1.3. inode的大小"></a>1.3. inode的大小</h2><p>inode也会消耗硬盘空间的，所以格式化的时候，操作系统自动将硬盘分成两个区域。一个是数据区，存放文件数据。另一个是inode区，存放inode所包含的信息。每个inode的大小，一般是<strong>128字节</strong>或<strong>256字节</strong>。通常只需要关注<strong>inode总数</strong>而不需要关注单个<strong>单个inode的大小</strong>。</p>
+<h2 id="3-inode的大小"><a href="#3-inode的大小" class="headerlink" title="3. inode的大小"></a>3. inode的大小</h2><p>inode也会消耗硬盘空间的，所以格式化的时候，操作系统自动将硬盘分成两个区域。一个是数据区，存放文件数据。另一个是inode区，存放inode所包含的信息。每个inode的大小，一般是<strong>128字节</strong>或<strong>256字节</strong>。通常只需要关注<strong>inode总数</strong>而不需要关注单个<strong>单个inode的大小</strong>。</p>
 <p>可以使用<strong>df -i</strong>查看硬盘分区<strong>inode总数</strong>和<strong>已使用情况</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# df -i</span><br><span class="line">Filesystem           Inodes  IUsed   IFree IUse% Mounted on</span><br><span class="line">devtmpfs             223111    399  222712    1% /dev</span><br><span class="line">tmpfs                230483      1  230482    1% /dev/shm</span><br><span class="line">tmpfs                230483    773  229710    1% /run</span><br><span class="line">tmpfs                230483     17  230466    1% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/cl-root 8910848 224485 8686363    3% /</span><br><span class="line">/dev/sda1             65536    309   65227    1% /boot</span><br><span class="line">tmpfs                230483     20  230463    1% /run/user/42</span><br><span class="line">tmpfs                230483     11  230472    1% /run/user/0</span><br></pre></td></tr></table></figure>
-<h2 id="1-4-inode的特性"><a href="#1-4-inode的特性" class="headerlink" title="1.4 inode的特性"></a>1.4 inode的特性</h2><p>由于inode和文件名分离，导致Unix/Linux系统具备以下几种特有的现像</p>
+<h2 id="4-inode的特性"><a href="#4-inode的特性" class="headerlink" title="4. inode的特性"></a>4. inode的特性</h2><p>由于inode和文件名分离，导致Unix/Linux系统具备以下几种特有的现像</p>
 <p>1) 文件名包含特殊字符，无法删除。这时候可直接删除inode，就能够间接删除文件。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ./* -inum 节点号 -delete</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find ./* -inum 36199745 -delete</span><br></pre></td></tr></table></figure>
@@ -365,7 +365,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">Linux硬链接，软链接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一-inode"><span class="toc-number">2.</span> <span class="toc-text">一. inode</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-文件存储"><span class="toc-number">2.1.</span> <span class="toc-text">1.1. 文件存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-inode的内容"><span class="toc-number">2.2.</span> <span class="toc-text">1.2. inode的内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-3-inode的大小"><span class="toc-number">2.3.</span> <span class="toc-text">1.3. inode的大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-4-inode的特性"><span class="toc-number">2.4.</span> <span class="toc-text">1.4 inode的特性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二-硬链接"><span class="toc-number">3.</span> <span class="toc-text">二. 硬链接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三-软链接（符号链接）"><span class="toc-number">4.</span> <span class="toc-text">三. 软链接（符号链接）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四-测试区别"><span class="toc-number">5.</span> <span class="toc-text">四. 测试区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#五-文件特殊权限设置位S和沾附位T"><span class="toc-number">6.</span> <span class="toc-text">五. 文件特殊权限设置位S和沾附位T</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#六-参考网站"><span class="toc-number">7.</span> <span class="toc-text">六. 参考网站</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">Linux硬链接，软链接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一-inode"><span class="toc-number">2.</span> <span class="toc-text">一. inode</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-文件存储"><span class="toc-number">2.1.</span> <span class="toc-text">1. 文件存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-inode的内容"><span class="toc-number">2.2.</span> <span class="toc-text">2. inode的内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-inode的大小"><span class="toc-number">2.3.</span> <span class="toc-text">3. inode的大小</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-inode的特性"><span class="toc-number">2.4.</span> <span class="toc-text">4. inode的特性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二-硬链接"><span class="toc-number">3.</span> <span class="toc-text">二. 硬链接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三-软链接（符号链接）"><span class="toc-number">4.</span> <span class="toc-text">三. 软链接（符号链接）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四-测试区别"><span class="toc-number">5.</span> <span class="toc-text">四. 测试区别</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#五-文件特殊权限设置位S和沾附位T"><span class="toc-number">6.</span> <span class="toc-text">五. 文件特殊权限设置位S和沾附位T</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#六-参考网站"><span class="toc-number">7.</span> <span class="toc-text">六. 参考网站</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -525,11 +525,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color3">面经</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -541,7 +537,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -550,6 +546,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
             
             <div class="clearfix"></div>
