@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Linux-note2 | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Linux硬链接，软链接  参考网上其他博客整理的内容 一. inode1.1. 文件存储文件是存储在硬盘上的，硬盘最小单位叫扇区(sector)，每个扇区存储512字节。操作系统读取硬盘的时候，如果一个一个读取那效率很低，因此一次性读取多个扇区，即一次性读取一个块(block)。这种多个扇区组成的块，就是文件存取的最小单位。block的大小最常见的是4KB，即连续8个sector组成一个bloc">
+  <meta name="description" content="Linux硬链接，软链接  参考网上其他博客整理的内容">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux-note2">
 <meta property="og:url" content="http://yoursite.com/2021/04/29/Linux-note2/index.html">
 <meta property="og:site_name" content="Dopaminer">
-<meta property="og:description" content="Linux硬链接，软链接  参考网上其他博客整理的内容 一. inode1.1. 文件存储文件是存储在硬盘上的，硬盘最小单位叫扇区(sector)，每个扇区存储512字节。操作系统读取硬盘的时候，如果一个一个读取那效率很低，因此一次性读取多个扇区，即一次性读取一个块(block)。这种多个扇区组成的块，就是文件存取的最小单位。block的大小最常见的是4KB，即连续8个sector组成一个bloc">
+<meta property="og:description" content="Linux硬链接，软链接  参考网上其他博客整理的内容">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-04-29T07:08:05.000Z">
-<meta property="article:modified_time" content="2021-04-29T09:15:42.891Z">
+<meta property="article:modified_time" content="2021-04-29T09:34:16.045Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -166,6 +166,7 @@
         <h1>Linux硬链接，软链接</h1>
 
 <p>参考网上其他博客整理的内容</p>
+<a id="more"></a>
 <h1 id="一-inode"><a href="#一-inode" class="headerlink" title="一. inode"></a>一. inode</h1><h2 id="1-1-文件存储"><a href="#1-1-文件存储" class="headerlink" title="1.1. 文件存储"></a>1.1. 文件存储</h2><p>文件是存储在硬盘上的，硬盘最小单位叫<strong>扇区(sector)</strong>，每个扇区存储<strong>512字节</strong>。操作系统读取硬盘的时候，如果一个一个读取那效率很低，因此一次性读取多个扇区，即一次性读取一个<strong>块(block)</strong>。这种多个扇区组成的块，就是文件存取的最小单位。<code>block</code>的大小最常见的是4KB，即连续8个<code>sector</code>组成一个<code>block</code>。</p>
 <p><strong>文件数据存储在块中</strong>，那么必须得有一个区域来存储文件的元信息，比如文件的创建者，修改日期，大小等等。这种存储文件元信息的区域就是<strong>inode</strong>，中文译<code>“索引节点”</code>，也称<code>i节点</code>。因为一次文件必须要占有一个inode，<strong>至少</strong>占用一个block。</p>
 <h2 id="1-2-inode的内容"><a href="#1-2-inode的内容" class="headerlink" title="1.2. inode的内容"></a>1.2. inode的内容</h2><p><strong>inode</strong>包含了文件的元信息，其中有:</p>
@@ -220,26 +221,17 @@
 <p>上面说过软链接得依赖于原文件，所以这里当原文件被删除后，软链接文件就不能正常指向了。但硬链接文件还能输出的原因是<code>inode</code>还存在，删除了原文件只是让<code>inode</code>的链接数减少1。<strong>所以要当inode的链接数变为0时，inode才会被系统回首，文件的内容才会被删除。</strong></p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# rm -f hello.hd1</span><br><span class="line">[root@localhost ~]# ls -li hello.*</span><br><span class="line">33726887 lrwxrwxrwx. 1 root root 9 Apr 29 16:56 hello.soft1 -&gt; hello.txt</span><br><span class="line">36199747 lrwxrwxrwx. 1 root root 9 Apr 29 17:00 hello.soft2 -&gt; hello.txt</span><br><span class="line">[root@localhost ~]# find ./* -inum 33796565		#没有输出</span><br><span class="line">[root@localhost ~]#</span><br></pre></td></tr></table></figure>
 <h1 id="五-文件特殊权限设置位S和沾附位T"><a href="#五-文件特殊权限设置位S和沾附位T" class="headerlink" title="五. 文件特殊权限设置位S和沾附位T"></a>五. 文件特殊权限设置位S和沾附位T</h1><p>（这部分内容只是补充记录）</p>
-<ol>
-<li><p><strong>设置位S</strong></p>
-<p> 为了让一般使用者临时具有该文件所属主/组的执行权限。比如/usr/bin/passwd在执行它的时候需要去修改/etc/passwd和/etc/shadow等文件，这些文件除了root外，其他用户都没有写权限，但是又为了能让普通用户修改自己的密码，只能时临时让他们具有root的权限。所以这个s权限就是用来完成这个特殊任务的。s权限只能应用在二进制的可执行文件上。</p>
-</li>
-<li><p><strong>沾附位</strong></p>
-<p> 只针对目录生效,它表示只能让所属主以及root可以删除(重命名/移动)该目录下的文件。比如/tmp目录本来就是任何用户都可以读写,如果别人可以任意删除（重命名/移动）自己的文件,那岂不是很危险,所以这个t权限就是为了解决这个问题。</p>
-</li>
-</ol>
-<h1 id="六-参考网站"><a href="#六-参考网站" class="headerlink" title="六. 参考网站"></a>六. 参考网站</h1><ol>
-<li><p>硬链接和软链接</p>
-<p> <a href="https://www.cnblogs.com/llife/p/11470668.html" target="_blank" rel="noopener">https://www.cnblogs.com/llife/p/11470668.html</a></p>
-<p> <a href="https://www.cnblogs.com/zsh-blogs/p/10570277.html" target="_blank" rel="noopener">https://www.cnblogs.com/zsh-blogs/p/10570277.html</a></p>
-</li>
-<li><p>inode</p>
-<p> <a href="https://www.cnblogs.com/zsh-blogs/p/10570277.html" target="_blank" rel="noopener">https://www.cnblogs.com/zsh-blogs/p/10570277.html</a></p>
-</li>
-<li><p>设置位S和沾附位T</p>
-<p> <a href="https://www.cnblogs.com/zhangming-blog/articles/5956280.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangming-blog/articles/5956280.html</a></p>
-</li>
-</ol>
+<p>1) <strong>设置位S</strong></p>
+<p>为了让一般使用者临时具有该文件所属主/组的执行权限。比如/usr/bin/passwd在执行它的时候需要去修改/etc/passwd和/etc/shadow等文件，这些文件除了root外，其他用户都没有写权限，但是又为了能让普通用户修改自己的密码，只能时临时让他们具有root的权限。所以这个s权限就是用来完成这个特殊任务的。s权限只能应用在二进制的可执行文件上。</p>
+<p>2) <strong>沾附位</strong></p>
+<p>只针对目录生效,它表示只能让所属主以及root可以删除(重命名/移动)该目录下的文件。比如/tmp目录本来就是任何用户都可以读写,如果别人可以任意删除（重命名/移动）自己的文件,那岂不是很危险,所以这个t权限就是为了解决这个问题。</p>
+<h1 id="六-参考网站"><a href="#六-参考网站" class="headerlink" title="六. 参考网站"></a>六. 参考网站</h1><p>1) 硬链接和软链接</p>
+<p><a href="https://www.cnblogs.com/llife/p/11470668.html" target="_blank" rel="noopener">https://www.cnblogs.com/llife/p/11470668.html</a></p>
+<p><a href="https://www.cnblogs.com/zsh-blogs/p/10570277.html" target="_blank" rel="noopener">https://www.cnblogs.com/zsh-blogs/p/10570277.html</a></p>
+<p>2) inode</p>
+<p><a href="https://www.cnblogs.com/zsh-blogs/p/10570277.html" target="_blank" rel="noopener">https://www.cnblogs.com/zsh-blogs/p/10570277.html</a></p>
+<p>3) 设置位S和沾附位T</p>
+<p><a href="https://www.cnblogs.com/zhangming-blog/articles/5956280.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangming-blog/articles/5956280.html</a></p>
 
       
 
@@ -533,19 +525,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">面经</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">STL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -553,11 +533,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>

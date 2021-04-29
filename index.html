@@ -165,81 +165,9 @@
         <h1>Linux硬链接，软链接</h1>
 
 <p>参考网上其他博客整理的内容</p>
-<h1 id="一-inode"><a href="#一-inode" class="headerlink" title="一. inode"></a>一. inode</h1><h2 id="1-1-文件存储"><a href="#1-1-文件存储" class="headerlink" title="1.1. 文件存储"></a>1.1. 文件存储</h2><p>文件是存储在硬盘上的，硬盘最小单位叫<strong>扇区(sector)</strong>，每个扇区存储<strong>512字节</strong>。操作系统读取硬盘的时候，如果一个一个读取那效率很低，因此一次性读取多个扇区，即一次性读取一个<strong>块(block)</strong>。这种多个扇区组成的块，就是文件存取的最小单位。<code>block</code>的大小最常见的是4KB，即连续8个<code>sector</code>组成一个<code>block</code>。</p>
-<p><strong>文件数据存储在块中</strong>，那么必须得有一个区域来存储文件的元信息，比如文件的创建者，修改日期，大小等等。这种存储文件元信息的区域就是<strong>inode</strong>，中文译<code>“索引节点”</code>，也称<code>i节点</code>。因为一次文件必须要占有一个inode，<strong>至少</strong>占用一个block。</p>
-<h2 id="1-2-inode的内容"><a href="#1-2-inode的内容" class="headerlink" title="1.2. inode的内容"></a>1.2. inode的内容</h2><p><strong>inode</strong>包含了文件的元信息，其中有:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.文件的字节数</span><br><span class="line">2.文件的拥有者user ID</span><br><span class="line">3.文件的组Group ID</span><br><span class="line">4.文件的读，写，执行权限</span><br><span class="line">5.文件的时间戳，共有三个:ctime指inode上一次改动的时间，mtime指文件内容上一次改动的时间，atime指文件上一次打开的时间</span><br><span class="line">6.链接数，即有多少个文件名指向这个inode</span><br><span class="line">7.文件数据block的位置</span><br></pre></td></tr></table></figure>
-<p>可以用<strong>stat</strong>命令，查看文件的inode信息</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# stat hello.txt </span><br><span class="line">  File: hello.txt</span><br><span class="line">  Size: 120       	Blocks: 8          IO Block: 4096   regular file</span><br><span class="line">Device: fd00h/64768d	Inode: 36199745    Links: 1</span><br><span class="line">Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)</span><br><span class="line">Context: unconfined_u:object_r:admin_home_t:s0</span><br><span class="line">Access: 2021-04-29 16:19:11.408074363 +0800</span><br><span class="line">Modify: 2021-04-29 16:19:11.408074363 +0800</span><br><span class="line">Change: 2021-04-29 16:19:11.408074363 +0800</span><br><span class="line"> Birth: -</span><br></pre></td></tr></table></figure>
-<p><strong>inode编号</strong></p>
-<p>表面上我们是直接通过文件名打开文件，实际上，系统内部将这个过程分为三部:</p>
-<ul>
-<li>系统通过文件名找到对应的<strong>inode号码</strong></li>
-<li>根据inode号码，获取inode里面的信息</li>
-<li>根据inode的信息，找到文件所在的block，读出数据。</li>
-</ul>
-<p>其实文件系统还要根据inode的信息，来判断用户是否有访问权限，有就指向对应数据的block，没有就返回权限拒绝。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls -li hello.txt </span><br><span class="line">36199745 -rw-r--r--. 1 root root 120 Apr 29 16:19 hello.txt</span><br></pre></td></tr></table></figure>
-<p>其中<strong>36199745</strong>就是inode号码</p>
-<h2 id="1-3-inode的大小"><a href="#1-3-inode的大小" class="headerlink" title="1.3. inode的大小"></a>1.3. inode的大小</h2><p>inode也会消耗硬盘空间的，所以格式化的时候，操作系统自动将硬盘分成两个区域。一个是数据区，存放文件数据。另一个是inode区，存放inode所包含的信息。每个inode的大小，一般是<strong>128字节</strong>或<strong>256字节</strong>。通常只需要关注<strong>inode总数</strong>而不需要关注单个<strong>单个inode的大小</strong>。</p>
-<p>可以使用<strong>df -i</strong>查看硬盘分区<strong>inode总数</strong>和<strong>已使用情况</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# df -i</span><br><span class="line">Filesystem           Inodes  IUsed   IFree IUse% Mounted on</span><br><span class="line">devtmpfs             223111    399  222712    1% /dev</span><br><span class="line">tmpfs                230483      1  230482    1% /dev/shm</span><br><span class="line">tmpfs                230483    773  229710    1% /run</span><br><span class="line">tmpfs                230483     17  230466    1% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/cl-root 8910848 224485 8686363    3% /</span><br><span class="line">/dev/sda1             65536    309   65227    1% /boot</span><br><span class="line">tmpfs                230483     20  230463    1% /run/user/42</span><br><span class="line">tmpfs                230483     11  230472    1% /run/user/0</span><br></pre></td></tr></table></figure>
-<h2 id="1-4-inode的特性"><a href="#1-4-inode的特性" class="headerlink" title="1.4 inode的特性"></a>1.4 inode的特性</h2><p>由于inode和文件名分离，导致Unix/Linux系统具备以下几种特有的现像</p>
-<p>1) 文件名包含特殊字符，无法删除。这时候可直接删除inode，就能够间接删除文件。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find ./* -inum 节点号 -delete</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# find ./* -inum 36199745 -delete</span><br></pre></td></tr></table></figure>
-<p>2) 移动文件或重命名文件，只是改动了文件名，并不影响到inode</p>
-<p>3) 打开一个文件后，系统就用<code>inode号码</code>来识别这个文件，不考虑文件名。</p>
-<p>这种情况使得软件更新变得简单，可以在不关闭软件的情况下进行更新，不需要重启。因为系统通过<code>inode</code>号码，识别运行中的文件，不通过文件名。更新的时候，新版文件以同样的文件名，生成一个新的<code>inode</code>，不会影响到运行中的文件。等到下一次运行这个软件的时候，文件名就自动指向新版文件，旧版文件的<code>inode</code>则被回收。</p>
-<h1 id="二-硬链接"><a href="#二-硬链接" class="headerlink" title="二. 硬链接"></a>二. 硬链接</h1><p>在Unix/Linux中是允许多个文件名与一个inode节点对应的，即多个文件名指向同一个inode。这就允许我们通过产生新的文件名来指向一个另外一个文件名所指向的inode，这就意味着我们可以通过不同的文件名（可能在同一路径也可能在不同路径）来访问同一个文件的数据内容，这种情况就可称为<strong>硬链接</strong></p>
-<p>可使用<code>ln</code>命令来创建一个硬链接:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln 源文件 新的目标文件</span><br></pre></td></tr></table></figure>
-<p>通过ln创建出来的新文件的inode号码将和原文件的inode号码一样，而在inode信息中的链接数将会<code>加1</code></p>
-<p>需要注意的是不能对目录做硬链接。</p>
-<p>通过<code>mkdir</code>命令创建一个新目录，其硬链接数应该有<code>2</code>个，因为常见的目录本身为<code>1</code>个硬链接，而目录下面的隐藏目录<code>.（点号）</code>是该目录的又一个硬链接，也算是<code>1</code>个连接数。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls -li hello.txt </span><br><span class="line">33796565 -rw-r--r--. 1 root root 120 Apr 29 16:48 hello.txt</span><br><span class="line">[root@localhost ~]# ln hello.txt hello.hd1</span><br><span class="line">[root@localhost ~]# ls -li hello.*</span><br><span class="line">33796565 -rw-r--r--. 2 root root 120 Apr 29 16:48 hello.hd1</span><br><span class="line">33796565 -rw-r--r--. 2 root root 120 Apr 29 16:48 hello.txt</span><br></pre></td></tr></table></figure>
-<p>这里可以看到hello.txt和hello.hd1的<code>inode</code>号码，文件权限属性，文件大小都是一样的。然后inode的链接数由原来的1变为2.</p>
-<p>所以<strong>硬链接本质就是一条文件名和inode的关联记录而已</strong></p>
-<h1 id="三-软链接（符号链接）"><a href="#三-软链接（符号链接）" class="headerlink" title="三. 软链接（符号链接）"></a>三. 软链接（符号链接）</h1><p>类似windows中的快捷方式，可以快速连接到目标文件和目录，称为<strong>软链接</strong>，或<strong>符号链接</strong></p>
-<p>首先看看怎么创建一个软链接，只需在ln命令后加一个s选项即可</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s 源文件 新的目标文件</span><br></pre></td></tr></table></figure>
-<p><strong>那软链接和硬链接的区别有哪些?</strong></p>
-<p>软链接其实再<strong>创建一个独立的文件</strong>，但是文件会让数据的读取指向它链接的那个文件。即<strong>软链接会写上链接文件的文件名</strong>。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ln -s hello.txt hello.soft1</span><br><span class="line">[root@localhost ~]# ls -li hello.*</span><br><span class="line">33796565 -rw-r--r--. 2 root root 120 Apr 29 16:48 hello.hd1</span><br><span class="line">33726887 lrwxrwxrwx. 1 root root   9 Apr 29 16:56 hello.soft1 -&gt; hello.txt</span><br><span class="line">33796565 -rw-r--r--. 2 root root 120 Apr 29 16:48 hello.txt</span><br></pre></td></tr></table></figure>
-<p>我们发现软链接文件的inode号确实和原文件不一样，并且它的大小只有9个字节(刚好的<code>hello.txt</code>文件名的长度)。</p>
-<p>这意味着软链接文件<code>hello.soft1</code>会依赖于原文件<code>hello.txt</code>而存在，如果<code>hello.txt</code>被删除了，则<code>hello.soft1</code>会找不到原文件，因为其指向的是原文件的<strong>文件名</strong>，而不是原文件的<code>inode</code>号码</p>
-<h1 id="四-测试区别"><a href="#四-测试区别" class="headerlink" title="四. 测试区别"></a>四. 测试区别</h1><p>假设当前目录下有一个原文件<code>hello.txt</code>,两个硬链接文件<code>hello.hd1</code>，<code>hello.hd2</code>和两个软链接文件<code>hello.soft1</code>，<code>hello.soft2</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls -li hello.*</span><br><span class="line">33796565 -rw-r--r--. 3 root root 120 Apr 29 16:48 hello.hd1</span><br><span class="line">33796565 -rw-r--r--. 3 root root 120 Apr 29 16:48 hello.hd2</span><br><span class="line">33726887 lrwxrwxrwx. 1 root root   9 Apr 29 16:56 hello.soft1 -&gt; hello.txt</span><br><span class="line">36199747 lrwxrwxrwx. 1 root root   9 Apr 29 17:00 hello.soft2 -&gt; hello.txt</span><br><span class="line">33796565 -rw-r--r--. 3 root root 120 Apr 29 16:48 hello.txt</span><br></pre></td></tr></table></figure>
-<p>现在删除文件<code>hello.txt</code>，然后在查看相关信息</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# rm -f hello.txt </span><br><span class="line">[root@localhost ~]# ls -li hello.*</span><br><span class="line">33796565 -rw-r--r--. 2 root root 120 Apr 29 16:48 hello.hd1</span><br><span class="line">33796565 -rw-r--r--. 2 root root 120 Apr 29 16:48 hello.hd2</span><br><span class="line">33726887 lrwxrwxrwx. 1 root root   9 Apr 29 16:56 hello.soft1 -&gt; hello.txt</span><br><span class="line">36199747 lrwxrwxrwx. 1 root root   9 Apr 29 17:00 hello.soft2 -&gt; hello.txt</span><br></pre></td></tr></table></figure>
-<p>可以发现硬链接inode信息中链接数从3变成2</p>
-<p>这时候查看文件内容</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat hello.hd1 </span><br><span class="line">hello</span><br><span class="line">hello</span><br><span class="line">hello</span><br><span class="line">hello</span><br><span class="line">...	#省略后续输出</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat hello.soft1 </span><br><span class="line">cat: hello.soft1: No such file or directory</span><br></pre></td></tr></table></figure>
-<p>上面说过软链接得依赖于原文件，所以这里当原文件被删除后，软链接文件就不能正常指向了。但硬链接文件还能输出的原因是<code>inode</code>还存在，删除了原文件只是让<code>inode</code>的链接数减少1。<strong>所以要当inode的链接数变为0时，inode才会被系统回首，文件的内容才会被删除。</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# rm -f hello.hd1</span><br><span class="line">[root@localhost ~]# ls -li hello.*</span><br><span class="line">33726887 lrwxrwxrwx. 1 root root 9 Apr 29 16:56 hello.soft1 -&gt; hello.txt</span><br><span class="line">36199747 lrwxrwxrwx. 1 root root 9 Apr 29 17:00 hello.soft2 -&gt; hello.txt</span><br><span class="line">[root@localhost ~]# find ./* -inum 33796565		#没有输出</span><br><span class="line">[root@localhost ~]#</span><br></pre></td></tr></table></figure>
-<h1 id="五-文件特殊权限设置位S和沾附位T"><a href="#五-文件特殊权限设置位S和沾附位T" class="headerlink" title="五. 文件特殊权限设置位S和沾附位T"></a>五. 文件特殊权限设置位S和沾附位T</h1><p>（这部分内容只是补充记录）</p>
-<ol>
-<li><p><strong>设置位S</strong></p>
-<p> 为了让一般使用者临时具有该文件所属主/组的执行权限。比如/usr/bin/passwd在执行它的时候需要去修改/etc/passwd和/etc/shadow等文件，这些文件除了root外，其他用户都没有写权限，但是又为了能让普通用户修改自己的密码，只能时临时让他们具有root的权限。所以这个s权限就是用来完成这个特殊任务的。s权限只能应用在二进制的可执行文件上。</p>
-</li>
-<li><p><strong>沾附位</strong></p>
-<p> 只针对目录生效,它表示只能让所属主以及root可以删除(重命名/移动)该目录下的文件。比如/tmp目录本来就是任何用户都可以读写,如果别人可以任意删除（重命名/移动）自己的文件,那岂不是很危险,所以这个t权限就是为了解决这个问题。</p>
-</li>
-</ol>
-<h1 id="六-参考网站"><a href="#六-参考网站" class="headerlink" title="六. 参考网站"></a>六. 参考网站</h1><ol>
-<li><p>硬链接和软链接</p>
-<p> <a href="https://www.cnblogs.com/llife/p/11470668.html" target="_blank" rel="noopener">https://www.cnblogs.com/llife/p/11470668.html</a></p>
-<p> <a href="https://www.cnblogs.com/zsh-blogs/p/10570277.html" target="_blank" rel="noopener">https://www.cnblogs.com/zsh-blogs/p/10570277.html</a></p>
-</li>
-<li><p>inode</p>
-<p> <a href="https://www.cnblogs.com/zsh-blogs/p/10570277.html" target="_blank" rel="noopener">https://www.cnblogs.com/zsh-blogs/p/10570277.html</a></p>
-</li>
-<li><p>设置位S和沾附位T</p>
-<p> <a href="https://www.cnblogs.com/zhangming-blog/articles/5956280.html" target="_blank" rel="noopener">https://www.cnblogs.com/zhangming-blog/articles/5956280.html</a></p>
-</li>
-</ol>
-
+        
+          <a class="article-more-a" href="/2021/04/29/Linux-note2/#more">more >></a>
+        
       
 
       
@@ -1109,19 +1037,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">面经</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">STL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1129,11 +1045,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
