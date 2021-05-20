@@ -142,119 +142,6 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-goConcepts" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/16/goConcepts/">go的一些小概念</a>
-    </h1>
-  
-
-        
-        <a href="/2021/05/16/goConcepts/" class="archive-article-date">
-  	<time datetime="2021-05-16T15:16:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-16</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <a id="more"></a>
-<h2 id="1-GOROOT目录"><a href="#1-GOROOT目录" class="headerlink" title="1. GOROOT目录"></a>1. GOROOT目录</h2><p>golang的安装路径</p>
-<h2 id="2-GOPATH目录"><a href="#2-GOPATH目录" class="headerlink" title="2. GOPATH目录"></a>2. GOPATH目录</h2><p>(1) 存放SDK以外的第三方库</p>
-<p>(2) 自己收藏的可复用代码</p>
-<p>在<strong>$GOPATH</strong>一般要有三个子目录</p>
-<ul>
-<li><strong>src</strong> : 用来存放源码(.go .c .h .s等)，按照golang的默认约定，go run, go install等命令的当前路径(即在此路径下执行上述命令)</li>
-<li><strong>pkg</strong> : 编译时生成的缓存文件(.a)，项目的第三方源码也可能在这个位置，具体看是否开启GOMODULE模块支持</li>
-<li><strong>bin</strong> : 编译后生成的可执行文件(.exe)</li>
-</ul>
-<p><strong>注意</strong></p>
-<p>对于<strong>环境变量GO111MODULE</strong></p>
-<ul>
-<li>GO111MODULE=off,无模块支持，go会从GOPATH和vendor文件夹寻找包，此时go get的包会下载到pkg目录</li>
-<li>GO111MODULE=on, 模块支持，go会忽略GOPATH和vendor文件夹，只根据go.mod下载依赖</li>
-<li>GO111MODULE=auto(<strong>默认</strong>)，在$GOPATH/src外面且根目录有<strong>go.mod</strong>时，开启模块支持(go1.13+)</li>
-</ul>
-<h2 id="3-goland中的GOPATH"><a href="#3-goland中的GOPATH" class="headerlink" title="3. goland中的GOPATH"></a>3. <strong>goland中的GOPATH</strong></h2><p>goland中分为<strong>Global GOPATH</strong>和<strong>Project GOPATH</strong></p>
-<p>Global GOPATH是所有项目都可以用的</p>
-<p>Project GOPATH是只有这个项目可以用的</p>
-<h2 id="4-go-get和go-mod-download"><a href="#4-go-get和go-mod-download" class="headerlink" title="4. go get和go mod download"></a>4. go get和go mod download</h2><p>go get 命令可以借助代码管理工具通过远程拉取或更新代码包及其依赖包，并自动完成编译和安装。</p>
-<p>go mod download可以将全部依赖（go.mod文件中）下载到GOPATH下，具体是下载到src还是pgk目录就看是否开启了GO111MODULE参数</p>
-<h2 id="5-go-module的使用"><a href="#5-go-module的使用" class="headerlink" title="5. go module的使用"></a>5. <a href="https://www.cnblogs.com/chnmig/p/11806609.html" target="_blank" rel="noopener">go module的使用</a></h2><p>​    4.1. <strong>go module介绍</strong></p>
-<p>​    go module是go官方自带的go依赖管理库,在1.13版本正式推荐使用</p>
-<p>​    go module可以将某个项目(文件夹)下的所有依赖整理成一个 go.mod 文件,里面写入了依赖的版本等</p>
-<p>​    <font color=red>使用go module之后我们可不用将代码放置在src下了</font></p>
-<p>​    4.2. <strong>go module的常用命令</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> mod init  # 初始化<span class="keyword">go</span>.mod</span><br><span class="line"><span class="keyword">go</span> mod tidy  # 更新依赖文件</span><br><span class="line"><span class="keyword">go</span> mod download  # 下载依赖文件</span><br><span class="line"><span class="keyword">go</span> mod vendor  # 将依赖转移至本地的vendor文件</span><br><span class="line"><span class="keyword">go</span> mod edit  # 手动修改依赖文件</span><br><span class="line"><span class="keyword">go</span> mod graph  # 打印依赖图</span><br><span class="line"><span class="keyword">go</span> mod verify  # 校验依赖</span><br></pre></td></tr></table></figure>
-<p>​    4.3. <strong>goland中的mod</strong></p>
-<p>​    goland中新建项目时默认不打开go module,所以要去settings打开</p>
-<h2 id="6-go-lint"><a href="#6-go-lint" class="headerlink" title="6. go-lint"></a>6. go-lint</h2><p>go-lint用来检查go代码编码是否规范</p>
-<h2 id="6-1-golangci-lint的使用"><a href="#6-1-golangci-lint的使用" class="headerlink" title="6.1. golangci-lint的使用"></a>6.1. golangci-lint的使用</h2><p>github : <a href="https://github.com/wangjunemse/golangci-lint" target="_blank" rel="noopener">https://github.com/wangjunemse/golangci-lint</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F:\GoProjects\test1\src&gt;golangci-lint run ./...</span><br></pre></td></tr></table></figure>
-<p><strong>goland中的设置</strong></p>
-<p>(1) 安装go-linter插件</p>
-<p>(2) 安装go lint工具</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u golang.org/x/lint/golint</span><br></pre></td></tr></table></figure>
-<p>(3) 按照官方文档指引配置</p>
-<p>(4) 编写自己的标准并导入</p>
-<p>在goland中可以在setteings进行设置导入</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">go</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/05/16/goConcepts/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-Linux-note2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -956,6 +843,82 @@
 
 
   
+    <article id="post-pythonCrawler" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/18/pythonCrawler/">携程，去哪儿评论，攻略爬取</a>
+    </h1>
+  
+
+        
+        <a href="/2021/02/18/pythonCrawler/" class="archive-article-date">
+  	<time datetime="2021-02-18T14:26:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="携程，去哪儿评论，攻略爬取"><a href="#携程，去哪儿评论，攻略爬取" class="headerlink" title="携程，去哪儿评论，攻略爬取"></a>携程，去哪儿评论，攻略爬取</h1>
+        
+          <a class="article-more-a" href="/2021/02/18/pythonCrawler/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/02/18/pythonCrawler/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &gt;&gt;</a>
@@ -1086,7 +1049,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1094,15 +1057,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">go</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
             
             <div class="clearfix"></div>
