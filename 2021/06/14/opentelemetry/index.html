@@ -6,20 +6,27 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>go的一些小概念 | Dopaminer</title>
+  <title>opentelemetry | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="go的一些小概念  学习过程中整理的小知识">
+  <meta name="description" content="OpenTelemetry学习整理，有错指正。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go的一些小概念">
-<meta property="og:url" content="http://yoursite.com/2021/05/16/goConcepts/index.html">
+<meta property="og:title" content="opentelemetry">
+<meta property="og:url" content="http://yoursite.com/2021/06/14/opentelemetry/index.html">
 <meta property="og:site_name" content="Dopaminer">
-<meta property="og:description" content="go的一些小概念  学习过程中整理的小知识">
+<meta property="og:description" content="OpenTelemetry学习整理，有错指正。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-05-16T15:16:32.000Z">
-<meta property="article:modified_time" content="2021-05-23T05:48:23.068Z">
+<meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/ZzrXL1cc5tXDKzv2A7rbc/f0145d239cb7b4184b75beaf9619010e/OTel_Image_A-0.png">
+<meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/3Nakhby3TS63D2tPQqe0bq/43a0a9e4305f9525224b1d84aaa0f640/spans1.png">
+<meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/4vHvbkEu2yE6km6hrgiZRF/926e12591fe8ff5e91da2b24f3b46b45/spans2.webp">
+<meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/2rkyGE6FpI78wIu1WezeZN/8b57bdaa93c84e673f96d64343ba8ab8/spans3.webp">
+<meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/3i2exIKcsZf82hYrmMly0u/c30c13175c715040b0f2e6c66cad55f5/spans4.png">
+<meta property="og:image" content="https://images.ctfassets.net/d3bkzhxwv8fv/2BERJUldaDWmZNM3K8WqOK/e8d287c47430f7bd7ed457793f02072b/OpenTelemetry_Context_Propagation.png">
+<meta property="article:published_time" content="2021-06-14T03:55:07.000Z">
+<meta property="article:modified_time" content="2021-06-14T03:56:36.754Z">
 <meta property="article:author" content="Dopaminer">
-<meta property="article:tag" content="go">
+<meta property="article:tag" content="opentelemetry">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.ctfassets.net/8057oncvx5dp/ZzrXL1cc5tXDKzv2A7rbc/f0145d239cb7b4184b75beaf9619010e/OTel_Image_A-0.png">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
   
@@ -143,69 +150,183 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-goConcepts" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-opentelemetry" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      go的一些小概念
+      opentelemetry
     </h1>
   
 
         
-        <a href="/2021/05/16/goConcepts/" class="archive-article-date">
-  	<time datetime="2021-05-16T15:16:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-16</time>
+        <a href="/2021/06/14/opentelemetry/" class="archive-article-date">
+  	<time datetime="2021-06-14T03:55:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-06-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1>go的一些小概念</h1>
-
-<p>学习过程中整理的小知识</p>
+        <h1 id="OpenTelemetry"><a href="#OpenTelemetry" class="headerlink" title="OpenTelemetry"></a>OpenTelemetry</h1><p>学习整理，有错指正。</p>
 <a id="more"></a>
-<h2 id="1-GOROOT目录"><a href="#1-GOROOT目录" class="headerlink" title="1. GOROOT目录"></a>1. GOROOT目录</h2><p>golang的安装路径</p>
-<h2 id="2-GOPATH目录"><a href="#2-GOPATH目录" class="headerlink" title="2. GOPATH目录"></a>2. GOPATH目录</h2><p>(1) 存放SDK以外的第三方库</p>
-<p>(2) 自己收藏的可复用代码</p>
-<p>在<strong>$GOPATH</strong>一般要有三个子目录</p>
+<h2 id="1-OpenTelemetry是用来做什么的"><a href="#1-OpenTelemetry是用来做什么的" class="headerlink" title="1. OpenTelemetry是用来做什么的"></a>1. OpenTelemetry是用来做什么的</h2><p>OpenTelemetry合并了openTracing和OpenCensus，它提供了一组API，标准库用来创建和管理<strong>遥测数据</strong>如traces,metric或者log。OpenTelemetry提供了一个与厂商无关的实现，因此可以按照自己的需求将其发送到不同的后端进行分析。它支持一些现在一些流行的开源项目，包括<a href="https://www.jaegertracing.io/" target="_blank" rel="noopener">Jaeger</a>和<a href="https://prometheus.io/" target="_blank" rel="noopener">Prometheus</a>(这两个是调用链追踪工具，用来后端可视化存储，查询，观测等)。</p>
+<h2 id="2-OpenTelemetry的数据源及内容"><a href="#2-OpenTelemetry的数据源及内容" class="headerlink" title="2. OpenTelemetry的数据源及内容"></a>2. OpenTelemetry的数据源及内容</h2><h3 id="2-1-Traces"><a href="#2-1-Traces" class="headerlink" title="2.1. Traces"></a>2.1. Traces</h3><h4 id="1-trace"><a href="#1-trace" class="headerlink" title="(1) trace"></a>(1) trace</h4><p><img src="https://images.ctfassets.net/8057oncvx5dp/ZzrXL1cc5tXDKzv2A7rbc/f0145d239cb7b4184b75beaf9619010e/OTel_Image_A-0.png" alt="Figure 1"></p>
+<p>上图是一个简单的trace例子（注意，虽然这条调用链跨了两个Service，但它属于一个trace）。<code>trace</code>是链接<code>span</code>的集合，这些span都是表示请求中的工作单元的命名和定时操作。</p>
+<p>有效的trace由有效的子trace组成。</p>
+<h4 id="2-span"><a href="#2-span" class="headerlink" title="(2) span"></a>(2) span</h4><p><code>span</code>是<code>trace</code>的构建块，是一个命名的定时操作(即用一个name来表示，表示需要耗费一定时间的操作，即为span。如一次命名的http请求或rpc调用等)，它表示分布式系统中的一部分工作流。多个span链接在一起形成一个trace。</p>
+<p><img src="https://images.ctfassets.net/8057oncvx5dp/3Nakhby3TS63D2tPQqe0bq/43a0a9e4305f9525224b1d84aaa0f640/spans1.png" alt="spans1"></p>
+<p>trace通常被认为是span的树(tree)，它用来反映每个span开始和完成的时间，它还显示了span之间的关系。下面是基于上图请求中具体的trace的视图。</p>
+<p><img src="https://images.ctfassets.net/8057oncvx5dp/4vHvbkEu2yE6km6hrgiZRF/926e12591fe8ff5e91da2b24f3b46b45/spans2.webp" alt="spans2"></p>
+<p>trace开始于一个代表请求开始的root span，这个root span可以有一个或多个的子span，这些子span又可以有它们自己的子span…(子又生孙，孙又生子，子子孙孙无穷匮也…)</p>
+<p><img src="https://images.ctfassets.net/8057oncvx5dp/2rkyGE6FpI78wIu1WezeZN/8b57bdaa93c84e673f96d64343ba8ab8/spans3.webp" alt="spans3"></p>
+<p>span的目的是向可观测性工具提供有关程序执行的一些信息，因此它应该包含一些工作（执行）的详细信息</p>
+<p>单个span组件应该包含以下信息:</p>
 <ul>
-<li><strong>src</strong> : 用来存放源码(.go .c .h .s等)，按照golang的默认约定，go run, go install等命令的当前路径(即在此路径下执行上述命令)</li>
-<li><strong>pkg</strong> : 编译时生成的缓存文件(.a)，项目的第三方源码也可能在这个位置，具体看是否开启GOMODULE模块支持</li>
-<li><strong>bin</strong> : 编译后生成的可执行文件(.exe)</li>
+<li>操作名(span name)</li>
+<li>开始和结束时间戳</li>
+<li>spanContext</li>
+<li>一个属性set</li>
+<li>有序事件列表</li>
 </ul>
-<p><strong>注意</strong></p>
-<p>对于<strong>环境变量GO111MODULE</strong></p>
+<p><strong>trace和span的例子</strong></p>
+<p><img src="https://images.ctfassets.net/8057oncvx5dp/3i2exIKcsZf82hYrmMly0u/c30c13175c715040b0f2e6c66cad55f5/spans4.png" alt="spans4"></p>
+<p>上图中的圆角矩阵长度表示该调用的总时长。</p>
+<h4 id="3-Trace如何跨域传播"><a href="#3-Trace如何跨域传播" class="headerlink" title="(3) Trace如何跨域传播"></a>(3) Trace如何跨域传播</h4><ol>
+<li><p><strong>context</strong></p>
+<p> <code>context</code>(上下文)是一种传播机制，它可以跨API边界和有逻辑关联的执行单元之间<strong>传递执行范围内的值</strong>，<code>Cross-cutting concerns</code>(横切关注点)可以使用共享的相同context对象来访问其处理的数据。</p>
+<blockquote>
+<p><strong>横切关注点</strong>指的是一些具有横越多个模块的行为，使用传统的软件开发方法不能够达到有效的模块化的一类特殊关注点。    —《维基百科》</p>
+</blockquote>
+<p> <code>context</code>必须是不可变的，并且它的写操作必须得返创建一个新的context，这个新context包含原始值和指定更新值。</p>
+</li>
+<li><p><strong>propagation</strong></p>
+<p> <code>propagation</code>是一种能让trace变成分布式trace的机制(跨域)，并促进<code>context</code>在服务和进程之间的流动。</p>
+<p> <code>context</code>可以被<strong>注入(inject</strong>)到一个请求中并由接受服务来<strong>提取(extract)</strong>并生成新的<code>span</code>，这个服务可能又会生成新的请求，然后再把<code>context</code>注入到请求中并发送到其他的服务等等。</p>
+<p> <img src="https://images.ctfassets.net/d3bkzhxwv8fv/2BERJUldaDWmZNM3K8WqOK/e8d287c47430f7bd7ed457793f02072b/OpenTelemetry_Context_Propagation.png" alt="OpenTelemetry Context Propagation"></p>
+<p> <code>propagation</code>通常通过特定的请求拦截器(request interceptors)和<strong>传播器(propagator)</strong>来实现，其中<code>interceptors</code>用来检测传入和传出的请求，并分别使用<code>propagator</code>的注入和提取操作。</p>
+</li>
+<li><p><strong>propagator</strong></p>
+<p> <code>propagator</code>是用来实现<code>propagation</code>机制的，它被定义于用于在应用程序之间交换<code>message</code>中读写<code>context</code>对象。</p>
+</li>
+<li><p><strong>carrier</strong></p>
+<p> <code>carrier</code>是<code>propagator</code>用来<strong>读值和写值</strong>的<strong>介质</strong>。每个特定的propagator类型都定义了与其预期的carrier类型，比如<code>string map</code> 或 一个 <code>byte array</code></p>
+</li>
+<li><p><strong>propagators的API</strong></p>
+<p> 在知道propagator和carrier的作用后，我们就可以来看看propagator是如何操作的。</p>
+<p> 对于<code>propagator</code>，它必须得实现<code>Inject</code>和<code>Extract</code>操作(作用)， 这两个操作是为了能够分别地从<code>carriers</code>中<strong>写入</strong>和<strong>读取</strong>数据(如上文中提到的<code>context</code>，然后下个服务可以从这个context中通过API取出span)。每一个<code>propagator</code>必须定义其特定的<code>carrier</code>类型，并且允许定义其他参数。</p>
 <ul>
-<li>GO111MODULE=off,无模块支持，go会从GOPATH和vendor文件夹寻找包，此时go get的包会下载到pkg目录</li>
-<li>GO111MODULE=on, 模块支持，go会忽略GOPATH和vendor文件夹，只根据go.mod下载依赖</li>
-<li>GO111MODULE=auto(<strong>默认</strong>)，在$GOPATH/src外面且根目录有<strong>go.mod</strong>时，开启模块支持(go1.13+)</li>
+<li><p><strong>Inject</strong></p>
+<p>将值注入到carrier中。例如，注入到一个HTTP请求头中</p>
+<p>必备参数:</p>
+<p>(1) 一个<code>Context</code>，一个propagator必须先从context中检索适当的值，如spanContext,Baggage或其他横切关注context(cross-cutting concern context)</p>
+<p>(2) 一个<code>carrier</code>,这个carrier必须是能够承载propagation字段。例如，一个传输的信息或者HTTP请求。</p>
+</li>
+<li><p><strong>Extract</strong></p>
+<p>从传入的请求中提取出值。例如，从HTTP请求头中提取</p>
+<p>必备参数:</p>
+<p>(1) <code>context</code></p>
+<p>(2) <code>carrier</code></p>
+<p>返回一个新的context,这个返回的context是传入的context参数派生出来的。返回的context包含可提取的值，这个值可能是spanContext,Baggage或他横切关注context(cross-cutting concern context)</p>
+</li>
 </ul>
-<h2 id="3-goland中的GOPATH"><a href="#3-goland中的GOPATH" class="headerlink" title="3. goland中的GOPATH"></a>3. <strong>goland中的GOPATH</strong></h2><p>goland中分为<strong>Global GOPATH</strong>和<strong>Project GOPATH</strong></p>
-<p>Global GOPATH是所有项目都可以用的</p>
-<p>Project GOPATH是只有这个项目可以用的</p>
-<h2 id="4-go-get和go-mod-download"><a href="#4-go-get和go-mod-download" class="headerlink" title="4. go get和go mod download"></a>4. go get和go mod download</h2><p>go get 命令可以借助代码管理工具通过远程拉取或更新代码包及其依赖包，并自动完成编译和安装。</p>
-<p>go mod download可以将全部依赖（go.mod文件中）下载到GOPATH下，具体是下载到src还是pgk目录就看是否开启了GO111MODULE参数</p>
-<h2 id="5-go-module的使用"><a href="#5-go-module的使用" class="headerlink" title="5. go module的使用"></a>5. <a href="https://www.cnblogs.com/chnmig/p/11806609.html" target="_blank" rel="noopener">go module的使用</a></h2><p>​    4.1. <strong>go module介绍</strong></p>
-<p>​    go module是go官方自带的go依赖管理库,在1.13版本正式推荐使用</p>
-<p>​    go module可以将某个项目(文件夹)下的所有依赖整理成一个 go.mod 文件,里面写入了依赖的版本等</p>
-<p>​    <font color=red>使用go module之后我们可不用将代码放置在src下了</font></p>
-<p>​    4.2. <strong>go module的常用命令</strong></p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> mod init  # 初始化<span class="keyword">go</span>.mod</span><br><span class="line"><span class="keyword">go</span> mod tidy  # 更新依赖文件</span><br><span class="line"><span class="keyword">go</span> mod download  # 下载依赖文件</span><br><span class="line"><span class="keyword">go</span> mod vendor  # 将依赖转移至本地的vendor文件</span><br><span class="line"><span class="keyword">go</span> mod edit  # 手动修改依赖文件</span><br><span class="line"><span class="keyword">go</span> mod graph  # 打印依赖图</span><br><span class="line"><span class="keyword">go</span> mod verify  # 校验依赖</span><br></pre></td></tr></table></figure>
-<p>​    4.3. <strong>goland中的mod</strong></p>
-<p>​    goland中新建项目时默认不打开go module,所以要去settings打开</p>
-<h2 id="6-go-lint"><a href="#6-go-lint" class="headerlink" title="6. go-lint"></a>6. go-lint</h2><p>go-lint用来检查go代码编码是否规范</p>
-<h3 id="6-1-golangci-lint的使用"><a href="#6-1-golangci-lint的使用" class="headerlink" title="6.1. golangci-lint的使用"></a>6.1. golangci-lint的使用</h3><p>github : <a href="https://github.com/wangjunemse/golangci-lint" target="_blank" rel="noopener">https://github.com/wangjunemse/golangci-lint</a></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">F:\GoProjects\test1\src&gt;golangci-lint run ./...</span><br></pre></td></tr></table></figure>
-<p><strong>goland中的设置</strong></p>
-<p>(1) 安装go-linter插件</p>
-<p>(2) 安装go lint工具</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u golang.org/x/lint/golint</span><br></pre></td></tr></table></figure>
-<p>(3) 按照官方文档指引配置</p>
-<p>(4) 编写自己的标准并导入</p>
-<p>在goland中可以在setteings进行设置导入</p>
+</li>
+</ol>
+<h4 id="4-tracing-API"><a href="#4-tracing-API" class="headerlink" title="(4) tracing API"></a>(4) <a href="https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/api.md" target="_blank" rel="noopener">tracing API</a></h4><p>tracing API主要由以下组成:</p>
+<ul>
+<li><p><code>TracerProvier</code> : API的入口点，它提供了<strong>tracer</strong>s的访问权限</p>
+</li>
+<li><p><code>Tracer</code> : 负责创建，获取<strong>span</strong>的类</p>
+</li>
+<li><code>span</code> : 用来跟踪操作的API</li>
+</ul>
+<p><strong>API中的一些相关内容</strong></p>
+<ul>
+<li><p><code>TracerProvider</code>类型</p>
+<p>  TracerProvider主要用来对<code>Tracer</code>进行相关访问，如创建tracer或获取一个已有tracer</p>
+</li>
+<li><p><code>Tracer</code>类型</p>
+<p>  Tracer主要用来创建或获取<code>span</code></p>
+</li>
+<li><p>Context交互(后面解释context)</p>
+<p>  能够从<code>context</code>实例中提取<code>span</code></p>
+<p>  能够往<code>context</code>实例中注入<code>span</code></p>
+</li>
+<li><p>span接口操作</p>
+<p>  <code>Get Context</code>: 从指定span中得到对应的spanContext</p>
+<p>  <code>Set Attributes</code> : 给span设置一些属性，如键值对形式的元数据，这样可以方便后续查询，过滤和分析trace数据</p>
+<blockquote>
+<p>Attributes是作为元数据应用于span的键值对，利用这些键值对属性能够方便聚集，筛选和分组trace。Attributes可以在创建span时就添加，也可以在span的结束前的任意时刻添加。</p>
+</blockquote>
+<p>  <code>Add Event</code> : 添加一个可读的消息</p>
+<blockquote>
+<p>Event是一个可读的信息，它描述了一个span在整个生命周期“正在发生的事情”</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="2-2-Metrics"><a href="#2-2-Metrics" class="headerlink" title="2.2. Metrics"></a>2.2. Metrics</h3><h4 id="1-metric"><a href="#1-metric" class="headerlink" title="(1) metric"></a>(1) metric</h4><p><code>metric</code>是有关计算机程序运行时的执行情况的一个被捕获的<code>measurement</code>，这个measurement与这个服务有关。metric的示例可以是“统计完成的请求数”、“统计活动请求数”、“获取队列长度”或“获取缓存未命中数”。</p>
+<h4 id="2-measurement"><a href="#2-measurement" class="headerlink" title="(2) measurement"></a>(2) measurement</h4><p><code>measurement</code>代表一个通过metric API向SDK报告的数据(data point)。</p>
+<p>一个measurement必须要封装:</p>
+<ul>
+<li>一个值或变量（被观测的值）</li>
+<li>一些属性（用来查询等）</li>
+</ul>
+<h4 id="3-instrument"><a href="#3-instrument" class="headerlink" title="(3) instrument"></a>(3) instrument</h4><p><code>Instrument</code>s用于汇报<code>measurement</code>,每个instrument必须要有以下信息:</p>
+<ul>
+<li>Instrument的名称</li>
+<li>instrument的类型</li>
+<li>可选的度量单位</li>
+<li>可选的描述</li>
+</ul>
+<p>instruments在创建时就与<code>meter</code>相关联，并通过名称标识</p>
+<p><strong>metric instruments的类型</strong></p>
+<ul>
+<li><p><strong>Counter</strong></p>
+<p>  <code>counter</code>计数器支持Add()函数，该函数只接受正值。用来对某些数据进行计数。如 字节接受数，请求完成数，错误发生率等。counter适合用来计算比率，如请求率，错误率等。</p>
+</li>
+<li><p><strong>UpDownCounter</strong></p>
+<p>  <code>UpDownCounter</code>是<code>counter</code>的补充，它一样支持Add()函数，但该函数可以接受正值和负值。它比较实合用来监视一个请求中某些数额的增减（如系统资源），如: 当前出于活跃状态的请求的数目， 内存的使用量， 队列的长度等。</p>
+</li>
+<li><p><strong>ValueRecorder</strong></p>
+<p>  <code>ValueRecorder</code>一般用来从记录分布或摘要中<strong>离散事件</strong>的值，并通过其Record()方法来捕获所有同步比率，平均值和范围所需的所有信息。比如<strong>延迟</strong>就是ValueRecorder最典型的例子。</p>
+</li>
+<li><p><strong>SumObserver</strong></p>
+<p>  对于异步的测量，如果它都是基于每个请求的单调总和那将是不必要的。这时<code>SumObserver</code>中的Observe()就排上用场。它的使用场景: 缓存未命中，系统CPU</p>
+</li>
+<li><p><strong>UpDownSumObserver</strong></p>
+<p>  SumObserver的补充，其Observe()可以定时接受正总和或负总和。应用场景: 出于活跃状态的碎片数目， 进程堆大小</p>
+</li>
+<li><p><strong>ValueObserver</strong></p>
+<p>  可以用更细粒度地控制何时进行非加性地测量。</p>
+</li>
+</ul>
+<h4 id="4-Metrics-API"><a href="#4-Metrics-API" class="headerlink" title="(4) Metrics API"></a>(4) <a href="https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/metrics/api.md" target="_blank" rel="noopener">Metrics API</a></h4><p>metrics API主要由以下组成:</p>
+<p><code>MeterProvider</code>: API的入口点，它提供了<strong>Meter</strong>s的访问权限</p>
+<p><code>Meter</code>:负责创建，获取<strong>Instruments</strong>的<strong>类</strong></p>
+<p><code>Instrument</code>: 负责报告<code>Measurements</code></p>
+<h3 id="2-3-Logs"><a href="#2-3-Logs" class="headerlink" title="2.3. Logs"></a>2.3. Logs</h3><p><code>log</code>是带有时间戳的文本记录，可以是结构化也可以是非结构化，并带有元数据。log虽然是独立的数据源但它可以加到span中。在Opentelemetry中，任何不属于分布式trace或span的数据都是日志。例如，<code>event</code>s就是特殊类型的日志。日志通常用于确定问题的根本原因，其通常包含的信息有谁更改了什么内容以及此次更改的结果。</p>
+<h2 id="3-例子-Go"><a href="#3-例子-Go" class="headerlink" title="3. 例子(Go)"></a>3. 例子(Go)</h2><p>虽然上述的概念很多很复杂，但实际应用中已经有很多包装好的第三方库可以直接使用，如otelhttp,otelsql,redisotel等等,以otelhttp为例看其代码。</p>
+<p>(1) 新建Transport时配置span，初始化相关变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewTransport</span><span class="params">(base http.RoundTripper, opts ...Option)</span> *<span class="title">Transport</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> base == <span class="literal">nil</span> &#123;</span><br><span class="line">		base = http.DefaultTransport</span><br><span class="line">	&#125;</span><br><span class="line">	t := Transport&#123;</span><br><span class="line">		rt: base,</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// span配置</span></span><br><span class="line">	defaultOpts := []Option&#123;</span><br><span class="line">		WithSpanOptions(trace.WithSpanKind(trace.SpanKindClient)),</span><br><span class="line">		WithSpanNameFormatter(defaultTransportFormatter),</span><br><span class="line">	&#125;</span><br><span class="line">	c := newConfig(<span class="built_in">append</span>(defaultOpts, opts...)...)</span><br><span class="line">	t.applyConfig(c)</span><br><span class="line">	<span class="keyword">return</span> &amp;t</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newConfig</span><span class="params">(opts ...Option)</span> *<span class="title">config</span></span> &#123;</span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">	c := &amp;config&#123;</span><br><span class="line">		Propagators:    otel.GetTextMapPropagator(),</span><br><span class="line">		TracerProvider: otel.GetTracerProvider(),</span><br><span class="line">		MeterProvider:  global.GetMeterProvider(),</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 应用配置，如span类型等</span></span><br><span class="line">	<span class="keyword">for</span> _, opt := <span class="keyword">range</span> opts &#123;</span><br><span class="line">		opt.Apply(c)</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 得到tracer和meter</span></span><br><span class="line">	c.Tracer = c.TracerProvider.Tracer(</span><br><span class="line">		instrumentationName,</span><br><span class="line">		trace.WithInstrumentationVersion(contrib.SemVersion()),</span><br><span class="line">	)</span><br><span class="line">	c.Meter = c.MeterProvider.Meter(</span><br><span class="line">		instrumentationName,</span><br><span class="line">		metric.WithInstrumentationVersion(contrib.SemVersion()),</span><br><span class="line">	)</span><br><span class="line">	<span class="keyword">return</span> c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(2) 发送请求时创建一个span,并在结束时end这个span</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *Transport)</span> <span class="title">RoundTrip</span><span class="params">(r *http.Request)</span> <span class="params">(*http.Response, error)</span></span> &#123;</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	opts := <span class="built_in">append</span>([]trace.SpanOption&#123;&#125;, t.spanStartOptions...) <span class="comment">// start with the configured options</span></span><br><span class="line"></span><br><span class="line">	ctx, span := t.tracer.Start(r.Context(), t.spanNameFormatter(<span class="string">""</span>, r), opts...)</span><br><span class="line"></span><br><span class="line">	r = r.WithContext(ctx)</span><br><span class="line">    <span class="comment">// span设置键值对属性</span></span><br><span class="line">	span.SetAttributes(semconv.HTTPClientAttributesFromHTTPRequest(r)...)</span><br><span class="line">    <span class="comment">// 使用Propagator将其inject到http的请求头中</span></span><br><span class="line">    <span class="comment">// 这里使用HeaderCarrier让header满足carrier,注意这里是request的header</span></span><br><span class="line">	t.propagators.Inject(ctx, propagation.HeaderCarrier(r.Header))</span><br><span class="line"></span><br><span class="line">	res, err := t.rt.RoundTrip(r)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		span.RecordError(err)</span><br><span class="line">		span.End()</span><br><span class="line">		<span class="keyword">return</span> res, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 上文提到span的Attributes可在结束前任意时刻添加，这里再其请求返回后添加</span></span><br><span class="line">	span.SetAttributes(semconv.HTTPAttributesFromHTTPStatusCode(res.StatusCode)...)</span><br><span class="line">	span.SetStatus(semconv.SpanStatusFromHTTPStatusCode(res.StatusCode))</span><br><span class="line">	res.Body = &amp;wrappedBody&#123;ctx: ctx, span: span, body: res.Body&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> res, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(wb *wrappedBody)</span> <span class="title">Read</span><span class="params">(b []<span class="keyword">byte</span>)</span> <span class="params">(<span class="keyword">int</span>, error)</span></span> &#123;</span><br><span class="line">	n, err := wb.body.Read(b)</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 读完返回的数据后即end它的span</span></span><br><span class="line">	<span class="keyword">switch</span> err &#123;</span><br><span class="line">	<span class="keyword">case</span> <span class="literal">nil</span>:</span><br><span class="line">		<span class="comment">// nothing to do here but fall through to the return</span></span><br><span class="line">	<span class="keyword">case</span> io.EOF:</span><br><span class="line">		wb.span.End()</span><br><span class="line">	<span class="keyword">default</span>:</span><br><span class="line">		wb.span.RecordError(err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> n, err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(3) 新建handler时添加metric instruments</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Handler <span class="keyword">struct</span> &#123;</span><br><span class="line">	operation <span class="keyword">string</span></span><br><span class="line">	handler   http.Handler</span><br><span class="line"></span><br><span class="line">	tracer            trace.Tracer</span><br><span class="line">	meter             metric.Meter</span><br><span class="line">	propagators       propagation.TextMapPropagator</span><br><span class="line">	spanStartOptions  []trace.SpanOption</span><br><span class="line">	readEvent         <span class="keyword">bool</span></span><br><span class="line">	writeEvent        <span class="keyword">bool</span></span><br><span class="line">	filters           []Filter</span><br><span class="line">	spanNameFormatter <span class="function"><span class="keyword">func</span><span class="params">(<span class="keyword">string</span>, *http.Request)</span> <span class="title">string</span></span></span><br><span class="line">	counters          <span class="keyword">map</span>[<span class="keyword">string</span>]metric.Int64Counter		<span class="comment">//metric instruments</span></span><br><span class="line">	valueRecorders    <span class="keyword">map</span>[<span class="keyword">string</span>]metric.Int64ValueRecorder	<span class="comment">//metric instruments</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewHandler</span><span class="params">(handler http.Handler, operation <span class="keyword">string</span>, opts ...Option)</span> <span class="title">http</span>.<span class="title">Handler</span></span> &#123;</span><br><span class="line">	h := Handler&#123;</span><br><span class="line">		handler:   handler,</span><br><span class="line">		operation: operation,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	defaultOpts := []Option&#123;</span><br><span class="line">		WithSpanOptions(trace.WithSpanKind(trace.SpanKindServer)),</span><br><span class="line">		WithSpanNameFormatter(defaultHandlerFormatter),</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	c := newConfig(<span class="built_in">append</span>(defaultOpts, opts...)...)</span><br><span class="line">	h.configure(c)</span><br><span class="line">	h.createMeasures()		<span class="comment">//创建metric instruments</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> &amp;h</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *Handler)</span> <span class="title">createMeasures</span><span class="params">()</span></span> &#123;</span><br><span class="line">	h.counters = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]metric.Int64Counter)</span><br><span class="line">	h.valueRecorders = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]metric.Int64ValueRecorder)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分别创建metric instruments,并保存在struct中</span></span><br><span class="line">	requestBytesCounter, err := h.meter.NewInt64Counter(RequestContentLength)</span><br><span class="line">	handleErr(err)</span><br><span class="line">    </span><br><span class="line">	responseBytesCounter, err := h.meter.NewInt64Counter(ResponseContentLength)</span><br><span class="line">	handleErr(err)</span><br><span class="line">    </span><br><span class="line">	serverLatencyMeasure, err := h.meter.NewInt64ValueRecorder(ServerLatency)</span><br><span class="line">	handleErr(err)</span><br><span class="line"></span><br><span class="line">	h.counters[RequestContentLength] = requestBytesCounter</span><br><span class="line">	h.counters[ResponseContentLength] = responseBytesCounter</span><br><span class="line">	h.valueRecorders[ServerLatency] = serverLatencyMeasure</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>(4) 在响应request中利用instrument观测具体数据，并对response做相关处理</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ServeHTTP serves HTTP requests (http.Handler)</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(h *Handler)</span> <span class="title">ServeHTTP</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	requestStartTime := time.Now()</span><br><span class="line">	<span class="keyword">for</span> _, f := <span class="keyword">range</span> h.filters &#123;</span><br><span class="line">		<span class="keyword">if</span> !f(r) &#123;</span><br><span class="line">			<span class="comment">// Simply pass through to the handler if a filter rejects the request</span></span><br><span class="line">			h.handler.ServeHTTP(w, r)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	opts := <span class="built_in">append</span>([]trace.SpanOption&#123;</span><br><span class="line">		trace.WithAttributes(semconv.NetAttributesFromHTTPRequest(<span class="string">"tcp"</span>, r)...),</span><br><span class="line">		trace.WithAttributes(semconv.EndUserAttributesFromHTTPRequest(r)...),</span><br><span class="line">		trace.WithAttributes(semconv.HTTPServerAttributesFromHTTPRequest(h.operation, <span class="string">""</span>, r)...),</span><br><span class="line">	&#125;, h.spanStartOptions...) <span class="comment">// start with the configured options</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从header中取出(extract)context</span></span><br><span class="line">	ctx := h.propagators.Extract(r.Context(), propagation.HeaderCarrier(r.Header))</span><br><span class="line">    <span class="comment">// 利用这个context创建一个新的子span</span></span><br><span class="line">	ctx, span := h.tracer.Start(ctx, h.spanNameFormatter(h.operation, r), opts...)</span><br><span class="line">	<span class="keyword">defer</span> span.End()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这个函数在写响应时调用</span></span><br><span class="line">	readRecordFunc := <span class="function"><span class="keyword">func</span><span class="params">(<span class="keyword">int64</span>)</span></span> &#123;&#125;</span><br><span class="line">	<span class="keyword">if</span> h.readEvent &#123;</span><br><span class="line">		readRecordFunc = <span class="function"><span class="keyword">func</span><span class="params">(n <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">			span.AddEvent(<span class="string">"read"</span>, trace.WithAttributes(ReadBytesKey.Int64(n)))</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> bw bodyWrapper</span><br><span class="line">	<span class="comment">// if request body is nil we don't want to mutate the body as it will affect</span></span><br><span class="line">	<span class="comment">// the identity of it in a unforeseeable way because we assert ReadCloser</span></span><br><span class="line">	<span class="comment">// fullfills a certain interface and it is indeed nil.</span></span><br><span class="line">	<span class="keyword">if</span> r.Body != <span class="literal">nil</span> &#123;</span><br><span class="line">		bw.ReadCloser = r.Body</span><br><span class="line">		bw.record = readRecordFunc</span><br><span class="line">		r.Body = &amp;bw</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	writeRecordFunc := <span class="function"><span class="keyword">func</span><span class="params">(<span class="keyword">int64</span>)</span></span> &#123;&#125;</span><br><span class="line">	<span class="keyword">if</span> h.writeEvent &#123;</span><br><span class="line">		writeRecordFunc = <span class="function"><span class="keyword">func</span><span class="params">(n <span class="keyword">int64</span>)</span></span> &#123;</span><br><span class="line">			span.AddEvent(<span class="string">"write"</span>, trace.WithAttributes(WroteBytesKey.Int64(n)))</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 对response做包装，包装了例如在写响应头时自动将context注入(inject)等操作</span></span><br><span class="line">	rww := &amp;respWriterWrapper&#123;ResponseWriter: w, record: writeRecordFunc, ctx: ctx, props: h.propagators&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Wrap w to use our ResponseWriter methods while also exposing</span></span><br><span class="line">	<span class="comment">// other interfaces that w may implement (http.CloseNotifier,</span></span><br><span class="line">	<span class="comment">// http.Flusher, http.Hijacker, http.Pusher, io.ReaderFrom).</span></span><br><span class="line"></span><br><span class="line">	w = httpsnoop.Wrap(w, httpsnoop.Hooks&#123;</span><br><span class="line">		Header: <span class="function"><span class="keyword">func</span><span class="params">(httpsnoop.HeaderFunc)</span> <span class="title">httpsnoop</span>.<span class="title">HeaderFunc</span></span> &#123;</span><br><span class="line">			<span class="keyword">return</span> rww.Header</span><br><span class="line">		&#125;,</span><br><span class="line">		Write: <span class="function"><span class="keyword">func</span><span class="params">(httpsnoop.WriteFunc)</span> <span class="title">httpsnoop</span>.<span class="title">WriteFunc</span></span> &#123;</span><br><span class="line">			<span class="keyword">return</span> rww.Write</span><br><span class="line">		&#125;,</span><br><span class="line">		WriteHeader: <span class="function"><span class="keyword">func</span><span class="params">(httpsnoop.WriteHeaderFunc)</span> <span class="title">httpsnoop</span>.<span class="title">WriteHeaderFunc</span></span> &#123;</span><br><span class="line">			<span class="keyword">return</span> rww.WriteHeader</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	labeler := &amp;Labeler&#123;&#125;</span><br><span class="line">	ctx = injectLabeler(ctx, labeler)</span><br><span class="line"></span><br><span class="line">	h.handler.ServeHTTP(w, r.WithContext(ctx))</span><br><span class="line"></span><br><span class="line">    <span class="comment">//这个函数在响应http后给span添加相关的属性，如读的字节数等</span></span><br><span class="line">	setAfterServeAttributes(span, bw.read, rww.written, rww.statusCode, bw.err, rww.err)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 添加metrics，并配置相关属性</span></span><br><span class="line">	attributes := <span class="built_in">append</span>(labeler.Get(), semconv.HTTPServerMetricAttributesFromHTTPRequest(h.operation, r)...)</span><br><span class="line">	h.counters[RequestContentLength].Add(ctx, bw.read, attributes...)	<span class="comment">//读取请求的字节数</span></span><br><span class="line">	h.counters[ResponseContentLength].Add(ctx, rww.written, attributes...)	<span class="comment">//写进响应的字节数</span></span><br><span class="line"></span><br><span class="line">	elapsedTime := time.Since(requestStartTime).Microseconds()	<span class="comment">//记录整个过程的延迟时间</span></span><br><span class="line"></span><br><span class="line">	h.valueRecorders[ServerLatency].Record(ctx, elapsedTime, attributes...)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其他实例可以见具体源代码或opentelemetry官方的示例</p>
+<h2 id="4-参考"><a href="#4-参考" class="headerlink" title="4. 参考"></a>4. 参考</h2><p><a href="https://opentelemetry.io/" target="_blank" rel="noopener">https://opentelemetry.io/</a></p>
+<p><a href="https://opentelemetry.lightstep.com/" target="_blank" rel="noopener">https://opentelemetry.lightstep.com/</a></p>
+<p><a href="https://github.com/open-telemetry/opentelemetry-specification" target="_blank" rel="noopener">https://github.com/open-telemetry/opentelemetry-specification</a></p>
+<p><a href="https://thanhnamit.medium.com/applying-observability-with-opentelemetry-part-2-metrics-and-logs-3d4913302ad2" target="_blank" rel="noopener">https://thanhnamit.medium.com/applying-observability-with-opentelemetry-part-2-metrics-and-logs-3d4913302ad2</a></p>
+<p><a href="https://www.cnblogs.com/charlieroro/p/13883578.html" target="_blank" rel="noopener">https://www.cnblogs.com/charlieroro/p/13883578.html</a></p>
+<p><a href="https://lightstep.com/blog/opentelemetry-context-propagation/" target="_blank" rel="noopener">https://lightstep.com/blog/opentelemetry-context-propagation/</a></p>
 
       
 
@@ -240,7 +361,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">go</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">opentelemetry</a>
         		</li>
       		
 		</ul>
@@ -296,7 +417,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/05/16/goConcepts/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/06/14/opentelemetry/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -310,18 +431,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/06/14/opentelemetry/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          opentelemetry
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/04/29/Linux-note2/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Linux硬链接，软链接</div>
+    <a href="/2021/05/16/goConcepts/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">go的一些小概念</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -348,7 +460,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#"><span class="toc-number">1.</span> <span class="toc-text">go的一些小概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-GOROOT目录"><span class="toc-number">1.1.</span> <span class="toc-text">1. GOROOT目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-GOPATH目录"><span class="toc-number">1.2.</span> <span class="toc-text">2. GOPATH目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-goland中的GOPATH"><span class="toc-number">1.3.</span> <span class="toc-text">3. goland中的GOPATH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-go-get和go-mod-download"><span class="toc-number">1.4.</span> <span class="toc-text">4. go get和go mod download</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-go-module的使用"><span class="toc-number">1.5.</span> <span class="toc-text">5. go module的使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-go-lint"><span class="toc-number">1.6.</span> <span class="toc-text">6. go-lint</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-golangci-lint的使用"><span class="toc-number">1.6.1.</span> <span class="toc-text">6.1. golangci-lint的使用</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#OpenTelemetry"><span class="toc-number">1.</span> <span class="toc-text">OpenTelemetry</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-OpenTelemetry是用来做什么的"><span class="toc-number">1.1.</span> <span class="toc-text">1. OpenTelemetry是用来做什么的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-OpenTelemetry的数据源及内容"><span class="toc-number">1.2.</span> <span class="toc-text">2. OpenTelemetry的数据源及内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Traces"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1. Traces</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-trace"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">(1) trace</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-span"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">(2) span</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Trace如何跨域传播"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">(3) Trace如何跨域传播</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-tracing-API"><span class="toc-number">1.2.1.4.</span> <span class="toc-text">(4) tracing API</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Metrics"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2. Metrics</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-metric"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">(1) metric</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-measurement"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">(2) measurement</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-instrument"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">(3) instrument</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-Metrics-API"><span class="toc-number">1.2.2.4.</span> <span class="toc-text">(4) Metrics API</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Logs"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3. Logs</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-例子-Go"><span class="toc-number">1.3.</span> <span class="toc-text">3. 例子(Go)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-参考"><span class="toc-number">1.4.</span> <span class="toc-text">4. 参考</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
