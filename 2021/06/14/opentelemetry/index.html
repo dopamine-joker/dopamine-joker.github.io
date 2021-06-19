@@ -8,25 +8,29 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>opentelemetry | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="OpenTelemetry学习整理，有错指正。">
+  <meta name="description" content="OpenTelemetry学习整理，附个人理解，有错指正。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="opentelemetry">
 <meta property="og:url" content="http://yoursite.com/2021/06/14/opentelemetry/index.html">
 <meta property="og:site_name" content="Dopaminer">
-<meta property="og:description" content="OpenTelemetry学习整理，有错指正。">
+<meta property="og:description" content="OpenTelemetry学习整理，附个人理解，有错指正。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/78620/Desktop/图1.png">
 <meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/ZzrXL1cc5tXDKzv2A7rbc/f0145d239cb7b4184b75beaf9619010e/OTel_Image_A-0.png">
+<meta property="og:image" content="c:/Users/78620/Desktop/图3.png">
+<meta property="og:image" content="c:/Users/78620/Desktop/图4.png">
 <meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/3Nakhby3TS63D2tPQqe0bq/43a0a9e4305f9525224b1d84aaa0f640/spans1.png">
 <meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/4vHvbkEu2yE6km6hrgiZRF/926e12591fe8ff5e91da2b24f3b46b45/spans2.webp">
+<meta property="og:image" content="c:/Users/78620/Desktop/Untitled%20Diagram.pbg%20(2">
 <meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/2rkyGE6FpI78wIu1WezeZN/8b57bdaa93c84e673f96d64343ba8ab8/spans3.webp">
 <meta property="og:image" content="https://images.ctfassets.net/8057oncvx5dp/3i2exIKcsZf82hYrmMly0u/c30c13175c715040b0f2e6c66cad55f5/spans4.png">
 <meta property="og:image" content="https://images.ctfassets.net/d3bkzhxwv8fv/2BERJUldaDWmZNM3K8WqOK/e8d287c47430f7bd7ed457793f02072b/OpenTelemetry_Context_Propagation.png">
 <meta property="article:published_time" content="2021-06-14T03:55:07.000Z">
-<meta property="article:modified_time" content="2021-06-14T04:11:58.445Z">
+<meta property="article:modified_time" content="2021-06-19T07:21:48.478Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="opentelemetry">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://images.ctfassets.net/8057oncvx5dp/ZzrXL1cc5tXDKzv2A7rbc/f0145d239cb7b4184b75beaf9619010e/OTel_Image_A-0.png">
+<meta name="twitter:image" content="c:/Users/78620/Desktop/图1.png">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
   
@@ -170,20 +174,52 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="OpenTelemetry"><a href="#OpenTelemetry" class="headerlink" title="OpenTelemetry"></a>OpenTelemetry</h1><p>学习整理，有错指正。</p>
+        <h1 id="OpenTelemetry"><a href="#OpenTelemetry" class="headerlink" title="OpenTelemetry"></a>OpenTelemetry</h1><p>学习整理，附个人理解，有错指正。</p>
 <a id="more"></a>
-<h2 id="1-OpenTelemetry是用来做什么的"><a href="#1-OpenTelemetry是用来做什么的" class="headerlink" title="1. OpenTelemetry是用来做什么的"></a>1. OpenTelemetry是用来做什么的</h2><p>OpenTelemetry合并了openTracing和OpenCensus，它提供了一组API，标准库用来创建和管理<strong>遥测数据</strong>如traces,metric或者log。OpenTelemetry提供了一个与厂商无关的实现，因此可以按照自己的需求将其发送到不同的后端进行分析。它支持一些现在一些流行的开源项目，包括<a href="https://www.jaegertracing.io/" target="_blank" rel="noopener">Jaeger</a>和<a href="https://prometheus.io/" target="_blank" rel="noopener">Prometheus</a>(这两个是调用链追踪工具，用来后端可视化存储，查询，观测等)。</p>
+<h2 id="1-OpenTelemetry是用来做什么的"><a href="#1-OpenTelemetry是用来做什么的" class="headerlink" title="1. OpenTelemetry是用来做什么的"></a>1. OpenTelemetry是用来做什么的</h2><p>OpenTelemetry合并了openTracing和OpenCensus，它提供了一组API，标准库用来创建和管理<strong>遥测数据</strong>如traces,metric或者log，通过对这些遥测数据的分析，我们可以进一步的去了解软件的性能和行为。OpenTelemetry提供了一个与厂商无关的实现，因此可以按照自己的需求将其发送到不同的后端进行分析。它支持一些现在一些流行的开源项目，包括<a href="https://www.jaegertracing.io/" target="_blank" rel="noopener">Jaeger</a>和<a href="https://prometheus.io/" target="_blank" rel="noopener">Prometheus</a>(这两个是调用链追踪工具，用来后端可视化存储，查询，观测等)。</p>
 <hr>
-<h2 id="2-OpenTelemetry的数据源及内容"><a href="#2-OpenTelemetry的数据源及内容" class="headerlink" title="2. OpenTelemetry的数据源及内容"></a>2. OpenTelemetry的数据源及内容</h2><h3 id="2-1-Traces"><a href="#2-1-Traces" class="headerlink" title="2.1. Traces"></a>2.1. Traces</h3><h4 id="1-trace"><a href="#1-trace" class="headerlink" title="(1) trace"></a>(1) trace</h4><p><img src="https://images.ctfassets.net/8057oncvx5dp/ZzrXL1cc5tXDKzv2A7rbc/f0145d239cb7b4184b75beaf9619010e/OTel_Image_A-0.png" alt="Figure 1"></p>
-<p>上图是一个简单的trace例子（注意，虽然这条调用链跨了两个Service，但它属于一个trace）。<code>trace</code>是链接<code>span</code>的集合，这些span都是表示请求中的工作单元的命名和定时操作。</p>
-<p>有效的trace由有效的子trace组成。</p>
+<h2 id="2-OpenTelemetry的数据源及内容"><a href="#2-OpenTelemetry的数据源及内容" class="headerlink" title="2. OpenTelemetry的数据源及内容"></a>2. OpenTelemetry的数据源及内容</h2><h3 id="2-1-Traces"><a href="#2-1-Traces" class="headerlink" title="2.1. Traces"></a>2.1. Traces</h3><h4 id="1-trace"><a href="#1-trace" class="headerlink" title="(1) trace"></a>(1) trace</h4><p>trace代表什么。首先从一个例子出来，假如小明他今天有如下活动计划:</p>
+<ol>
+<li>从家里出发，走路去书店</li>
+<li>到达书店，开始买书等</li>
+<li>买完书走路去商城</li>
+<li>去商城购物</li>
+<li>搭公交车回家</li>
+</ol>
+<p>那么小明从家出发，去书店买书，去商城买日用品，再到买完东西回家的这整一个过程（一整条流程链，小明今天的活动计划）就可以看过一个trace，即包含了很多个子流程（买书，购物，搭公交车回家等）的流程。</p>
+<p><img src="C:\Users\78620\Desktop\图1.png" alt="图1"></p>
+<center><font size=4><b>图 小明今天的活动</font></center>
+
+<p><img src="https://images.ctfassets.net/8057oncvx5dp/ZzrXL1cc5tXDKzv2A7rbc/f0145d239cb7b4184b75beaf9619010e/OTel_Image_A-0.png" alt="Figure 1"></p>
+<center><font size=4><b>图 trace简单例子</b></font></center>
+
+<p>上图是一个简单的trace例子（注意，虽然这条链路跨了两个Service，但它属于一个trace，可以将ServiceA类比小明在书店买书，将ServiceB类比小明在商城购物），<strong>有效的trace由有效的子trace组成</strong>。</p>
+<p>在上述小明买东西的例子中，我们可以把他一整天的流程看作一个大trace（即这个trace代表小明今天的流程链），然后他在书店中的具体一系列操作（如看书，买书等构成的流程链）整体看成一个小trace，那么这个大的trace就包含了这个小的trace，这样就可以理解什么是<strong>有效的trace由有效的子trace组成</strong>。</p>
+<p>一个<code>trace</code>是链接<code>span</code>的集合，这些span都是表示请求中的工作单元的命名和定时操作。</p>
 <hr>
-<h4 id="2-span"><a href="#2-span" class="headerlink" title="(2) span"></a>(2) span</h4><p><code>span</code>是<code>trace</code>的构建块，是一个命名的定时操作(即用一个name来表示，表示需要耗费一定时间的操作，即为span。如一次命名的http请求或rpc调用等)，它表示分布式系统中的一部分工作流。多个span链接在一起形成一个trace。</p>
+<h4 id="2-span"><a href="#2-span" class="headerlink" title="(2) span"></a>(2) span</h4><p>在trace中提到的span指什么？继续用上述小明这个例子。</p>
+<p>小明去书店买书，比如他在书店中分别挑选了《C++语言程序设计》，《The Go Programming Language》，《程序猿护发秘籍》，然后去结账，那么小明在书店买书就可以是如下流程（忽略各个动作之间的时间间隔)。</p>
+<p><img src="C:\Users\78620\Desktop\图3.png" alt="图3"></p>
+<p>这时候将这个具体操作放入到一开始的图中，如下图</p>
+<p><img src="C:\Users\78620\Desktop\图4.png" alt="图4"></p>
+<p>这时候在书店这个小trace里的每一项具体操作就可以看成是一个span，即一个命名（这里命名为”买《C++语言程序设计》”）的定时操作。</p>
+<p>当然如果图3中的操作可以继续往下划分，其中的每一个操作也可以作为一个trace，这里认为已经不可划分了。</p>
+<p>进入正题…</p>
+<p><strong>span是什么</strong></p>
+<p><code>span</code>是<code>trace</code>的构建块，是一个命名的定时操作(即用一个name来表示，表示需要耗费一定时间的操作，即为span。如一次命名的http请求或rpc调用等)，它表示分布式系统中的一部分工作流，多个span链接在一起形成一个trace。</p>
+<p>实际应用中这个span可以是完整http的请求响应，sql查询，rpc调用等。</p>
 <p><img src="https://images.ctfassets.net/8057oncvx5dp/3Nakhby3TS63D2tPQqe0bq/43a0a9e4305f9525224b1d84aaa0f640/spans1.png" alt="spans1"></p>
-<p>trace通常被认为是span的树(tree)，它用来反映每个span开始和完成的时间，它还显示了span之间的关系。下面是基于上图请求中具体的trace的视图。</p>
+<center><font size=4><b>图5 trace和span的关系1</b></font></center>
+
+<p><strong>如何理解trace和span的关系</strong></p>
+<p>trace通常被认为是span的树(tree)，它用来反映每个span开始和完成的时间。<strong>一个trace包含了一个根span，这个根span囊括了整一个请求从头到尾的延迟</strong>（正如上述中的trace代表了小明一整天的的流程链，小trace代表了小明在书店买书的整个流程链）。我们可以把这个trace视为一个单一的逻辑操作。它还显示了span之间的关系。下面是基于上图请求中具体的trace的视图。</p>
 <p><img src="https://images.ctfassets.net/8057oncvx5dp/4vHvbkEu2yE6km6hrgiZRF/926e12591fe8ff5e91da2b24f3b46b45/spans2.webp" alt="spans2"></p>
+<p>如果在上述小明的例子中，它大概是这个意思(不太准确)。</p>
+<p><img src="C:\Users\78620\Desktop\Untitled Diagram.pbg (2" alt="Untitled Diagram.pbg (2)">.png)</p>
 <p>trace开始于一个代表请求开始的root span，这个root span可以有一个或多个的子span，这些子span又可以有它们自己的子span…(子又生孙，孙又生子，子子孙孙无穷匮也…)</p>
 <p><img src="https://images.ctfassets.net/8057oncvx5dp/2rkyGE6FpI78wIu1WezeZN/8b57bdaa93c84e673f96d64343ba8ab8/spans3.webp" alt="spans3"></p>
+<center><font size=4><b>图 span和子span</b></font></center>
+
 <p>span的目的是向可观测性工具提供有关程序执行的一些信息，因此它应该包含一些工作（执行）的详细信息</p>
 <p>单个span组件应该包含以下信息:</p>
 <ul>
@@ -197,7 +233,10 @@
 <p><img src="https://images.ctfassets.net/8057oncvx5dp/3i2exIKcsZf82hYrmMly0u/c30c13175c715040b0f2e6c66cad55f5/spans4.png" alt="spans4"></p>
 <p>上图中的圆角矩阵长度表示该调用的总时长。</p>
 <hr>
-<h4 id="3-Trace如何跨域传播"><a href="#3-Trace如何跨域传播" class="headerlink" title="(3) Trace如何跨域传播"></a>(3) Trace如何跨域传播</h4><p>3.1. <strong>context</strong></p>
+<h4 id="3-Trace如何跨域传播"><a href="#3-Trace如何跨域传播" class="headerlink" title="(3) Trace如何跨域传播"></a>(3) Trace如何跨域传播</h4><p>假设小明是个健忘的人，事情若不记录下来他过一会就会忘得一干二净。</p>
+<p>因此把他在书店做的所有事都写进了身上的备忘录，随后小明来到商城，在某家店铺购物途时店主小黑中问他 <del>三点几啦饮咗茶没啊</del> 今天做了什么事，此时小明二话不说直接掏出了心爱的备忘录，然后一五一十的将记录的内容读给小黑听。在这个例子中，小明的备忘录作为介质，把他在书店的动作（信息数据）记录起来并全部带到了商城，实现trace的跨域（书店-&gt;商城）传播。此时若小明要接着记录在商城购物的所有事情，这时候就可以接着之前记录的书店信息继续记录，从而形成一条完整的流程链。</p>
+<p>倘若小明不记录在书店做的事情，那么由于他健忘的原因，当他要记录在商城所做事情的时候，就无法接着之前的流程链继续记录。</p>
+<p>3.1. <strong>context</strong></p>
 <p><code>context</code>(上下文)是一种传播机制，它可以跨API边界和有逻辑关联的执行单元之间<strong>传递执行范围内的值</strong>，<code>Cross-cutting concerns</code>(横切关注点)可以使用共享的相同context对象来访问其处理的数据。</p>
 <blockquote>
 <p><strong>横切关注点</strong>指的是一些具有横越多个模块的行为，使用传统的软件开发方法不能够达到有效的模块化的一类特殊关注点。    —《维基百科》</p>
@@ -205,12 +244,16 @@
 <p><code>context</code>必须是不可变的，并且它的写操作必须得返创建一个新的context，这个新context包含原始值和指定更新值。</p>
 <p>3.2. <strong>propagation</strong></p>
 <p><code>propagation</code>是一种能让trace变成分布式trace的机制(跨域)，并促进<code>context</code>在服务和进程之间的流动。</p>
-<p><code>context</code>可以被<strong>注入(inject</strong>)到一个请求中并由接受服务来<strong>提取(extract)</strong>并生成新的<code>span</code>，这个服务可能又会生成新的请求，然后再把<code>context</code>注入到请求中并发送到其他的服务等等。<img src="https://images.ctfassets.net/d3bkzhxwv8fv/2BERJUldaDWmZNM3K8WqOK/e8d287c47430f7bd7ed457793f02072b/OpenTelemetry_Context_Propagation.png" alt="OpenTelemetry Context Propagation"></p>
+<p><code>context</code>可以被<strong>注入(inject</strong>)到一个请求中并由接受服务来<strong>提取(extract)</strong>并生成新的<code>span</code>，这个服务可能又会生成新的请求，然后再把<code>context</code>注入到请求中并发送到其他的服务等等。</p>
+<p>这里的注入操作可以类比小明把在书店所做事记录在备忘录。</p>
+<p>提出操作可以类比小明把备忘录的内容读给小黑听。</p>
+<p><img src="https://images.ctfassets.net/d3bkzhxwv8fv/2BERJUldaDWmZNM3K8WqOK/e8d287c47430f7bd7ed457793f02072b/OpenTelemetry_Context_Propagation.png" alt="OpenTelemetry Context Propagation"></p>
 <p><code>propagation</code>通常通过特定的请求拦截器(request interceptors)和<strong>传播器(propagator)</strong>来实现，其中<code>interceptors</code>用来检测传入和传出的请求，并分别使用<code>propagator</code>的注入和提取操作。</p>
 <p>3.3. <strong>propagator</strong></p>
 <p><code>propagator</code>是用来实现<code>propagation</code>机制的，它被定义于用于在应用程序之间交换<code>message</code>中读写<code>context</code>对象。</p>
 <p>3.4. <strong>carrier</strong></p>
 <p><code>carrier</code>是<code>propagator</code>用来<strong>读值和写值</strong>的<strong>介质</strong>。每个特定的propagator类型都定义了与其预期的carrier类型，比如<code>string map</code> 或 一个 <code>byte array</code></p>
+<p>类比小明的备忘录，充当记录信息或值的介质。</p>
 <p>3.5. <strong>propagators的API</strong></p>
 <p>在知道propagator和carrier的作用后，我们就可以来看看propagator是如何操作的。</p>
 <p>对于<code>propagator</code>，它必须得实现<code>Inject</code>和<code>Extract</code>操作(作用)， 这两个操作是为了能够分别地从<code>carriers</code>中<strong>写入</strong>和<strong>读取</strong>数据(如上文中提到的<code>context</code>，然后下个服务可以从这个context中通过API取出span)。每一个<code>propagator</code>必须定义其特定的<code>carrier</code>类型，并且允许定义其他参数。</p>
@@ -263,7 +306,8 @@
 </li>
 </ul>
 <hr>
-<h3 id="2-2-Metrics"><a href="#2-2-Metrics" class="headerlink" title="2.2. Metrics"></a>2.2. Metrics</h3><h4 id="1-metric"><a href="#1-metric" class="headerlink" title="(1) metric"></a>(1) metric</h4><p><code>metric</code>是有关计算机程序运行时的执行情况的一个被捕获的<code>measurement</code>，这个measurement与这个服务有关。metric的示例可以是“统计完成的请求数”、“统计活动请求数”、“获取队列长度”或“获取缓存未命中数”。</p>
+<h3 id="2-2-Metrics"><a href="#2-2-Metrics" class="headerlink" title="2.2. Metrics"></a>2.2. Metrics</h3><p>下面的概念基本都是用来对trace和span进行进一步的描述修饰。</p>
+<h4 id="1-metric"><a href="#1-metric" class="headerlink" title="(1) metric"></a>(1) metric</h4><p><code>metric</code>是有关计算机程序运行时的执行情况的一个被捕获的<code>measurement</code>，这个measurement与这个服务有关。metric的示例可以是“统计完成的请求数”、“统计活动请求数”、“获取队列长度”或“获取缓存未命中数”。</p>
 <hr>
 <h4 id="2-measurement"><a href="#2-measurement" class="headerlink" title="(2) measurement"></a>(2) measurement</h4><p><code>measurement</code>代表一个通过metric API向SDK报告的数据(data point)。</p>
 <p>一个measurement必须要封装:</p>
@@ -631,23 +675,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -656,6 +684,22 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
             
             <div class="clearfix"></div>
