@@ -142,6 +142,87 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-盐如何抵御彩虹表" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/25/%E7%9B%90%E5%A6%82%E4%BD%95%E6%8A%B5%E5%BE%A1%E5%BD%A9%E8%99%B9%E8%A1%A8/">盐如何抵御彩虹表</a>
+    </h1>
+  
+
+        
+        <a href="/2021/08/25/%E7%9B%90%E5%A6%82%E4%BD%95%E6%8A%B5%E5%BE%A1%E5%BD%A9%E8%99%B9%E8%A1%A8/" class="archive-article-date">
+  	<time datetime="2021-08-25T12:51:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://www.itranslater.com/qa/details/2116746518890808320" target="_blank" rel="noopener">https://www.itranslater.com/qa/details/2116746518890808320</a></p>
+<p>破解单个密码时，公共盐不会使字典攻击变得更难。 正如您所指出的，攻击者可以访问散列密码和盐，因此在运行字典攻击时，她可以在尝试破解密码时简单地使用已知的盐。</p>
+<p>公共盐可以做两件事：破解大量密码会更加耗时，并且使用彩虹表是不可行的。</p>
+<p>要理解第一个，想象一个包含数百个用户名和密码的密码文件。 没有盐，我可以计算“md5（attempt [0]）”，然后扫描文件以查看该哈希是否出现在任何地方。 如果存在盐，那么我必须计算“md5（salt [a] .Try [0]）”，与条目A进行比较，然后“md5（salt [b] .Try [0]）”，与条目B进行比较 等等。现在我有<code>n</code>倍的工作量，其中<code>n</code>是文件中包含的用户名和密码数。</p>
+<p>要理解第二个，你必须了解彩虹表是什么。 彩虹表是常用密码的预先计算的散列的大列表。 想象一下没有盐的密码文件。 我所要做的就是遍历文件的每一行，取出哈希密码，然后在彩虹表中查找。 我永远不必计算单个哈希。 如果查找比哈希函数（它可能是）快得多，这将大大加快破解文件的速度。</p>
+<p>但是如果密码文件是盐渍的，那么彩虹表必须包含预先散列的“盐。密码”。 如果盐足够随机，这是不太可能的。 我可能会在我常用的预先伪装密码（彩虹表）列表中找到“hello”和“foobar”和“qwerty”之类的东西，但我不会有像“jX95psDZhello”这样的东西或者 “LPgB0sdgxfoobar”或“dZVUABJtqwerty”预先计算。 这会使彩虹表格过大。</p>
+<p>因此，盐将攻击者减少到每次尝试一次计算，当与足够长，足够随机的密码相结合时，（通常来说）是不可破解的。</p>
+<p>按理解就是破解加盐后的密码首先是要加大很多工作量的，彩虹表需要存储更多的条目，从而降低破解速度。其次是由于盐是随机足够长的，因此彩虹表预先计算中可能不会包含到这种包含随机盐的密码，从而大大降低被破解的概率。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/08/25/%E7%9B%90%E5%A6%82%E4%BD%95%E6%8A%B5%E5%BE%A1%E5%BD%A9%E8%99%B9%E8%A1%A8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ElasticSearch-数据结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -836,87 +917,6 @@
 
 
   
-    <article id="post-C++traits" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/28/C++traits/">C++traits</a>
-    </h1>
-  
-
-        
-        <a href="/2021/02/28/C++traits/" class="archive-article-date">
-  	<time datetime="2021-02-28T15:13:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="C-traits"><a href="#C-traits" class="headerlink" title="C++traits"></a>C++traits</h1><p>​        在STL中，其中心思想是将<strong>数据容器(containers)</strong>和<strong>算法(algorithms)</strong>分开设计的，在算法中它并不清楚会被传进什么。而<strong>traits</strong>萃取技术则可以获取被传进来的对象的类型，从而让算法的设计有一个统一的实现，即可以不用根据传入类型分开实现，要更好地明白traits技术的作用还是得看例子。</p>
-<p>​        有错指正，不喜勿喷。</p>
-        
-          <a class="article-more-a" href="/2021/02/28/C++traits/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">c/c++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">STL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/02/28/C++traits/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &gt;&gt;</a>
@@ -1039,15 +1039,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1059,7 +1059,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">go</a>
+                <a href="javascript:void(0)" class="js-tag color4">ElasticSearch</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1067,11 +1071,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
+                <a href="javascript:void(0)" class="js-tag color3">go</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ElasticSearch</a>
+                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
               </li>
             
             <div class="clearfix"></div>
