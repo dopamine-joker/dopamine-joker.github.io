@@ -6,26 +6,54 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Linux网络编程API(二) | Dopaminer</title>
+  <title>SpringBoot自动装配源码笔记 | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="相关API笔记(二)Linux网络编程高级I&#x2F;O函数">
+  <meta name="description" content="SpringBoot自动装配笔记个人学习整理">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux网络编程API(二)">
-<meta property="og:url" content="http://yoursite.com/2021/03/10/LinuxSPAPI-%E4%BA%8C/index.html">
+<meta property="og:title" content="SpringBoot自动装配源码笔记">
+<meta property="og:url" content="http://yoursite.com/2022/01/16/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Dopaminer">
-<meta property="og:description" content="相关API笔记(二)Linux网络编程高级I&#x2F;O函数">
+<meta property="og:description" content="SpringBoot自动装配笔记个人学习整理">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/GSDmv2zZbUwd7Ri.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/wSlBD2nUObroafc.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/plb5OaWTiD3orkd.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/96YEnfhbPiORVUy.png">
-<meta property="og:image" content="https://i.loli.net/2021/03/10/pTmkxNyXMjJKzor.png">
-<meta property="article:published_time" content="2021-03-10T12:06:59.000Z">
-<meta property="article:modified_time" content="2021-03-30T12:14:40.159Z">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116095203015.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116100256933.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116100624910.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116100849683.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101145232.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101631562.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101709775.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101746002.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101803512.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103722250.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103544933.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103833818.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103936721.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116104932943.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105002712.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105030569.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105113843.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105151639.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105205597.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116144135943.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116144638117.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116145118190.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116145622911.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116150714406.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151057621.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151130110.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151423200.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151640987.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116152057647.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116153443148.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116153459761.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116160104756.png">
+<meta property="article:published_time" content="2022-01-16T08:08:39.000Z">
+<meta property="article:modified_time" content="2022-01-16T00:08:56.046Z">
 <meta property="article:author" content="Dopaminer">
-<meta property="article:tag" content="服务器">
+<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/03/10/GSDmv2zZbUwd7Ri.png">
+<meta name="twitter:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116095203015.png">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
   
@@ -149,129 +177,207 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-LinuxSPAPI-二" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-SpringBoot自动装配源码笔记" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Linux网络编程API(二)
+      SpringBoot自动装配源码笔记
     </h1>
   
 
         
-        <a href="/2021/03/10/LinuxSPAPI-%E4%BA%8C/" class="archive-article-date">
-  	<time datetime="2021-03-10T12:06:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-10</time>
+        <a href="/2022/01/16/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/" class="archive-article-date">
+  	<time datetime="2022-01-16T08:08:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-16</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="相关API笔记-二"><a href="#相关API笔记-二" class="headerlink" title="相关API笔记(二)"></a>相关API笔记(二)</h1><p>Linux网络编程<strong>高级I/O函数</strong></p>
+        <h1 id="SpringBoot自动装配笔记"><a href="#SpringBoot自动装配笔记" class="headerlink" title="SpringBoot自动装配笔记"></a>SpringBoot自动装配笔记</h1><p>个人学习整理</p>
 <a id="more"></a>
-<h1 id="1-pipe"><a href="#1-pipe" class="headerlink" title="1. pipe"></a>1. pipe</h1><p>pipe函数用于创建一个管道，实现<strong>进程间通信</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">pipe</span><span class="params">(<span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd</strong>: pipe函数创建的两个文件描述符对应管道两端，分别为<strong>“读”端</strong>和<strong>“写端”</strong>(可记忆为读写),即fd[0]为管道的读端，fd[1]为管道的写端。</p>
-<p>默认情况下这对<strong>文件描述符</strong>是阻塞的,<strong>对空的fd[0]执行读操作</strong>或<strong>对满的fd[1]执行写操作</strong>会阻塞。</p>
-<p><strong><font color=red>创建双向管道</font></strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">socketpair</span><span class="params">(<span class="keyword">int</span> domain, <span class="keyword">int</span> type, <span class="keyword">int</span> protocol, <span class="keyword">int</span> fd[<span class="number">2</span>])</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p>前三个参数与<strong>socket系统调用</strong>的三个参数完全相同，但是<strong>domian只能使用UNIX本地域协议族AF_UNIX</strong>，因为<strong>仅能在本地使用这个双向管道</strong></p>
-<p><strong>fd</strong>: 与pipe系统调用的参数一样，不过这里创建的文件描述符都是<strong>即可读又可写的</strong></p>
-<h1 id="2-dup和dup2"><a href="#2-dup和dup2" class="headerlink" title="2. dup和dup2"></a>2. dup和dup2</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="comment">//二者都是失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> file_descriptor)</span></span>;</span><br><span class="line"><span class="comment">//dup2可理解为后者重定向到前者</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> file_descriptor_one, <span class="keyword">int</span> file_descriptor_two)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p>dup和dup2的参数都是<strong>文件描述符</strong>，具体作用如下:</p>
-<p>dup函数<strong>创建一个新的文件描述符</strong>，该新的描述符和原有<strong>文件描述符file_descriptor</strong>指向<strong>相同文件，管道或者网络连接</strong>， 并且dup返回的文件描述符总是<strong>取系统当前可用的最小整数值</strong>。</p>
-<p>dup2函数与dup类似，不过它返回的是<strong>第一个不小于file_descriptor_tow的整数值</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例子。重定向STDOUT</span></span><br><span class="line"><span class="comment">//使用dup</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dup_out</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    <span class="built_in">close</span>(STDOUT);</span><br><span class="line">    dup(fd);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"dup"</span>);</span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用dup2</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dup2_out</span><span class="params">()</span></span>&#123;</span><br><span class="line">    dup2(fd, STDOUT);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"dup2"</span>);</span><br><span class="line">    <span class="built_in">close</span>(fd);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="3-readv和writev"><a href="#3-readv和writev" class="headerlink" title="3. readv和writev"></a>3. readv和writev</h1><p>readv函数<strong>将数据从文件描述符读到分散的内存块中</strong>，即分散读</p>
-<p>writev函数则<strong>将多块分散的内存数据一并写入文件描述符中</strong>，即集中写</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/uio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">readv</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec* <span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">writev</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">const</span> struct iovec* <span class="built_in">vector</span>, <span class="keyword">int</span> count)</span></span>;</span><br><span class="line"><span class="comment">//iovec封装了一块内存的起始位置和长度</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span>&#123;</span></span><br><span class="line">    <span class="keyword">void</span>*		iov_base;				<span class="comment">//内存起始地址</span></span><br><span class="line">    <span class="keyword">size_t</span> 		iov_len;				<span class="comment">//这块内存的长度</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd</strong>: 被操作的目标文件描述符</p>
-<p><strong>vector</strong>: iovec结构数组</p>
-<p><strong>count</strong>: vector数组的长度</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//eg</span></span><br><span class="line"><span class="keyword">char</span> buf1[<span class="number">1024</span>], buf2[<span class="number">1024</span>];</span><br><span class="line"><span class="comment">//...往buf1填充数据</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iovec</span> <span class="title">iv</span>[2];</span></span><br><span class="line">iv[<span class="number">0</span>].iov_base = buf1;</span><br><span class="line">iv[<span class="number">0</span>].iov_len = <span class="keyword">sizeof</span>(buf1);</span><br><span class="line">iv[<span class="number">1</span>].iov_base = buf2;</span><br><span class="line">iv[<span class="number">1</span>].iov_len = <span class="keyword">sizeof</span>(buf2);</span><br><span class="line"><span class="comment">//writev,集中写，把buf1,buf2中的数据写到connfd</span></span><br><span class="line">ret = writev(connfd, iv, <span class="number">2</span>);</span><br><span class="line"><span class="comment">//readv,分散读，把键盘的输入读出并放入到buf1,buf2中</span></span><br><span class="line">ret = readv(STDIN_FILENO, iv, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
-<h1 id="3-sendfile"><a href="#3-sendfile" class="headerlink" title="3. sendfile"></a>3. sendfile</h1><p>sendfile函数在<strong>两个文件描述符之间直接传递数据(完全在内核中操作)</strong>，避免在内核缓冲区和用户缓冲区之间的数据拷贝，效率很高，称为<strong>零拷贝</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/sendfile.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回传输的字节数，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">sendfile</span><span class="params">(<span class="keyword">int</span> out_fd, <span class="keyword">int</span> in_fd, <span class="keyword">off_t</span>* offset, <span class="keyword">size_t</span> count)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>out_fd</strong>: <strong>待写入内容</strong>的文件描述符，可理解为数据进入到out_fd输出，流到in_fd，我们需要把数据写给它让它又得输出。</p>
-<p><strong>in_fd</strong>: <strong>待读出内容</strong>的文件描述符，可理解为文件流入到in_fd中，我们需要从它这里读出数据。</p>
-<p><strong>offset</strong>: 指定从读入文件流的<strong>哪个位置</strong>开始读，如果为空，则使用读入文件流默认的起始位置。</p>
-<p><strong>count</strong>: 指定在文件描述符in_fd和out_fd之间传输的字节数</p>
-<h1 id="4-mmap和munmap"><a href="#4-mmap和munmap" class="headerlink" title="4. mmap和munmap"></a>4. mmap和munmap</h1><p>mmap用于<strong>申请一段内存空间</strong>，这段内存可以作为进程间通信的共享内存，可以将文件直接映射到其中。</p>
-<p>munmap函数则<strong>释放mmap创建的这段内存空间</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回指向目标区域的指针，失败返回MAP_FAILED((void*)-1)</span></span><br><span class="line"><span class="function"><span class="keyword">void</span>* <span class="title">mmap</span><span class="params">(<span class="keyword">void</span> *start, <span class="keyword">size_t</span> length, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags, <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset)</span></span>;</span><br><span class="line"><span class="comment">//成功返回0，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">munmap</span><span class="params">(<span class="keyword">void</span> *start, <span class="keyword">size_t</span> length)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>start</strong>: 用户<strong>指定某个特定的地址</strong>作为这段内存的起始地址，如果设置为NULL，则系统自动分配一个地址。</p>
-<p><strong>length</strong>: 指定<strong>内存段的长度</strong></p>
-<p><strong>prot</strong>: 设置<strong>内存段的访问权限</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>值</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>PROT_READ</td>
-<td>内存段可读</td>
-</tr>
-<tr>
-<td>PROT_WRITE</td>
-<td>内存段可写</td>
-</tr>
-<tr>
-<td>PROT_EXEC</td>
-<td>内存段可执行</td>
-</tr>
-<tr>
-<td>PROT_NONE</td>
-<td>内存段不能访问</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>flags</strong>:可控制<strong>内存段内容被修改后程序的行为</strong></p>
-<p><img src="https://i.loli.net/2021/03/10/GSDmv2zZbUwd7Ri.png" alt="mmap.png"></p>
-<h1 id="5-splice"><a href="#5-splice" class="headerlink" title="5. splice"></a>5. splice</h1><p>splice函数用于<strong>在两个文件描述符之间移动数据</strong>，也是<strong>零拷贝操作</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回移动字节的数量，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">splice</span><span class="params">(<span class="keyword">int</span> fd_in, <span class="keyword">loof_t</span>* off_in, <span class="keyword">int</span> fd_out, <span class="keyword">loff_t</span>* off_out, <span class="keyword">size_t</span> len, <span class="keyword">unsigned</span> <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd_in</strong>: 待输入数据的文件描述符</p>
-<p><strong>off_in</strong>: 如果fd_in是<strong>管道文件描述符</strong>，则必须设置为NULL，若不是(如socket),则off_in表示从输入数据流的何处开始读取数据。</p>
-<p><strong>fd_out</strong>: 待输出数据的文件描述符</p>
-<p><strong>off_out</strong>: 同off_in</p>
-<p><strong>len</strong>: 指定<strong>移动数据的长度</strong></p>
-<p><strong>flags</strong>: 可被设置为如下某些值的<strong>按位或</strong></p>
-<p><img src="https://i.loli.net/2021/03/10/wSlBD2nUObroafc.png" alt="ff22.png"></p>
-<p><strong><font color = red>使用splice时，fd_in和fd_out至少有一个是管道文件描述符</font></strong></p>
-<p>其常见errno:</p>
-<p><img src="https://i.loli.net/2021/03/10/plb5OaWTiD3orkd.png" alt="errno.png"></p>
-<h1 id="6-tee"><a href="#6-tee" class="headerlink" title="6. tee"></a>6. tee</h1><p>tee函数用于在<strong>两个管道文件描述符</strong>之间<strong>复制数据</strong>，也是<strong>零拷贝操作</strong>。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回复制的数据量，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">ssize_t</span> <span class="title">tee</span><span class="params">(<span class="keyword">int</span> fd_in, <span class="keyword">int</span> fd_out, <span class="keyword">size_t</span> len, <span class="keyword">unsigned</span> <span class="keyword">int</span> flags)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p>与splice相同，但是<strong>fd_in</strong>和<strong>fd_out</strong>必须<strong>都是管道文件描述符</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//eg</span></span><br><span class="line"><span class="comment">//把管道pipe1的输出端数据复制到管道pipe2的输入端</span></span><br><span class="line"><span class="keyword">int</span> ret = tee(pipe1[<span class="number">0</span>], pipe2[<span class="number">1</span>], <span class="number">32768</span>, SPLICE_F_NONBLOCK);</span><br></pre></td></tr></table></figure>
-<h1 id="7-fcntl"><a href="#7-fcntl" class="headerlink" title="7. fcntl"></a>7. fcntl</h1><p>fctnl(file control), 提供<strong>对文件描述符的各种控制操作</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fctnl.h&gt;</span></span></span><br><span class="line"><span class="comment">//成功返回值见后面表格，失败返回-1并设置errno</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fcntl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> cmd, ...)</span></span>;</span><br></pre></td></tr></table></figure>
-<p><strong>参数</strong>:</p>
-<p><strong>fd</strong>: 被操作的文件描述符</p>
-<p><strong>cmd</strong>: 操作类型，根据操作类型可能还需要第三个可选参数arg</p>
-<p><img src="https://i.loli.net/2021/03/10/96YEnfhbPiORVUy.png" alt="fctnl1.png"></p>
-<p><img src="https://i.loli.net/2021/03/10/pTmkxNyXMjJKzor.png" alt="fctnl2.png"></p>
-<p>对于<strong>F_SETFL</strong>,可更改的几个标志如下面的描述：</p>
+<p>参考的原内容来自b站雷神SpringBoot视频和相关笔记</p>
+<p><a href="https://www.bilibili.com/video/BV19K4y1L7MT" target="_blank" rel="noopener">https://www.bilibili.com/video/BV19K4y1L7MT</a></p>
+<p><a href="https://www.yuque.com/atguigu/springboot/qb7hy2#Lv0Fg" target="_blank" rel="noopener">https://www.yuque.com/atguigu/springboot/qb7hy2#Lv0Fg</a></p>
+<h1 id="1-前置知识"><a href="#1-前置知识" class="headerlink" title="1. 前置知识"></a>1. 前置知识</h1><h2 id="1-1-条件装配-Conditional"><a href="#1-1-条件装配-Conditional" class="headerlink" title="1.1. 条件装配@Conditional"></a>1.1. 条件装配@Conditional</h2><p>正如其名称一样，当组件满足了@Conditional给定的条件时才会进行装配到容器。</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116095203015.png" alt="image-20220116095203015"></p>
+<h3 id="1-1-1-ConditionalOnBean"><a href="#1-1-1-ConditionalOnBean" class="headerlink" title="1.1.1 @ConditionalOnBean"></a>1.1.1 @ConditionalOnBean</h3><p><strong><code>@ConditionalOnBean</code>注解的作用是当注解参数对应的bean不存在时，则其标注的Bean也不会被注册。</strong></p>
+<p>具体示例: </p>
+<p>首先创建一个SpringBoot项目，加入<code>Spring Web</code>依赖，然后创建对应的类，具体目录如下(红色框为修改或添加部分):</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116100256933.png" alt="image-20220116100256933"></p>
 <ul>
-<li><strong>O_NONBLOCK</strong>  非阻塞I/O，如果read(2)调用没有可读取的数据，或者如果write(2)操作将阻塞，则read或write调用将返回-1和EAGAIN错误</li>
-<li><strong>O_APPEND</strong>   强制每次写(write)操作都添加在文件大的末尾，相当于open(2)的O_APPEND标志</li>
-<li><strong>O_DIRECT</strong>   最小化或去掉reading和writing的缓存影响。系统将企图避免缓存你的读或写的数据。如果不能够避免缓存，那么它将最小化已经被缓存了的数据造成的影响。如果这个标志用的不够好，将大大的降低性能</li>
-<li><strong>O_ASYNC</strong>   当I/O可用的时候，允许SIGIO信号发送到进程组，例如：当有数据可以读的时候</li>
+<li>com.doper.pojo.User.java</li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//eg</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">setnonblocking</span><span class="params">(<span class="keyword">int</span> fd)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> old_option = fctnl(fd, F_GETFL);	<span class="comment">/* 获取文件描述符旧的状态标志 */</span></span><br><span class="line">    <span class="keyword">int</span> new_option = old_option | O_NONBLOCK;	<span class="comment">/* 设置非阻塞标志 */</span></span><br><span class="line">    fcntl(fd, F_SETFL, new_option);</span><br><span class="line">    <span class="keyword">return</span> old_option;	<span class="comment">/* 返回文件描述符旧的状态标志，以便日后恢复该状态标志 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.doper.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"User&#123;"</span> +</span><br><span class="line">                <span class="string">"name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>com.doper.pojo.Book.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.doper.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Book</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Book&#123;"</span> +</span><br><span class="line">                <span class="string">"name="</span> + name +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>com.doper.config.Config.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.doper.config;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.doper.pojo.Book;</span><br><span class="line"><span class="keyword">import</span> com.doper.pojo.User;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Config</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"user"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> User <span class="title">user</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> User(<span class="string">"法外狂徒张三"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"book"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Book <span class="title">book</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Book(<span class="string">"法外狂徒的自我修养"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>com.doper.ConditionTestApplication</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.doper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.ConfigurableApplicationContext;</span><br><span class="line"></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConditionalTestApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ConfigurableApplicationContext run = SpringApplication.run(ConditionalTestApplication<span class="class">.<span class="keyword">class</span>, <span class="title">args</span>)</span>;</span><br><span class="line">        <span class="keyword">boolean</span> haveUser = run.containsBean(<span class="string">"user"</span>);	<span class="comment">//容器内是否注册了user Bean</span></span><br><span class="line">        <span class="keyword">boolean</span> haveBook = run.containsBean(<span class="string">"book"</span>);	<span class="comment">//容器内是否注册了book Bean</span></span><br><span class="line">        System.out.println(<span class="string">"容器是否有user bean? : "</span> + haveUser);</span><br><span class="line">        System.out.println(<span class="string">"容器是否有book bean? : "</span> + haveBook);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行项目，控制台输出结果:</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116100624910.png" alt="image-20220116100624910"></p>
+<p>可以看到容器内确实注册了user和book</p>
+<p>下一步修改Config文件</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116100849683.png" alt="image-20220116100849683"></p>
+<p>如图所示，注释user()方法的@Bean注解，此时它只是Config类下的一个普通方法，并且在book()方法上面增加<code>@ConditionalOnBean(name = &quot;user&quot;)</code>。此时再运行一下项目</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101145232.png" alt="image-20220116101145232"></p>
+<p>此时发现user bean不存在(因为@Bean注解已经被注释掉了)，并且book bean也不存在(@ConditionalOnBean注解的作用)</p>
+<blockquote>
+<p><strong><font color=red>扩展: 使用@ConditionalOnBean时要注意bean的声明顺序</font></strong></p>
+</blockquote>
+<p>我们继续改变Config,如下:</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101631562.png" alt="image-20220116101631562"></p>
+<p>我们恢复user()上的@Bean注解，此时运行项目，结果如下:</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101709775.png" alt="image-20220116101709775"></p>
+<p>两个bean都可以顺利被注册。</p>
+<p>但这是如果<strong>调换一下两个bean的声明顺序</strong>，如下</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101746002.png" alt="image-20220116101746002"></p>
+<p>此时得到如下结果:</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116101803512.png" alt="image-20220116101803512"></p>
+<p>可以看到book bean不能被创建，因为它是从上往下顺序注册到容器的的，在注册book时user bean还没被注册，<code>@ConditionalOnBean</code>条件不成立，因为book bean不会被注册。</p>
+<h3 id="1-1-2-ConditionalOnMissingBean"><a href="#1-1-2-ConditionalOnMissingBean" class="headerlink" title="1.1.2  @ConditionalOnMissingBean"></a>1.1.2  @ConditionalOnMissingBean</h3><p>作用和<code>@ConditionalOnBean</code>相反</p>
+<h2 id="1-2-配置绑定"><a href="#1-2-配置绑定" class="headerlink" title="1.2. 配置绑定"></a>1.2. 配置绑定</h2><h3 id="1-2-1-方式一：-ConfigurationProperties"><a href="#1-2-1-方式一：-ConfigurationProperties" class="headerlink" title="1.2.1. 方式一： @ConfigurationProperties"></a>1.2.1. 方式一： @ConfigurationProperties</h3><p>首先在1.1中的项目增加如下类和代码(红色部分为增加或者修改)</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103722250.png" alt="image-20220116103722250"></p>
+<ul>
+<li>com.doper.config.Config.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 增加如下bean，这里直接在Student类上增加@Compoent注解也可以</span></span><br><span class="line"><span class="meta">@Bean</span>(<span class="string">"student"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> Student <span class="title">student</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Student();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>com.doper.pojo.Student.java</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.doper.pojo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.context.properties.ConfigurationProperties;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用该注解开启配置绑定，配置的属性前缀为student</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"student"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Student</span><span class="params">(<span class="keyword">int</span> id, String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Student&#123;"</span> +</span><br><span class="line">                <span class="string">"id="</span> + id +</span><br><span class="line">                <span class="string">", name='"</span> + name + <span class="string">'\''</span> +</span><br><span class="line">                <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>com.doper.ConditionTestApplication</li>
+</ul>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103544933.png" alt="image-20220116103544933"></p>
+<ul>
+<li>application.properties</li>
+</ul>
+<blockquote>
+<p>使用yaml格式的配置也行</p>
+</blockquote>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">student.id</span>=<span class="string">1</span></span><br><span class="line"><span class="meta">student.name</span>=<span class="string">张三</span></span><br></pre></td></tr></table></figure>
+<p>运行项目，结果如下:</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103833818.png" alt="image-20220116103833818"></p>
+<p>配置文件中的属性已经被自动配置到容器的bean里面了。</p>
+<p>如果中文乱码了，原因是编码格式不支持，在idea可以通过打开如下配置解决</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116103936721.png" alt="image-20220116103936721"></p>
+<h3 id="1-2-2-方式二-EnableConfigurationProperties"><a href="#1-2-2-方式二-EnableConfigurationProperties" class="headerlink" title="1.2.2 方式二: @EnableConfigurationProperties"></a>1.2.2 方式二: @EnableConfigurationProperties</h3><p><strong>这种情况适用于<code>@Autowired</code>自动注入的情况，但本身容器内并不会注册这个bean。</strong></p>
+<ul>
+<li>把Config类中的这部分代码注释</li>
+</ul>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116104932943.png" alt="image-20220116104932943"></p>
+<ul>
+<li>在Config顶部增加注解<code>@EnableConfigurationProperties(Student.class)</code></li>
+</ul>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105002712.png" alt="image-20220116105002712"></p>
+<ul>
+<li>创建控制器验证<code>Autowired</code></li>
+</ul>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105030569.png" alt="image-20220116105030569"></p>
+<ul>
+<li>修改启动方法，验证是否注册了bean</li>
+</ul>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105113843.png" alt="image-20220116105113843"></p>
+<p>启动项目，得到如下结果</p>
+<p>浏览器:</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105151639.png" alt="image-20220116105151639"></p>
+<p>控制台:</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116105205597.png" alt="image-20220116105205597"></p>
+<p>结果可见控制器的<code>@Autowired</code>已经生效完成自动注入，但容器内并不存在这个bean.</p>
+<h1 id="2-自动装配原理"><a href="#2-自动装配原理" class="headerlink" title="2. 自动装配原理"></a>2. 自动装配原理</h1><p>在在了解前置知识中几个注解的作用后就可以来看SpringBoot自动装配的原理了，这里由于知识有限，只能结合视频及笔记列个大概。</p>
+<h2 id="2-1-SpringBootApplication"><a href="#2-1-SpringBootApplication" class="headerlink" title="2.1. @SpringBootApplication"></a>2.1. @SpringBootApplication</h2><p>点开启动类的<code>@SpringBootApplication</code>注解，可以发现它由如下注解组成</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.TYPE)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@SpringBootConfiguration</span></span><br><span class="line"><span class="meta">@EnableAutoConfiguration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(excludeFilters = &#123; <span class="meta">@Filter</span>(type = FilterType.CUSTOM, classes = TypeExcludeFilter<span class="class">.<span class="keyword">class</span>),</span></span><br><span class="line"><span class="class">		@<span class="title">Filter</span>(<span class="title">type</span> </span>= FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter<span class="class">.<span class="keyword">class</span>) &#125;)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">SpringBootApplication</span> </span>&#123;</span><br><span class="line">	<span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里前面4个为元注解</p>
+<ul>
+<li><code>@Target</code>:描述注解的范围，即注解在哪里可以使用。 </li>
+<li><code>@Retention</code>： 描述注解的生命周期，即其保留的时间长短。这里为RUNTIME即运行时有效</li>
+<li><code>@Documented</code>: 生成doc文档时保留其他注解，用于辅助说明</li>
+<li><code>@Inherited</code>: 注释类型会被子类自动继承。</li>
+</ul>
+<p>然而自动装配的重点为如下三个注解</p>
+<ul>
+<li><strong><code>@SpringBootConfiguration</code></strong></li>
+<li><strong><code>@EnableAutoConfiguration</code></strong></li>
+<li><strong><code>@ComponentScan</code></strong></li>
+</ul>
+<h2 id="2-2-SpringBootConfiguration"><a href="#2-2-SpringBootConfiguration" class="headerlink" title="2.2. @SpringBootConfiguration"></a>2.2. @SpringBootConfiguration</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.TYPE)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Indexed</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> SpringBootConfiguration &#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>@Configuration</strong></p>
+<p>  代表这是一个配置类，说明启动类是一个核心的配置类。</p>
+</li>
+<li><p><strong>@Indexed</strong></p>
+<p>  为Spring的<strong>模式注解</strong>添加索引，提升应用启动性能。具体见<a href="https://www.cnblogs.com/aflyun/p/11992101.html" target="_blank" rel="noopener">这里</a></p>
+</li>
+</ul>
+<h2 id="2-3-ComponentScan"><a href="#2-3-ComponentScan" class="headerlink" title="2.3. @ComponentScan"></a>2.3. @ComponentScan</h2><p>包扫描注解</p>
+<h2 id="2-4-EnableAutoConfiguration"><a href="#2-4-EnableAutoConfiguration" class="headerlink" title="2.4. @EnableAutoConfiguration"></a>2.4. @EnableAutoConfiguration</h2><p>自动装配的关键</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.TYPE)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@AutoConfigurationPackage</span></span><br><span class="line"><span class="meta">@Import</span>(AutoConfigurationImportSelector<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">EnableAutoConfiguration</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除去上面4个元注解，现在逐层看<code>@AutoConfigurationPackage</code>和<code>@Import(AutoConfigurationImportSelector.class)</code></p>
+<h3 id="2-4-1-AutoConfigurationPackage"><a href="#2-4-1-AutoConfigurationPackage" class="headerlink" title="2.4.1 @AutoConfigurationPackage"></a>2.4.1 @AutoConfigurationPackage</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.TYPE)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Inherited</span></span><br><span class="line"><span class="meta">@Import</span>(AutoConfigurationPackages.Registrar<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> @<span class="title">interface</span> <span class="title">AutoConfigurationPackage</span> </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里重点在<code>@Import(AutoConfigurationPackages.Registrar.class)</code></p>
+<p><code>@Import</code>的作用是为容器导入组件，这里导入了<code>AutoConfigurationPackages.Registrar</code>类，打开<code>AutoConfigurationPackages.Registrar</code>查看</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* &#123;<span class="doctag">@link</span> ImportBeanDefinitionRegistrar&#125; to store the base package from the importing</span></span><br><span class="line"><span class="comment">* configuration.</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Registrar</span> <span class="keyword">implements</span> <span class="title">ImportBeanDefinitionRegistrar</span>, <span class="title">DeterminableImports</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将某个包的所有组件进行注册</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">registerBeanDefinitions</span><span class="params">(AnnotationMetadata metadata, BeanDefinitionRegistry registry)</span> </span>&#123;</span><br><span class="line">        register(registry, <span class="keyword">new</span> PackageImports(metadata).getPackageNames().toArray(<span class="keyword">new</span> String[<span class="number">0</span>]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Set&lt;Object&gt; <span class="title">determineImports</span><span class="params">(AnnotationMetadata metadata)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Collections.singleton(<span class="keyword">new</span> PackageImports(metadata));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在register打断点，调试，查看相关信息</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116144135943.png" alt="image-20220116144135943"></p>
+<p>这里可以看到<code>new PackageImports(metadata).getPackageNames()</code>的值为<code>com.doper</code>，即我们主启动类所在的包。所以这里就将我们包下的组件导入。继续进入。</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116144638117.png" alt="image-20220116144638117"></p>
+<p>这里可以看到我们的<code>com.doper</code>包也被注册进入。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * Register a new bean definition with this registry.</span></span><br><span class="line"><span class="comment">	 * Must support RootBeanDefinition and ChildBeanDefinition.</span></span><br><span class="line"><span class="comment">	 ...</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">registerBeanDefinition</span><span class="params">(String beanName, BeanDefinition beanDefinition)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> BeanDefinitionStoreException</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-2-Import-AutoConfigurationImportSelector-class"><a href="#2-4-2-Import-AutoConfigurationImportSelector-class" class="headerlink" title="2.4.2. @Import(AutoConfigurationImportSelector.class)"></a>2.4.2. @Import(AutoConfigurationImportSelector.class)</h3><p>点进<code>AutoConfigurationImportSelector</code>类，看到如下方法</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116145118190.png" alt="image-20220116145118190"></p>
+<p>这里规定了要导入哪些包，并把<strong>包名String</strong>保存到Stirng数组然后返回，而这些包名String都由<code>getAutoConfigurationEntry</code>方法获得。点进该方法查看</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116145622911.png" alt="image-20220116145622911"></p>
+<p>这里关注红色框这一行，它通过<code>getCandidateConfigurations</code>方法获得所要导入的包名，继续查看</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116150714406.png" alt="image-20220116150714406"></p>
+<p>如注释所写，这个方法就是通过<code>SpringFactoriesLoader</code>类来返回<strong>需要自动装配的类名</strong>，继续查看<code>SpringFactoriesLoader</code>的<code>loadFactoryNames</code>方法</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151057621.png" alt="image-20220116151057621"></p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151130110.png" alt="image-20220116151130110"></p>
+<p>直接看<code>loadSpringFactories</code>方法，里面在<code>getResources</code>方法通过加载所有路径为<code>META-INT/spring.factories</code>中的资源来得到要加载的类名。如</p>
+<p><code>spring-boot-autoconfigure-2.6.2.jar</code>包下的<code>META-INT/spring.factories</code>文件，里面列出了需要自动装配的类的类名。</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151423200.png" alt="image-20220116151423200"></p>
+<p><strong>接下来打点验证是否加载了这个配置文件下的类</strong></p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116151640987.png" alt="image-20220116151640987"></p>
+<p>可以看到控制台中要自动装配的类名数组确实和配置文件中的配置项是对应的。并且后缀都是<strong><code>XXXAutoConfigutation</code></strong></p>
+<p>但要注意的是，<strong>这里面列出的配置项虽然已经全被加载进来，但是不会全部配置，实际上它是<font color=red>按需配置</font>的</strong>，这里就涉及到<code>前置知识</code>中的条件装配。</p>
+<p>这里打开<code>CacheAutoConfiguration</code>类查看</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116152057647.png" alt="image-20220116152057647"></p>
+<p>可以看到这里使用了<code>@ConditionalOnClass</code>，<code>@ConditionalOnBean</code>，<code>@ConditionalOnMissingBean</code>等<strong>条件装配注解</strong>。这里报红是因为我们没有导入相关的类，因此在实际自动装配阶段该bean就不会被自动装配。</p>
+<h3 id="2-4-3-修改默认配置"><a href="#2-4-3-修改默认配置" class="headerlink" title="2.4.3 修改默认配置"></a>2.4.3 修改默认配置</h3><p>在底层中虽然它是自动装配，但是我们也可以刚过修改配置文件<code>application.properties</code>配置项来进行调整，这里以<code>DispatcherServletAutoConfiguration</code>为例</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116153443148.png" alt="image-20220116153443148"></p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116153459761.png" alt="image-20220116153459761"></p>
+<p>通过上述1.1.2节的例子，可以看到这里DispatcherServlet的属性都是由配置类来决定的。若在配置文件中有配置项，则会在载入时去加载这些属性到<code>XXXXProperties</code>中，然后再取出其相关属性然后设置。</p>
+<h3 id="2-4-4-总结"><a href="#2-4-4-总结" class="headerlink" title="2.4.4 总结"></a>2.4.4 总结</h3><p><code>@EnableAutoConfiguration</code>注解的作用由以下两个注解决定</p>
+<ul>
+<li><code>@AutoConfigurationPackage</code>: 自动扫描我们启动类所在的包(例子中为<code>com.doper</code>)</li>
+<li><code>@Import(AutoConfigurationImportSelector.class)</code>: 加载所有路径为<code>META-INT/spring.factories</code>的资源，加载所有需要自动装配的类名。但是在条件装配注解的作用下，并不会去配置所有的组件中。并且我们还可以通过<code>application.properties</code>配置文件来配置我们的组件属性。</li>
+</ul>
+<h1 id="3-注解关系图"><a href="#3-注解关系图" class="headerlink" title="3. 注解关系图"></a>3. 注解关系图</h1><p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220116160104756.png" alt="image-20220116160104756"></p>
+<h1 id="4-自动装配总结"><a href="#4-自动装配总结" class="headerlink" title="4. 自动装配总结"></a>4. 自动装配总结</h1><p>(以下总结来自链接笔记)</p>
+<ul>
+<li>SpringBoot先加载所有的自动配置类  xxxxxAutoConfiguration</li>
+<li>每个自动配置类按照条件进行生效，默认都会绑定配置文件指定的值。xxxxProperties里面拿。xxxProperties和配置文件进行了绑定</li>
+<li>生效的配置类就会给容器中装配很多组件</li>
+<li>只要容器中有这些组件，相当于这些功能就有了</li>
+<li><p>定制化配置</p>
+<ul>
+<li>用户直接自己@Bean替换底层的组件</li>
+<li>用户去看这个组件是获取的配置文件什么值就去修改。</li>
+</ul>
+</li>
+<li><p><strong>xxxxxAutoConfiguration —-&gt; 组件  —-&gt;</strong> <strong>xxxxProperties里面拿值  ——&gt; application.properties</strong></p>
+</li>
+</ul>
 
       
 
@@ -306,7 +412,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">服务器</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
@@ -362,7 +472,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/03/10/LinuxSPAPI-%E4%BA%8C/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2022/01/16/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -376,18 +486,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/03/18/bitOperation/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          位运算相关
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/03/06/LinuxSPAPI-%E4%B8%80/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Linux网络编程API(一)</div>
+    <a href="/2022/01/08/2021%E7%A7%8B%E6%8B%9B%E5%9B%9E%E9%A1%BE/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">2021秋招回顾及总结</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -414,7 +515,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#相关API笔记-二"><span class="toc-number">1.</span> <span class="toc-text">相关API笔记(二)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-pipe"><span class="toc-number">2.</span> <span class="toc-text">1. pipe</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-dup和dup2"><span class="toc-number">3.</span> <span class="toc-text">2. dup和dup2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-readv和writev"><span class="toc-number">4.</span> <span class="toc-text">3. readv和writev</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-sendfile"><span class="toc-number">5.</span> <span class="toc-text">3. sendfile</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-mmap和munmap"><span class="toc-number">6.</span> <span class="toc-text">4. mmap和munmap</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-splice"><span class="toc-number">7.</span> <span class="toc-text">5. splice</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-tee"><span class="toc-number">8.</span> <span class="toc-text">6. tee</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-fcntl"><span class="toc-number">9.</span> <span class="toc-text">7. fcntl</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SpringBoot自动装配笔记"><span class="toc-number">1.</span> <span class="toc-text">SpringBoot自动装配笔记</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-前置知识"><span class="toc-number">2.</span> <span class="toc-text">1. 前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-条件装配-Conditional"><span class="toc-number">2.1.</span> <span class="toc-text">1.1. 条件装配@Conditional</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-1-ConditionalOnBean"><span class="toc-number">2.1.1.</span> <span class="toc-text">1.1.1 @ConditionalOnBean</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-2-ConditionalOnMissingBean"><span class="toc-number">2.1.2.</span> <span class="toc-text">1.1.2  @ConditionalOnMissingBean</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-配置绑定"><span class="toc-number">2.2.</span> <span class="toc-text">1.2. 配置绑定</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-1-方式一：-ConfigurationProperties"><span class="toc-number">2.2.1.</span> <span class="toc-text">1.2.1. 方式一： @ConfigurationProperties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-2-方式二-EnableConfigurationProperties"><span class="toc-number">2.2.2.</span> <span class="toc-text">1.2.2 方式二: @EnableConfigurationProperties</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-自动装配原理"><span class="toc-number">3.</span> <span class="toc-text">2. 自动装配原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-SpringBootApplication"><span class="toc-number">3.1.</span> <span class="toc-text">2.1. @SpringBootApplication</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-SpringBootConfiguration"><span class="toc-number">3.2.</span> <span class="toc-text">2.2. @SpringBootConfiguration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-ComponentScan"><span class="toc-number">3.3.</span> <span class="toc-text">2.3. @ComponentScan</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-4-EnableAutoConfiguration"><span class="toc-number">3.4.</span> <span class="toc-text">2.4. @EnableAutoConfiguration</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-1-AutoConfigurationPackage"><span class="toc-number">3.4.1.</span> <span class="toc-text">2.4.1 @AutoConfigurationPackage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-2-Import-AutoConfigurationImportSelector-class"><span class="toc-number">3.4.2.</span> <span class="toc-text">2.4.2. @Import(AutoConfigurationImportSelector.class)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-3-修改默认配置"><span class="toc-number">3.4.3.</span> <span class="toc-text">2.4.3 修改默认配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-4-总结"><span class="toc-number">3.4.4.</span> <span class="toc-text">2.4.4 总结</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-注解关系图"><span class="toc-number">4.</span> <span class="toc-text">3. 注解关系图</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-自动装配总结"><span class="toc-number">5.</span> <span class="toc-text">4. 自动装配总结</span></a></li></ol>
                     </div>
                 </span>
             </div>
