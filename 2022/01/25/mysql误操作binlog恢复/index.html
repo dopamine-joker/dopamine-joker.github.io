@@ -6,17 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives: 2022/1 | Dopaminer</title>
+  <title>mysql误操作binlog恢复 | Dopaminer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="文艺风程序猿的blog">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Dopaminer">
-<meta property="og:url" content="http://yoursite.com/archives/2022/01/index.html">
+  <meta name="description" content="mysql误操作binlog恢复步骤记录具体步骤，方便日后回忆">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql误操作binlog恢复">
+<meta property="og:url" content="http://yoursite.com/2022/01/25/mysql%E8%AF%AF%E6%93%8D%E4%BD%9Cbinlog%E6%81%A2%E5%A4%8D/index.html">
 <meta property="og:site_name" content="Dopaminer">
-<meta property="og:description" content="文艺风程序猿的blog">
+<meta property="og:description" content="mysql误操作binlog恢复步骤记录具体步骤，方便日后回忆">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220125111545962.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220125113249838.png">
+<meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220125113029208.png">
+<meta property="article:published_time" content="2022-01-25T14:40:40.000Z">
+<meta property="article:modified_time" content="2022-01-25T14:41:59.407Z">
 <meta property="article:author" content="Dopaminer">
+<meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220125111545962.png">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
   
@@ -140,36 +147,110 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-mysql误操作binlog恢复" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2022" class="archive-year">2022</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/01/25/mysql%E8%AF%AF%E6%93%8D%E4%BD%9Cbinlog%E6%81%A2%E5%A4%8D/" class="archive-article-date">
-  	<time datetime="2022-01-25T14:40:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-25</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/25/mysql%E8%AF%AF%E6%93%8D%E4%BD%9Cbinlog%E6%81%A2%E5%A4%8D/">mysql误操作binlog恢复</a>
+    <h1 class="article-title" itemprop="name">
+      mysql误操作binlog恢复
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2022/01/25/mysql%E8%AF%AF%E6%93%8D%E4%BD%9Cbinlog%E6%81%A2%E5%A4%8D/" class="archive-article-date">
+  	<time datetime="2022-01-25T14:40:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="mysql误操作binlog恢复步骤"><a href="#mysql误操作binlog恢复步骤" class="headerlink" title="mysql误操作binlog恢复步骤"></a>mysql误操作binlog恢复步骤</h1><p>记录具体步骤，方便日后回忆</p>
+<a id="more"></a>
+<p>一般正式环境使用数据库都会做全备份，但如果某个时刻数据库崩了，若利用全备份文件恢复，则在全备份到出现问题这段时间内的数据将会丢失，一般来说迫不得已也不会采取这种措施，更直接是采用binlog恢复。</p>
+<h1 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h1><p>这里使用mysql镜像实验</p>
+<ul>
+<li><p><strong>docker</strong></p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">Client:</span><br><span class="line"> Version:           20.10.12</span><br><span class="line"> API version:       1.41</span><br><span class="line"> Go version:        go1.17.5</span><br><span class="line"> Git commit:        e91ed5707e</span><br><span class="line"> Built:             Mon Dec 13 22:31:40 2021</span><br><span class="line"> OS/Arch:           linux/amd64</span><br><span class="line"> Context:           default</span><br><span class="line"> Experimental:      true</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          20.10.12</span><br><span class="line">  API version:      1.41 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.17.5</span><br><span class="line">  Git commit:       459d0dfbbb</span><br><span class="line">  Built:            Mon Dec 13 22:30:43 2021</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     false</span><br><span class="line"> containerd:</span><br><span class="line">  Version:          v1.5.9</span><br><span class="line">  GitCommit:        1407cab509ff0d96baa4f0eb6ff9980270e6e620.m</span><br><span class="line"> runc:</span><br><span class="line">  Version:          1.1.0</span><br><span class="line">  GitCommit:        v1.1.0-0-g067aaf85</span><br><span class="line"> docker-init:</span><br><span class="line">  Version:          0.19.0</span><br><span class="line">  GitCommit:        de40ad0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>mysql</strong></p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select version();</span><br><span class="line">+-----------+</span><br><span class="line">| version() |</span><br><span class="line">+-----------+</span><br><span class="line">| 8.0.27    |</span><br><span class="line">+-----------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="1-检查数据库是否开启binlog"><a href="#1-检查数据库是否开启binlog" class="headerlink" title="1. 检查数据库是否开启binlog"></a>1. 检查数据库是否开启binlog</h1><p>使用<code>show variables like &#39;%log_bin%&#39;</code>检查是否开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &#39;%log_bin%&#39;;</span><br><span class="line">+---------------------------------+-----------------------------+</span><br><span class="line">| Variable_name                   | Value                       |</span><br><span class="line">+---------------------------------+-----------------------------+</span><br><span class="line">| log_bin                         | ON                          |</span><br><span class="line">| log_bin_basename                | &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;binlog       |</span><br><span class="line">| log_bin_index                   | &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;binlog.index |</span><br><span class="line">| log_bin_trust_function_creators | OFF                         |</span><br><span class="line">| log_bin_use_v1_row_events       | OFF                         |</span><br><span class="line">| sql_log_bin                     | ON                          |</span><br><span class="line">+---------------------------------+-----------------------------+</span><br><span class="line">6 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+<p>若没开启，则可通过在配置文件<code>my.cnf</code>添加配置</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">log_bin</span>=<span class="string">ON</span></span><br><span class="line"><span class="attr">log_bin_basename</span>=<span class="string">/var/lib/mysql/binlog </span></span><br><span class="line"><span class="attr">log_bin_index</span>=<span class="string">/var/lib/mysql/binlog.index</span></span><br></pre></td></tr></table></figure>
+<h1 id="2-模拟误删除操作"><a href="#2-模拟误删除操作" class="headerlink" title="2. 模拟误删除操作"></a>2. 模拟误删除操作</h1><ol>
+<li><p>创建实验数据库<code>myDatabase</code>以及实验数据表<code>user</code></p>
+<p> 这里建表语句来自<code>mybatis-plus</code>官方文档(懒得自己写了)</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database myDatabase;</span><br><span class="line">Query OK, 1 row affected (0.04 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; use myDatabase;</span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; DROP TABLE IF EXISTS user;</span><br><span class="line">Query OK, 0 rows affected, 1 warning (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; CREATE TABLE user</span><br><span class="line">    -&gt; (</span><br><span class="line">    -&gt;     id BIGINT(20) NOT NULL COMMENT &#39;ID&#39;,</span><br><span class="line">    -&gt;     name VARCHAR(30) NULL DEFAULT NULL COMMENT &#39;&#39;,</span><br><span class="line">    -&gt;     age INT(11) NULL DEFAULT NULL COMMENT &#39;&#39;,</span><br><span class="line">    -&gt;     email VARCHAR(50) NULL DEFAULT NULL COMMENT &#39;&#39;,</span><br><span class="line">    -&gt;     PRIMARY KEY (id)</span><br><span class="line">    -&gt; );</span><br><span class="line">Query OK, 0 rows affected, 2 warnings (0.02 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; DELETE FROM user;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line">mysql&gt; INSERT INTO user (id, name, age, email) VALUES</span><br><span class="line">    -&gt; (1, &#39;Jone&#39;, 18, &#39;test1@baomidou.com&#39;),</span><br><span class="line">    -&gt; (2, &#39;Jack&#39;, 20, &#39;test2@baomidou.com&#39;),</span><br><span class="line">    -&gt; (3, &#39;Tom&#39;, 28, &#39;test3@baomidou.com&#39;),</span><br><span class="line">    -&gt; (4, &#39;Sandy&#39;, 21, &#39;test4@baomidou.com&#39;),</span><br><span class="line">    -&gt; (5, &#39;Billie&#39;, 24, &#39;test5@baomidou.com&#39;);</span><br><span class="line">Query OK, 5 rows affected (0.01 sec)</span><br><span class="line">Records: 5  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+--------+------+--------------------+</span><br><span class="line">| id | name   | age  | email              |</span><br><span class="line">+----+--------+------+--------------------+</span><br><span class="line">|  1 | Jone   |   18 | test1@baomidou.com |</span><br><span class="line">|  2 | Jack   |   20 | test2@baomidou.com |</span><br><span class="line">|  3 | Tom    |   28 | test3@baomidou.com |</span><br><span class="line">|  4 | Sandy  |   21 | test4@baomidou.com |</span><br><span class="line">|  5 | Billie |   24 | test5@baomidou.com |</span><br><span class="line">+----+--------+------+--------------------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+<ol>
+<li>模拟误删除</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; drop table user;</span><br><span class="line">Query OK, 0 rows affected (0.05 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">Empty set (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="3-查找binlog"><a href="#3-查找binlog" class="headerlink" title="3. 查找binlog"></a>3. 查找binlog</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master logs;</span><br><span class="line">+---------------+-----------+-----------+</span><br><span class="line">| Log_name      | File_size | Encrypted |</span><br><span class="line">+---------------+-----------+-----------+</span><br><span class="line">| binlog.000026 |      7815 | No        |</span><br><span class="line">| binlog.000027 |     24952 | No        |</span><br><span class="line">| binlog.000028 |      3231 | No        |</span><br><span class="line">| binlog.000029 |       179 | No        |</span><br><span class="line">| binlog.000030 |       479 | No        |</span><br><span class="line">| binlog.000031 |      5013 | No        |</span><br><span class="line">| binlog.000032 |       528 | No        |</span><br><span class="line">| binlog.000033 |       179 | No        |</span><br><span class="line">| binlog.000034 |       179 | No        |</span><br><span class="line">| binlog.000035 |      1447 | No        |</span><br><span class="line">| binlog.000036 |       179 | No        |</span><br><span class="line">| binlog.000037 |      5566 | No        |</span><br><span class="line">| binlog.000038 |       821 | No        |</span><br><span class="line">| binlog.000039 |       854 | No        |</span><br><span class="line">| binlog.000040 |      4509 | No        |</span><br><span class="line">| binlog.000041 |       859 | No        |</span><br><span class="line">| binlog.000042 |      2982 | No        |</span><br><span class="line">| binlog.000043 |      8238 | No        |</span><br><span class="line">| binlog.000044 |       179 | No        |</span><br><span class="line">| binlog.000045 |       179 | No        |</span><br><span class="line">| binlog.000046 |       179 | No        |</span><br><span class="line">| binlog.000047 |       179 | No        |</span><br><span class="line">| binlog.000048 |     11185 | No        |</span><br><span class="line">+---------------+-----------+-----------+</span><br><span class="line">23 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; show master status\G;</span><br><span class="line">*************************** 1. row ***************************</span><br><span class="line">             File: binlog.000048</span><br><span class="line">         Position: 11185</span><br><span class="line">     Binlog_Do_DB: </span><br><span class="line"> Binlog_Ignore_DB: </span><br><span class="line">Executed_Gtid_Set: </span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">ERROR: </span><br><span class="line">No query specified</span><br></pre></td></tr></table></figure>
+<p>可以看到这里最近的<code>binlog</code>名字为<code>binlog.000048</code>，根据第一步开启binlog命令中的提示去<code>/var/lib/mysql/</code>下查找binlog</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">root@f5f55acbb59a:/var/lib/mysql# ls -a | grep binlog.</span><br><span class="line">binlog.000026</span><br><span class="line">binlog.000027</span><br><span class="line">binlog.000028</span><br><span class="line">binlog.000029</span><br><span class="line">binlog.000030</span><br><span class="line">binlog.000031</span><br><span class="line">binlog.000032</span><br><span class="line">binlog.000033</span><br><span class="line">binlog.000034</span><br><span class="line">binlog.000035</span><br><span class="line">binlog.000036</span><br><span class="line">binlog.000037</span><br><span class="line">binlog.000038</span><br><span class="line">binlog.000039</span><br><span class="line">binlog.000040</span><br><span class="line">binlog.000041</span><br><span class="line">binlog.000042</span><br><span class="line">binlog.000043</span><br><span class="line">binlog.000044</span><br><span class="line">binlog.000045</span><br><span class="line">binlog.000046</span><br><span class="line">binlog.000047</span><br><span class="line">binlog.000048</span><br><span class="line">binlog.index</span><br></pre></td></tr></table></figure>
+<h1 id="4-直接将binlog导出到sql文件"><a href="#4-直接将binlog导出到sql文件" class="headerlink" title="4. 直接将binlog导出到sql文件"></a>4. 直接将binlog导出到sql文件</h1><p>接着把<code>binlog.000048</code>拿出来，然后转为sql文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@f5f55acbb59a:/var/lib/mysql# cp binlog.000048 /home/</span><br><span class="line">root@f5f55acbb59a:/var/lib/mysql# cd /home/</span><br><span class="line">root@f5f55acbb59a:/home# mysqlbinlog -d myDatabase binlog.000048 &gt; 000048bin.sql</span><br><span class="line">WARNING: The option --database has been used. It may filter parts of transactions, but will include the GTIDs in any case. If you want to exclude or include transactions, you should use the options --exclude-gtids or --include-gtids, respectively, instead.</span><br><span class="line">root@f5f55acbb59a:/home# ls</span><br><span class="line">000048bin.sql  binlog.000048</span><br></pre></td></tr></table></figure>
+<p>这里<code>-d</code>用来指定误操作的数据库，当然还有其他参数如<code>--start-datetime</code>，<code>--stop-datetime</code>， <code>--start-position</code>， <code>--stop-position</code>用来指定导出binlog哪些时间点</p>
+<p>由于这里是使用了mysql容器，因此我将sql文件复制到宿主机修改然后再放回去，也可以直接在容器内修改但是我懒得安装相关编辑器。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doper@doper  /home  sudo docker cp mysql:/home/000048bin.sql /home</span><br></pre></td></tr></table></figure>
+<p>修改<code>000048bin.sql</code>文件，找到刚才的删除语句，并将其对应的<code>at</code>以下的内容全部删除</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220125111545962.png" alt="image-20220125111545962"></p>
+<p>修改完后重新将sql文件重新放回容器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">doper@doper  /home  sudo docker cp /home/000048bin.sql mysql:/home/</span><br></pre></td></tr></table></figure>
+<p>回放</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@f5f55acbb59a:/home# mysql -uroot -p123456 myDatabase &lt; 000048bin.sql </span><br><span class="line">mysql: [Warning] Using a password on the command line interface can be insecure.</span><br><span class="line">ERROR 1007 (HY000) at line 400: Can't create database 'myDatabase'; database exists</span><br></pre></td></tr></table></figure>
+<p>这里报错是因为<code>myDatabase</code>数据库已经存在，说明我们导出的binlog时间段太长，回放时冲突，因此我们可以利用刚才上面提到的导出时间参数选择正确的时间点，重新生成sql文件执行.</p>
+<p>这种方式恢复的时间段不够精确，容易出现问题。</p>
+<h1 id="5-根据binlog时间点提取sql文件"><a href="#5-根据binlog时间点提取sql文件" class="headerlink" title="5. 根据binlog时间点提取sql文件"></a>5. 根据binlog时间点提取sql文件</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@f5f55acbb59a:/var/lib/mysql# mysqlbinlog binlog.000048</span><br></pre></td></tr></table></figure>
+<p>使用mysqlbinlog+binlog日志名来读取binlog里面的内容，其中<code># at + 数字</code>中的数字就代表对应的pos时间点编号，并且其下一行还有对应操作发生的具体时间</p>
+<p>找到我们要数据回滚的时间点</p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220125113249838.png" alt="image-20220125113249838"></p>
+<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220125113029208.png" alt="image-20220125113029208"></p>
+<p>使用参数<code>start-position</code>和<code>stop-position</code>来导出我们指定的时间点，<strong>这里导出不包括10967</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@f5f55acbb59a:/home# mysqlbinlog --start-position=10154 --stop-position=10967 -d myDatabase binlog.000048 &gt; 000048bin.sql</span><br></pre></td></tr></table></figure>
+<p>cat <code>sql</code>文件的内容看下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line">root@f5f55acbb59a:/home# cat 000048bin.sql </span><br><span class="line"><span class="meta">#</span><span class="bash"> The proper term is pseudo_replica_mode, but we use this compatibility <span class="built_in">alias</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> to make the statement usable on server versions 8.0.24 and older.</span></span><br><span class="line">/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=1*/;</span><br><span class="line">/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;</span><br><span class="line">DELIMITER /*!*/;</span><br><span class="line"><span class="meta">#</span><span class="bash"> at 156</span></span><br><span class="line"><span class="meta">#</span><span class="bash">220125  2:02:03 server id 1  end_log_pos 125 CRC32 0xae39ed97  Start: binlog v 4, server v 8.0.27 created 220125  2:02:03 at startup</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Warning: this binlog is either <span class="keyword">in</span> use or was not closed properly.</span></span><br><span class="line">ROLLBACK/*!*/;</span><br><span class="line">BINLOG '</span><br><span class="line">G1rvYQ8BAAAAeQAAAH0AAAABAAQAOC4wLjI3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br><span class="line">AAAAAAAAAAAAAAAAAAAbWu9hEwANAAgAAAAABAAEAAAAYQAEGggAAAAICAgCAAAACgoKKioAEjQA</span><br><span class="line">CigBl+05rg==</span><br><span class="line">'/*!*/;</span><br><span class="line"><span class="meta">#</span><span class="bash"> ================================		start-position		================================</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> at 10154</span></span><br><span class="line"><span class="meta">#</span><span class="bash">220125  3:02:28 server id 1  end_log_pos 10486 CRC32 0x891fbcfa        Query   thread_id=36    exec_time=0     error_code=0    Xid = 1639</span></span><br><span class="line">use `myDatabase`/*!*/;</span><br><span class="line">SET TIMESTAMP=1643079748/*!*/;</span><br><span class="line">SET @@session.pseudo_thread_id=36/*!*/;</span><br><span class="line">SET @@session.foreign_key_checks=1, @@session.sql_auto_is_null=0, @@session.unique_checks=1, @@session.autocommit=1/*!*/;</span><br><span class="line">SET @@session.sql_mode=1168113696/*!*/;</span><br><span class="line">SET @@session.auto_increment_increment=1, @@session.auto_increment_offset=1/*!*/;</span><br><span class="line">/*!\C latin1 *//*!*/;</span><br><span class="line">SET @@session.character_set_client=8,@@session.collation_connection=8,@@session.collation_server=255/*!*/;</span><br><span class="line">SET @@session.lc_time_names=0/*!*/;</span><br><span class="line">SET @@session.collation_database=DEFAULT/*!*/;</span><br><span class="line">/*!80011 SET @@session.default_collation_for_utf8mb4=255*//*!*/;</span><br><span class="line">/*!80013 SET @@session.sql_require_primary_key=0*//*!*/;</span><br><span class="line">CREATE TABLE user</span><br><span class="line">(</span><br><span class="line">    id BIGINT(20) NOT NULL COMMENT 'ID',</span><br><span class="line">    name VARCHAR(30) NULL DEFAULT NULL COMMENT '',</span><br><span class="line">    age INT(11) NULL DEFAULT NULL COMMENT '',</span><br><span class="line">    email VARCHAR(50) NULL DEFAULT NULL COMMENT '',</span><br><span class="line">    PRIMARY KEY (id)</span><br><span class="line">)</span><br><span class="line">/*!*/;</span><br><span class="line"><span class="meta">#</span><span class="bash"> at 10486</span></span><br><span class="line"><span class="meta">#</span><span class="bash">220125  3:02:35 server id 1  end_log_pos 10565 CRC32 0x27b2ef33        Anonymous_GTID  last_committed=31       sequence_number=32      rbr_only=yes original_committed_timestamp=1643079755409992    immediate_commit_timestamp=1643079755409992     transaction_length=481</span></span><br><span class="line">/*!50718 SET TRANSACTION ISOLATION LEVEL READ COMMITTED*//*!*/;</span><br><span class="line"><span class="meta">#</span><span class="bash"> original_commit_timestamp=1643079755409992 (2022-01-25 03:02:35.409992 UTC)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> immediate_commit_timestamp=1643079755409992 (2022-01-25 03:02:35.409992 UTC)</span></span><br><span class="line">/*!80001 SET @@session.original_commit_timestamp=1643079755409992*//*!*/;</span><br><span class="line">/*!80014 SET @@session.original_server_version=80027*//*!*/;</span><br><span class="line">/*!80014 SET @@session.immediate_server_version=80027*//*!*/;</span><br><span class="line">SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;</span><br><span class="line"><span class="meta">#</span><span class="bash"> at 10565</span></span><br><span class="line"><span class="meta">#</span><span class="bash">220125  3:02:35 server id 1  end_log_pos 10646 CRC32 0xe5bf9fe9        Query   thread_id=36    exec_time=0     error_code=0</span></span><br><span class="line">SET TIMESTAMP=1643079755/*!*/;</span><br><span class="line">BEGIN</span><br><span class="line">/*!*/;</span><br><span class="line"><span class="meta">#</span><span class="bash"> at 10646</span></span><br><span class="line"><span class="meta">#</span><span class="bash">220125  3:02:35 server id 1  end_log_pos 10714 CRC32 0x7c4eb4f8        Table_map: `myDatabase`.`user` mapped to number 114</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> at 10714</span></span><br><span class="line"><span class="meta">#</span><span class="bash">220125  3:02:35 server id 1  end_log_pos 10936 CRC32 0x0375a73e        Write_rows: table id 114 flags: STMT_END_F</span></span><br><span class="line"></span><br><span class="line">BINLOG '</span><br><span class="line">S2jvYRMBAAAARAAAANopAAAAAHIAAAAAAAEACm15RGF0YWJhc2UABHVzZXIABAgPAw8EeADIAA4B</span><br><span class="line">AQACA/z/APi0Tnw=</span><br><span class="line">S2jvYR4BAAAA3gAAALgqAAAAAHIAAAAAAAEAAgAE/wABAAAAAAAAAARKb25lEgAAABJ0ZXN0MUBi</span><br><span class="line">YW9taWRvdS5jb20AAgAAAAAAAAAESmFjaxQAAAASdGVzdDJAYmFvbWlkb3UuY29tAAMAAAAAAAAA</span><br><span class="line">A1RvbRwAAAASdGVzdDNAYmFvbWlkb3UuY29tAAQAAAAAAAAABVNhbmR5FQAAABJ0ZXN0NEBiYW9t</span><br><span class="line">aWRvdS5jb20ABQAAAAAAAAAGQmlsbGllGAAAABJ0ZXN0NUBiYW9taWRvdS5jb20+p3UD</span><br><span class="line">'/*!*/;</span><br><span class="line"><span class="meta">#</span><span class="bash"> ================================		end-position(不包括)		================================</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> at 10936</span></span><br><span class="line"><span class="meta">#</span><span class="bash">220125  3:02:35 server id 1  end_log_pos 10967 CRC32 0xe0d2259a        Xid = 1641</span></span><br><span class="line">COMMIT/*!*/;</span><br><span class="line">SET @@SESSION.GTID_NEXT= 'AUTOMATIC' /* added by mysqlbinlog */ /*!*/;</span><br><span class="line">DELIMITER ;</span><br><span class="line"><span class="meta">#</span><span class="bash"> End of <span class="built_in">log</span> file</span></span><br><span class="line">/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;</span><br><span class="line">/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=0*/;</span><br><span class="line">root@f5f55acbb59a:/home#</span><br></pre></td></tr></table></figure>
+<p>将sql文件重新执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@f5f55acbb59a:/home# mysql -uroot -p123456 myDatabase &lt; 000048bin.sql </span><br><span class="line">mysql: [Warning] Using a password on the command line interface can be insecure.</span><br></pre></td></tr></table></figure>
+<p>重新进入数据库发现被删除的表已经恢复</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; use myDatabase;</span><br><span class="line">Reading table information for completion of table and column names</span><br><span class="line">You can turn off this feature to get a quicker startup with -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; show tables;</span><br><span class="line">+----------------------+</span><br><span class="line">| Tables_in_myDatabase |</span><br><span class="line">+----------------------+</span><br><span class="line">| user                 |</span><br><span class="line">+----------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from user;</span><br><span class="line">+----+--------+------+--------------------+</span><br><span class="line">| id | name   | age  | email              |</span><br><span class="line">+----+--------+------+--------------------+</span><br><span class="line">|  1 | Jone   |   18 | test1@baomidou.com |</span><br><span class="line">|  2 | Jack   |   20 | test2@baomidou.com |</span><br><span class="line">|  3 | Tom    |   28 | test3@baomidou.com |</span><br><span class="line">|  4 | Sandy  |   21 | test4@baomidou.com |</span><br><span class="line">|  5 | Billie |   24 | test5@baomidou.com |</span><br><span class="line">+----+--------+------+--------------------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; exit</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢老板<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -181,225 +262,146 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2022/01/25/mysql%E8%AF%AF%E6%93%8D%E4%BD%9Cbinlog%E6%81%A2%E5%A4%8D/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/01/25/SpringBoot%E5%AE%9A%E5%88%B6%E5%8C%96%E7%BB%84%E4%BB%B6/" class="archive-article-date">
-  	<time datetime="2022-01-24T17:20:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-25</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2022/01/25/SpringBoot%E5%AE%9A%E5%88%B6%E5%8C%96%E7%BB%84%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SpringBoot定制化组件</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/25/SpringBoot%E5%AE%9A%E5%88%B6%E5%8C%96%E7%BB%84%E4%BB%B6/">SpringBoot定制化组件</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mysql误操作binlog恢复步骤"><span class="toc-number">1.</span> <span class="toc-text">mysql误操作binlog恢复步骤</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实验环境"><span class="toc-number">2.</span> <span class="toc-text">实验环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-检查数据库是否开启binlog"><span class="toc-number">3.</span> <span class="toc-text">1. 检查数据库是否开启binlog</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-模拟误删除操作"><span class="toc-number">4.</span> <span class="toc-text">2. 模拟误删除操作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-查找binlog"><span class="toc-number">5.</span> <span class="toc-text">3. 查找binlog</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-直接将binlog导出到sql文件"><span class="toc-number">6.</span> <span class="toc-text">4. 直接将binlog导出到sql文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-根据binlog时间点提取sql文件"><span class="toc-number">7.</span> <span class="toc-text">5. 根据binlog时间点提取sql文件</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/01/25/SpringBoot%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" class="archive-article-date">
-  	<time datetime="2022-01-24T17:11:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/25/SpringBoot%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">SpringBoot异常处理</a>
-    </h1>
-  
+        
+    </div>
+</aside>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/01/18/springboot%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90%E5%9B%BE/" class="archive-article-date">
-  	<time datetime="2022-01-18T02:35:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/18/springboot%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90%E5%9B%BE/">springboot类型参数解析图</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/01/16/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/" class="archive-article-date">
-  	<time datetime="2022-01-16T08:08:39.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-16</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/16/SpringBoot%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D%E6%BA%90%E7%A0%81%E7%AC%94%E8%AE%B0/">SpringBoot自动装配源码笔记</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2022/01/08/2021%E7%A7%8B%E6%8B%9B%E5%9B%9E%E9%A1%BE/" class="archive-article-date">
-  	<time datetime="2022-01-08T15:03:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2022/01/08/2021%E7%A7%8B%E6%8B%9B%E5%9B%9E%E9%A1%BE/">2021秋招回顾及总结</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">秋招</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
     
+    <section id="comments" class="comments">
+      <style>
+        .comments{margin:30px;padding:10px;background:#fff}
+        @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+      </style>
+      <div id="vcomment" class="comment"></div> 
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+   var notify = 'true' == true ? true : false;
+   var verify = 'false' == true ? true : false;
+    window.onload = function() {
+        new Valine({
+            el: '.comment',
+            notify: notify,
+            verify: verify,
+            app_id: "6xSQNU87imxTE1OlELHnXNsi-gzGzoHsz",
+            app_key: "0S7qV5AbYvJrLdywmnX24mzf",
+            placeholder: "不来指点指点？",
+            avatar:"monsterid"
+        });
+    }
+</script>
+  </section>
+   
+
+  
+  
+  
+
+  
+
+  
+
+  
 
 
           </div>
@@ -422,8 +424,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
