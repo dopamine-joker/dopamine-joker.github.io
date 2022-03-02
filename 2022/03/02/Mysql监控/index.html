@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302110209940.png">
 <meta property="og:image" content="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302110245588.png">
 <meta property="article:published_time" content="2022-03-02T02:05:53.000Z">
-<meta property="article:modified_time" content="2022-03-02T03:30:36.993Z">
+<meta property="article:modified_time" content="2022-03-02T03:35:10.850Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="mysql">
 <meta name="twitter:card" content="summary">
@@ -174,66 +174,43 @@
       
         <h1 id="Grafana-Prometheus-Mysqld-Exporter实现Mysql监控-基于Docker"><a href="#Grafana-Prometheus-Mysqld-Exporter实现Mysql监控-基于Docker" class="headerlink" title="Grafana+Prometheus+Mysqld-Exporter实现Mysql监控(基于Docker)"></a>Grafana+Prometheus+Mysqld-Exporter实现Mysql监控(基于Docker)</h1><p>使用Grafana+Prometheus+Mysqld-exporter实现Mysql监控的步骤</p>
 <a id="more"></a>
-<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p><a href="https://grafana.com/" target="_blank" rel="noopener">Granafa</a>: 开源的数据可视化平台</p>
-<p><a href="https://prometheus.io/" target="_blank" rel="noopener">Prometheus</a>:监控系统，时序数据库</p>
-<p><a href="https://github.com/prometheus/mysqld_exporter" target="_blank" rel="noopener">Mysqld-Exporter</a>: mysql服务器prometheus metrics导出</p>
-<p>在本文介绍如何在云服务器中实现腾讯云MySQL监控。Grafana+Prometheus的搭建可参考<a href="https://www.cnblogs.com/xiao987334176/p/9930517.html" target="_blank" rel="noopener">https://www.cnblogs.com/xiao987334176/p/9930517.html</a></p>
-<h1 id="2-步骤"><a href="#2-步骤" class="headerlink" title="2. 步骤"></a>2. 步骤</h1><h2 id="2-1-安装Grafana"><a href="#2-1-安装Grafana" class="headerlink" title="2.1. 安装Grafana"></a>2.1. 安装Grafana</h2><p>使用docker直接search并Pull，运行。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# docker search grafana</span><br><span class="line">NAME                                    DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED</span><br><span class="line">grafana/grafana                         The official Grafana docker container           2150</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
-<p>这里直接pull最新版的grafana即可。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# docker pull grafana</span><br></pre></td></tr></table></figure>
-<p>拉取完毕后创建一个文件夹用来存放grafana数据，本例子中选择在云服务器的/opt目录下</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# mkdir /opt/grafana-storage</span><br></pre></td></tr></table></figure>
-<p>修改该目录权限</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# chmod 777 -R /opt/grafana-storage</span><br></pre></td></tr></table></figure>
-<p>启动grafana</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  -p 3000:3000 \</span><br><span class="line">  --name=grafana \</span><br><span class="line">  -v /opt/grafana-storage:/var/lib/grafana \</span><br><span class="line">  grafana/grafana</span><br></pre></td></tr></table></figure>
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h1><p><a href="https://grafana.com/" target="_blank" rel="noopener">Granafa</a>: 开源的数据可视化平台<br><a href="https://prometheus.io/" target="_blank" rel="noopener">Prometheus</a>:监控系统，时序数据库<br><a href="https://github.com/prometheus/mysqld_exporter" target="_blank" rel="noopener">Mysqld-Exporter</a>: mysql服务器prometheus metrics导出<br>在本文介绍如何在云服务器中实现腾讯云MySQL监控。Grafana+Prometheus的搭建可参考<a href="https://www.cnblogs.com/xiao987334176/p/9930517.html" target="_blank" rel="noopener">https://www.cnblogs.com/xiao987334176/p/9930517.html</a></p>
+<h1 id="2-步骤"><a href="#2-步骤" class="headerlink" title="2. 步骤"></a>2. 步骤</h1><h2 id="2-1-安装Grafana"><a href="#2-1-安装Grafana" class="headerlink" title="2.1. 安装Grafana"></a>2.1. 安装Grafana</h2><p>使用docker直接search并Pull，运行。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# docker search grafana</span><br><span class="line">NAME                                    DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED</span><br><span class="line">grafana/grafana                         The official Grafana docker container           2150</span><br><span class="line">....</span><br></pre></td></tr></table></figure></p>
+<p>这里直接pull最新版的grafana即可。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# docker pull grafana</span><br></pre></td></tr></table></figure><br>拉取完毕后创建一个文件夹用来存放grafana数据，本例子中选择在云服务器的/opt目录下<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# mkdir /opt/grafana-storage</span><br></pre></td></tr></table></figure></p>
+<p>修改该目录权限<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-0-6-centos ~]# chmod 777 -R /opt/grafana-storage</span><br></pre></td></tr></table></figure></p>
+<p>启动grafana<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d \</span><br><span class="line">  -p 3000:3000 \</span><br><span class="line">  --name=grafana \</span><br><span class="line">  -v /opt/grafana-storage:/var/lib/grafana \</span><br><span class="line">  grafana/grafana</span><br></pre></td></tr></table></figure></p>
 <p>随后访问{服务器ip}:3000 即可进入登录页，默认的登录用户名和密码都是admin。可以修改。</p>
 <p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302102345533.png" alt="image-20220302102345533"></p>
 <h2 id="2-2-数据库Metrics导出"><a href="#2-2-数据库Metrics导出" class="headerlink" title="2.2. 数据库Metrics导出"></a>2.2. 数据库Metrics导出</h2><p>这是用来导出mysql数据的，同样可以通过拉取镜像生成容器的方法运行。具体步骤如下:</p>
-<h3 id="2-2-1-创建数据库账号"><a href="#2-2-1-创建数据库账号" class="headerlink" title="2.2.1. 创建数据库账号"></a>2.2.1. 创建数据库账号</h3><p>在安装Mysqld-Exporter之前，要先在数据库创建账号用来拉取数据库数据。首先进入数据库，创建账号并赋予权限。</p>
-<p>需要注意的是，本例子中云服务器和数据库都在同一内网中，并且数据库只有内网ip没有公网ip，先看数据库操作命令。</p>
+<h3 id="2-2-1-创建数据库账号"><a href="#2-2-1-创建数据库账号" class="headerlink" title="2.2.1. 创建数据库账号"></a>2.2.1. 创建数据库账号</h3><p>在安装Mysqld-Exporter之前，要先在数据库创建账号用来拉取数据库数据。首先进入数据库，创建账号并赋予权限。<br>需要注意的是，本例子中云服务器和数据库都在同一内网中，并且数据库只有内网ip没有公网ip，先看数据库操作命令。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">create user &#39;exporter&#39;@&#39;&#123;ip&#125;&#39; IDENTIFIED by &#39;&#123;password&#125;&#39; </span><br><span class="line">GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;exporter&#39;@&#39;&#123;ip&#125;&#39;;</span><br></pre></td></tr></table></figure>
 <font color=red>在这里中{ip}和{password}根据自己实际情况填，记得去掉大括号</font>。
-
 `ip`: 这里的ip若想省事可以直接填`*`表示所有ip，若要严谨点则填指定机器的ip。在网上大多数教程中由于Mysql和Mysql-Exporter都是同一机器上所以教程里都填localhost，在本例子中由于云服务器和数据库在同一内网，并且·Mysql-Exporter·是在云服务器的Docker下运行并暴露端口到宿主机上。因此本例子中{ip}填了云服务器的内网ip地址。
-
 `password`: 账号密码，待会配置Mysql-Exporter需要用到.
 
 ### 2.2.2 安装Mysql-Exporter
 
 直接拉取Mysql-Exporter镜像运行即可。
-
 具体命令如下:
-
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker search mysqld-export	# 查找镜像，一般这里搜索出来的第一个就是</span><br><span class="line">docker pull prom/mysqld-exporter	# 拉取镜像</span><br><span class="line">docker run -d -p 9104:9104 -e DATA_SOURCE_NAME="exporter:&#123;password&#125;@(&#123;ip&#125;:3306)/" --name mysqld_exporter prom/mysqld-exporter:latest</span><br></pre></td></tr></table></figure>
 
 这里`{ip}`和`{password}`要和上一步中的一样。
-
 之后访问`http://{ip}:9104/metrics`查看是否导出成功（若是云服务记得配置安全组开放端口）。
-
 <font color=red>注意！这里得通过网页数据长度来判断是否导出成功，因为即使Mysql-Exporter配置失败，数据库数据没导出metrics但它还是可以运行，并且同样可以访问该网页。具体表现为进入/metrics页网页内容很少，在下图中为导出成功的结果，数据量较大，可以根据右边的滚动条来判断。</font>
 
 <p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302103801291.png" alt="image-20220302103801291"></p>
 <h2 id="2-3-安装prometheus"><a href="#2-3-安装prometheus" class="headerlink" title="2.3. 安装prometheus"></a>2.3. 安装prometheus</h2><p>本例子中同样使用Docker拉取镜像运行。</p>
 <ol>
-<li><p>创建prometheus配置文件</p>
-<p> 本例子在云服务器的/opt目录下创建yml配置文件</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /opt/prometheus</span><br><span class="line">vim /opt/prometheus/prometheus.yml</span><br></pre></td></tr></table></figure>
-<p> 配置文件的内容如下:</p>
- <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">global:</span></span><br><span class="line">  <span class="attr">scrape_interval:</span>     <span class="string">60s</span></span><br><span class="line">  <span class="attr">evaluation_interval:</span> <span class="string">60s</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">prometheus</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['localhost:9090']</span></span><br><span class="line">        <span class="attr">labels:</span></span><br><span class="line">          <span class="attr">instance:</span> <span class="string">prometheus</span></span><br><span class="line"> </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">mysql</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['&#123;ip&#125;:9104']</span></span><br></pre></td></tr></table></figure>
-<p> 这里的ip为Mysql-Exporter容器的ip地址，可通过<code>docker inspect containerID/containerName</code>命令查看。</p>
-</li>
-<li><p>拉取prometheus镜像并启动</p>
-<p> pull镜像</p>
+<li>创建prometheus配置文件<br> 本例子在云服务器的/opt目录下创建yml配置文件 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /opt/prometheus</span><br><span class="line">vim /opt/prometheus/prometheus.yml</span><br></pre></td></tr></table></figure>
+ 配置文件的内容如下: <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">global:</span></span><br><span class="line">  <span class="attr">scrape_interval:</span>     <span class="string">60s</span></span><br><span class="line">  <span class="attr">evaluation_interval:</span> <span class="string">60s</span></span><br><span class="line"> </span><br><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">prometheus</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['localhost:9090']</span></span><br><span class="line">        <span class="attr">labels:</span></span><br><span class="line">          <span class="attr">instance:</span> <span class="string">prometheus</span></span><br><span class="line"> </span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">mysql</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">['&#123;ip&#125;:9104']</span></span><br></pre></td></tr></table></figure>
+ 这里的ip为Mysql-Exporter容器的ip地址，可通过<code>docker inspect containerID/containerName</code>命令查看。</li>
+<li><p>拉取prometheus镜像并启动<br> pull镜像</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull prom/prometheus #这里直接拉取这个即可，不通过search查看</span><br></pre></td></tr></table></figure>
 <p> 启动</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run  -d \</span><br><span class="line">  -p 9090:9090 \</span><br><span class="line">  -v /opt/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  \</span><br><span class="line">  prom/prometheus</span><br></pre></td></tr></table></figure>
 <p> 这里<code>/opt/prometheus/prometheus.yml</code>要改成自己机器配置文件的路径</p>
 </li>
-<li><p>检查是否成功</p>
-<p> 启动后检查一下是否配置成功，进入<code>http://{ip}:9090/</code>检查是否启动成功。若成功可以进入到prometheus ui界面，由于prometheus是基于时序数据库的，若页面提示时区不配则点一下<code>Use local time</code>即可。</p>
-<p> 进入ui界面，检查prometheus是否拉取到Mysql导出数据，点击上方status-&gt;Targets检查。</p>
+<li><p>检查是否成功<br> 启动后检查一下是否配置成功，进入<code>http://{ip}:9090/</code>检查是否启动成功。若成功可以进入到prometheus ui界面，由于prometheus是基于时序数据库的，若页面提示时区不配则点一下<code>Use local time</code>即可。<br> 进入ui界面，检查prometheus是否拉取到Mysql导出数据，点击上方status-&gt;Targets检查。</p>
 <p> <img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302105117121.png" alt="image-20220302105117121"></p>
 </li>
 </ol>
@@ -241,8 +218,7 @@
 <p>若如上图所示则说明成功了，若还没提示up则等一下即可，要是长时间没up可能就是配置错误，或者是端口没开启。</p>
 <h2 id="2-4-配置Grafana"><a href="#2-4-配置Grafana" class="headerlink" title="2.4. 配置Grafana"></a>2.4. 配置Grafana</h2><ol>
 <li><p>配置prometheus数据源</p>
-<p> <img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302110316752.png" alt="image-20220302110316752"></p>
-<p> 在界面左边设置中，点击<code>Data sources</code>，然后选择<code>prometheus</code>，填写相关信息，添加。</p>
+<p> <img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302110316752.png" alt="image-20220302110316752"><br> 在界面左边设置中，点击<code>Data sources</code>，然后选择<code>prometheus</code>，填写相关信息，添加。</p>
 </li>
 <li><p>配置数据展示模板</p>
 <p> 首先下载Mysql数据展示的json模板，这里使用7362，网址如下</p>
@@ -252,8 +228,7 @@
 </ol>
 <p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302105509721.png" alt="image-20220302105509721"></p>
 <p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302110209940.png" alt="image-20220302110209940"></p>
-<p>​    完成！</p>
-<p><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302110245588.png" alt="image-20220302110245588"></p>
+<p>​    完成！<br><img src="https://gitee.com/dopamine-joker/image-host/raw/master/image/image-20220302110245588.png" alt="image-20220302110245588"></p>
 <h1 id="3-避坑"><a href="#3-避坑" class="headerlink" title="3. 避坑"></a>3. 避坑</h1><ol>
 <li>配置文件一定要写对。</li>
 <li>数据库账号ip要填对，不然Mysql-Exporeter无法导出数据。</li>
@@ -532,14 +507,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">STL</a>
               </li>
              
@@ -548,7 +515,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -564,11 +539,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ElasticSearch</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ElasticSearch</a>
+                <a href="javascript:void(0)" class="js-tag color3">秋招</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -577,10 +556,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">秋招</a>
               </li>
              
               <li class="article-tag-list-item">
