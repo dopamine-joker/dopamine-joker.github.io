@@ -162,25 +162,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>mybatis-generator官方文档: <a href="http://mybatis.org/generator/index.html" target="_blank" rel="noopener">http://mybatis.org/generator/index.html</a></p>
+        <h1 id="MyBatis-Generator例子简介"><a href="#MyBatis-Generator例子简介" class="headerlink" title="MyBatis-Generator例子简介"></a>MyBatis-Generator例子简介</h1><p>mybatis-generator官方文档: <a href="http://mybatis.org/generator/index.html" target="_blank" rel="noopener">http://mybatis.org/generator/index.html</a></p>
 <p>例子代码参考: <a href="https://github.com/macrozheng/mall" target="_blank" rel="noopener">mall</a></p>
-<h1 id="1-运行MyBatis-Generator-MBG"><a href="#1-运行MyBatis-Generator-MBG" class="headerlink" title="1. 运行MyBatis Generator(MBG)"></a>1. 运行MyBatis Generator(MBG)</h1><p>这部分文档已经说的很清楚了，这里列举java运行代码</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220423210040200.png" alt="image-20220423210040200"></p>
-<h2 id="1-1-基于XML配置文件运行"><a href="#1-1-基于XML配置文件运行" class="headerlink" title="1.1. 基于XML配置文件运行"></a>1.1. 基于XML配置文件运行</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; warnings = <span class="keyword">new</span> ArrayList&lt;String&gt;();	<span class="comment">//这里存储运行过程中的警告信息</span></span><br><span class="line"><span class="keyword">boolean</span> overwrite = <span class="keyword">true</span>;</span><br><span class="line">File configFile = <span class="keyword">new</span> File(<span class="string">"generatorConfig.xml"</span>);	<span class="comment">//这里是配置文件</span></span><br><span class="line">ConfigurationParser cp = <span class="keyword">new</span> ConfigurationParser(warnings);</span><br><span class="line">Configuration config = cp.parseConfiguration(configFile);</span><br><span class="line">DefaultShellCallback callback = <span class="keyword">new</span> DefaultShellCallback(overwrite);</span><br><span class="line">MyBatisGenerator myBatisGenerator = <span class="keyword">new</span> MyBatisGenerator(config, callback, warnings);</span><br><span class="line">myBatisGenerator.generate(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="1-2-基于Java配置代码运行"><a href="#1-2-基于Java配置代码运行" class="headerlink" title="1.2. 基于Java配置代码运行"></a>1.2. 基于Java配置代码运行</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; warnings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"><span class="keyword">boolean</span> overwrite = <span class="keyword">true</span>;</span><br><span class="line">Configuration config = <span class="keyword">new</span> Configuration();</span><br><span class="line"></span><br><span class="line"><span class="comment">//   ... fill out the config object as appropriate...</span></span><br><span class="line"></span><br><span class="line">DefaultShellCallback callback = <span class="keyword">new</span> DefaultShellCallback(overwrite);</span><br><span class="line">MyBatisGenerator myBatisGenerator = <span class="keyword">new</span> MyBatisGenerator(config, callback, warnings);</span><br><span class="line">myBatisGenerator.generate(<span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
-<h1 id="2-XML配置文件"><a href="#2-XML配置文件" class="headerlink" title="2. XML配置文件"></a>2. XML配置文件</h1><p>官方文档对XML的描述十分详细，这里仅列举自己学习过程中碰到的，代码来源于<a href="https://github.com/macrozheng/mall" target="_blank" rel="noopener">mall项目</a>:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">generatorConfiguration</span></span></span><br><span class="line"><span class="meta">        <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"</span></span></span><br><span class="line"><span class="meta">        <span class="meta-string">"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 配置标签 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">generatorConfiguration</span>&gt;</span>	</span><br><span class="line">    <span class="comment">&lt;!-- 用来指定用于解析外部配置文件里面的属性，外部配置文件的属性可以用$&#123;property&#125;来引用	--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">properties</span> <span class="attr">resource</span>=<span class="string">"generator.properties"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context</span> <span class="attr">id</span>=<span class="string">"MySqlContext"</span> <span class="attr">targetRuntime</span>=<span class="string">"MyBatis3"</span> <span class="attr">defaultModelType</span>=<span class="string">"flat"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- plugin用来定义插件，可选的插件文档有详细列出来:http://mybatis.org/generator/reference/plugins.html --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 为模型生成序列化方法--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">type</span>=<span class="string">"org.mybatis.generator.plugins.SerializablePlugin"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 为生成的Java模型创建一个toString方法 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">type</span>=<span class="string">"org.mybatis.generator.plugins.ToStringPlugin"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--生成文件时覆盖原mapper.xml，因为默认多次运行生成的代码是追加到原文件而不是覆盖，因此要指定这个插件--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span> <span class="attr">type</span>=<span class="string">"org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- commentGenerator用来定义注释生成器的属性，其可用于Java字段，方法，XML元素的注释生成 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 可自定义注释生成器，必须要实现 org.mybatis.generator.api.CommentGenerator 接口 --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 若不指定type,则默认使用 org.mybatis.generator.internal.DefaultCommentGenerator --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">commentGenerator</span> <span class="attr">type</span>=<span class="string">"cn.doper.mall.CommentGenerator"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 是否去除mybatis-generator默认的自动生成的注释 true：是 ： false:否 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"suppressAllComments"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 是否去掉自动生成的注释中添加生成日期, true: 是, false:否 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"suppressDate"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 是否在生成的注释中显示对应数据库table中的字段名, true: 是, false: 否 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"addRemarkComments"</span> <span class="attr">value</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">commentGenerator</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 配置数据库属性，这里传入&lt;properties&gt;外部配置文件的属性 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">jdbcConnection</span> <span class="attr">driverClass</span>=<span class="string">"$&#123;jdbc.driverClass&#125;"</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">connectionURL</span>=<span class="string">"$&#123;jdbc.connectionURL&#125;"</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">userId</span>=<span class="string">"$&#123;jdbc.userId&#125;"</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">password</span>=<span class="string">"$&#123;jdbc.password&#125;"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--解决mysql驱动升级到8.0后不生成指定数据库代码的问题--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"nullCatalogMeansCurrent"</span> <span class="attr">value</span>=<span class="string">"true"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">jdbcConnection</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 生成Java模型的包名与路径，这些模型是与数据库表中字段相对应的类，用来操作数据库，会生成xxx.class和xxxExample.class，Example类一般用来构造复杂查询 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"cn.doper.mall.model"</span> <span class="attr">targetProject</span>=<span class="string">"mall-mbg/src/main/java"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 生成对应的mapper.xml文件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"cn.doper.mall.mapper"</span> <span class="attr">targetProject</span>=<span class="string">"mall-mbg/src/main/resources"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 生成对应的Mapper接口，与mapper.xml文件对应，XMLMAPPER表示生成对应Mybatis3的Java接口--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">type</span>=<span class="string">"XMLMAPPER"</span> <span class="attr">targetPackage</span>=<span class="string">"cn.doper.mall.mapper"</span> <span class="attr">targetProject</span>=<span class="string">"mall-mbg/src/main/java"</span>/&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 指定对哪些表生成代码，%表示全部 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">table</span> <span class="attr">tableName</span>=<span class="string">"%"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">generatedKey</span> <span class="attr">column</span>=<span class="string">"id"</span> <span class="attr">sqlStatement</span>=<span class="string">"MySql"</span> <span class="attr">identity</span>=<span class="string">"true"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">table</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">context</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">generatorConfiguration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>MBG自动生成的注释如下所示:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220423210906552.png" alt="image-20220423210906552"></p>
-<h1 id="3-注释生成器"><a href="#3-注释生成器" class="headerlink" title="3. 注释生成器"></a>3. 注释生成器</h1><p>这里使用了自定义的注释生成器，主要生成<code>swagger</code>相关的注解，代码来源于<a href="https://github.com/macrozheng/mall" target="_blank" rel="noopener">mall项目</a>:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cn.doper.mall;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.IntrospectedColumn;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.IntrospectedTable;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.dom.java.CompilationUnit;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.dom.java.Field;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.internal.DefaultCommentGenerator;</span><br><span class="line"><span class="keyword">import</span> org.mybatis.generator.internal.util.StringUtility;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommentGenerator</span> <span class="keyword">extends</span> <span class="title">DefaultCommentGenerator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> addRemarkComments = <span class="keyword">false</span>;  <span class="comment">// 默认不显示table字段注释</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXAMPLE_SUFFIX = <span class="string">"Example"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String MAPPER_SUFFIX = <span class="string">"Mapper"</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String API_MODEL_PROPERTY_FULL_CLASS_NAME = <span class="string">"io.swagger.annotations.ApiModelProperty"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置用户配置的参数</span></span><br><span class="line"><span class="comment">     * 得到在xml中配置在&lt;commentGenerator&gt;中的参数properties</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addConfigurationProperties</span><span class="params">(Properties properties)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.addConfigurationProperties(properties);</span><br><span class="line">        <span class="comment">// 配置文件的addRemarkComments属性</span></span><br><span class="line">        <span class="keyword">this</span>.addRemarkComments = StringUtility.isTrue(properties.getProperty(<span class="string">"addRemarkComments"</span>));	</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 给字段添加 <span class="doctag">@APiModelProperty</span>注释</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addFieldComment</span><span class="params">(Field field, IntrospectedTable introspectedTable,</span></span></span><br><span class="line"><span class="function"><span class="params">                                IntrospectedColumn introspectedColumn)</span> </span>&#123;</span><br><span class="line">        String remarks = introspectedColumn.getRemarks();       <span class="comment">//返回数据库字段的注释内容，没的话则为""</span></span><br><span class="line">        <span class="comment">//根据参数和备注信息判断是否添加swagger注解信息</span></span><br><span class="line">        <span class="comment">// 这里为若数据库字段有注释，则生成对应的 @ApiModelProperty(value = "&#123;注释&#125;") 注解</span></span><br><span class="line">        <span class="keyword">if</span> (addRemarkComments &amp;&amp; StringUtility.stringHasValue(remarks)) &#123;</span><br><span class="line">            <span class="comment">//数据库中特殊字符需要转义，防止注释字段中出现双引号(")这个符号</span></span><br><span class="line">            <span class="keyword">if</span> (remarks.contains(<span class="string">"\""</span>)) &#123;</span><br><span class="line">                remarks = remarks.replace(<span class="string">"\""</span>, <span class="string">"'"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//给model的字段添加swagger注解</span></span><br><span class="line">            field.addJavaDocLine(<span class="string">"@ApiModelProperty(value = \""</span> + remarks + <span class="string">"\")"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 在生成的每个文件添加swagger的包, import ...，如import io.swagger.annotations.ApiModelProperty;</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> compilationUnit the compilation unit</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addJavaFileComment</span><span class="params">(CompilationUnit compilationUnit)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.addJavaFileComment(compilationUnit);</span><br><span class="line">        <span class="comment">// 只在model中的非Example添加swagger注解类的导入</span></span><br><span class="line">        <span class="comment">// 这是防止上述添加了@ApiModelProperty注解后却没有导入包的情况</span></span><br><span class="line">        <span class="keyword">if</span> (!compilationUnit.getType().getFullyQualifiedName().contains(MAPPER_SUFFIX) &amp;&amp;</span><br><span class="line">                !compilationUnit.getType().getFullyQualifiedName().contains(EXAMPLE_SUFFIX)) &#123;</span><br><span class="line">            compilationUnit.addImportedType(<span class="keyword">new</span> FullyQualifiedJavaType(API_MODEL_PROPERTY_FULL_CLASS_NAME));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="4-MBG代码"><a href="#4-MBG代码" class="headerlink" title="4. MBG代码"></a>4. MBG代码</h1><p>代码来源于<a href="https://github.com/macrozheng/mall" target="_blank" rel="noopener">mall项目</a>:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">//MBG 执行过程中的警告信息</span></span><br><span class="line">        List&lt;String&gt; warnings = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">        <span class="comment">//当生成的代码重复时，覆盖原代码</span></span><br><span class="line">        <span class="keyword">boolean</span> overwrite = <span class="keyword">true</span>;</span><br><span class="line">        <span class="comment">//读取我们的 MBG 配置文件</span></span><br><span class="line">        InputStream is = Generator.class.getResourceAsStream("/generatorConfig.xml");</span><br><span class="line">        ConfigurationParser cp = <span class="keyword">new</span> ConfigurationParser(warnings);</span><br><span class="line">        Configuration config = cp.parseConfiguration(is);</span><br><span class="line">        is.close();</span><br><span class="line"></span><br><span class="line">        DefaultShellCallback callback = <span class="keyword">new</span> DefaultShellCallback(overwrite);</span><br><span class="line">        <span class="comment">//创建 MBG</span></span><br><span class="line">        MyBatisGenerator myBatisGenerator = <span class="keyword">new</span> MyBatisGenerator(config, callback, warnings);</span><br><span class="line">        <span class="comment">//执行生成代码</span></span><br><span class="line">        myBatisGenerator.generate(<span class="keyword">null</span>);</span><br><span class="line">        <span class="comment">//输出警告信息</span></span><br><span class="line">        <span class="keyword">for</span> (String warning : warnings) &#123;</span><br><span class="line">            System.out.println(warning);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="5-踩坑"><a href="#5-踩坑" class="headerlink" title="5. 踩坑"></a>5. 踩坑</h1><p>在第2步的xml配置文件中有如下属性:</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">javaModelGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"cn.doper.mall.model"</span> <span class="attr">targetProject</span>=<span class="string">"mall-mbg/src/main/java"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">sqlMapGenerator</span> <span class="attr">targetPackage</span>=<span class="string">"cn.doper.mall.mapper"</span> <span class="attr">targetProject</span>=<span class="string">"mall-mbg/src/main/resources"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">javaClientGenerator</span> <span class="attr">type</span>=<span class="string">"XMLMAPPER"</span> <span class="attr">targetPackage</span>=<span class="string">"cn.doper.mall.mapper"</span> <span class="attr">targetProject</span>=<span class="string">"mall-mbg/src/main/java"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<p>在<code>springboot</code>里，若<code>targetProject</code>若不配置程序运行的工作空间则会报错找不到对应路径，具体在idea解决方法为修改工作目录为父项目的目录。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220423212408441.png" alt="image-20220423212408441"></p>
-
+        
+          <a class="article-more-a" href="/2022/04/23/MyBatis-Generator%E4%BE%8B%E5%AD%90%E7%AE%80%E4%BB%8B/#more">more >></a>
+        
       
 
       
@@ -193,11 +179,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -353,15 +339,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">SpringCloud</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
         		</li>
       		
 		</ul>
@@ -665,11 +651,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
@@ -745,11 +731,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
@@ -825,11 +811,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
@@ -905,11 +891,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">SpringBoot</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Java</a>
         		</li>
       		
 		</ul>
@@ -1067,23 +1053,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">SpringCloud</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Mybatis</a>
+                <a href="javascript:void(0)" class="js-tag color5">Java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1095,15 +1069,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">SpringCloud</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Mybatis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">面经</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">go</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1115,15 +1093,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color3">go</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1272,5 +1258,21 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>
