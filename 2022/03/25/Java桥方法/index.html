@@ -15,15 +15,15 @@
 <meta property="og:site_name" content="Dopaminer">
 <meta property="og:description" content="Java-桥方法Java桥方法的出现是由于Java中泛型在虚拟机中会类型擦除，为了解决因擦除引起在多态时会引起问题而引入桥方法这个概念">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220327105856233.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220327111357226.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220327111449557.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220327105856233.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220327111357226.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220327111449557.png">
 <meta property="article:published_time" content="2022-03-25T13:17:07.000Z">
-<meta property="article:modified_time" content="2022-04-14T07:46:25.805Z">
+<meta property="article:modified_time" content="2022-05-19T02:44:25.619Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="Java">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220327105856233.png">
+<meta name="twitter:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220327105856233.png">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
   
@@ -178,7 +178,7 @@
 <p>​    则类型擦除后会变成</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Comparable member;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperClass</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Serializable member;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​    具体可以通过反射来进行验证，这里利用反射分析<code>SuperClass1</code>类，得到如下结果</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220327105856233.png" alt="image-20220327105856233" style="zoom:150%;" /></p>
+<p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220327105856233.png" alt="image-20220327105856233" style="zoom:150%;" /></p>
 <p>​    可以看到反射解析的结果中确实是使用了<code>Object</code>类</p>
 <h1 id="2-桥方法"><a href="#2-桥方法" class="headerlink" title="2. 桥方法"></a>2. 桥方法</h1><p>​        类型擦除可能会引起对象多态上的问题，看下述例子，假设有一个超类<code>SuperClass1</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SuperClass1</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> T member;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperClass1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SuperClass1</span><span class="params">(T member)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.member = member;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(T obj)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"superclass say "</span> + obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> member;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -189,9 +189,9 @@
 <p>​        这里可以看到<code>say</code>方法发生了变化，按照重写的要求子类的重写方法参数要与父类一致，但这里已经不一致了。因此<strong>编译器为了维护这种重写规则</strong>，在子类生成了<strong>桥方法</strong>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ChildClass</span> <span class="keyword">extends</span> <span class="title">SuperClass1</span>&lt;<span class="title">String</span>&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(String obj)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"child call "</span> + obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//下面这个是桥方法,覆盖父类方法实现多态</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        say((String) obj);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"child get"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//下面这个是桥方法,覆盖父类方法实现多态</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里貌似有误，因为在java中方法签名=方法名+参数，但是这里桥方法和原方法方法签名一样冲突。</span></span><br><span class="line">       	<span class="comment">// 这里实际上不会出错，因为在虚拟机中是通过&#123;方法名+参数+返回值&#125;来区分方法的，所以在字节码中允许这种情况出现</span></span><br><span class="line">        <span class="keyword">return</span> get();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="comment">//省略其他</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​        这样子类就重写了父类的<code>say</code>以及<code>get</code>方法了，调用时也可以根据多态选择正确的版本。具体也可以通过反射来验证子类桥方法，这里使用了<code>Method</code>类的<code>isBridge</code>方法来判断是否为桥方法</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220327111357226.png" alt="image-20220327111357226" style="zoom:150%;" /></p>
+<p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220327111357226.png" alt="image-20220327111357226" style="zoom:150%;" /></p>
 <p>​        具体解析结果如下:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220327111449557.png" alt="image-20220327111449557" style="zoom:150%;" /></p>
+<p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220327111449557.png" alt="image-20220327111449557" style="zoom:150%;" /></p>
 <h1 id="3-反射代码"><a href="#3-反射代码" class="headerlink" title="3. 反射代码"></a>3. 反射代码</h1><p>上述通过反射分析类的代码如下，代码改自《Java核心技术 卷Ⅰ》反射部分:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">reflect_demo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Class&lt;?&gt; c1 = ChildClass<span class="class">.<span class="keyword">class</span></span>;		<span class="comment">//class对象</span></span><br><span class="line">        Class&lt;?&gt; superC1 = c1.getSuperclass();</span><br><span class="line">        <span class="keyword">if</span>(superC1 != <span class="keyword">null</span> &amp;&amp; superC1 != Object<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">            System.out.printf(<span class="string">"%s extends %s\n"</span>, c1.getName(), superC1.getName());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 1. 获取构造函数</span></span><br><span class="line">        printConstructor(c1);</span><br><span class="line">        System.out.println();</span><br><span class="line">        <span class="comment">// 2. 获取其他方法</span></span><br><span class="line">        printMethods(c1);</span><br><span class="line">        System.out.println();</span><br><span class="line">        <span class="comment">// 3. 获取字段</span></span><br><span class="line">        printFields(c1);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printFields</span><span class="params">(Class&lt;?&gt; cl)</span> </span>&#123;</span><br><span class="line">        Field[] declaredFields = cl.getDeclaredFields();</span><br><span class="line">        <span class="keyword">for</span> (Field f: declaredFields) &#123;</span><br><span class="line">            Class&lt;?&gt; type = f.getType();</span><br><span class="line">            String name = f.getName();</span><br><span class="line">            String modifiers = Modifier.toString(f.getModifiers());</span><br><span class="line">            Annotation[] annotations = f.getAnnotations();</span><br><span class="line">            <span class="keyword">for</span> (Annotation a : annotations) &#123;</span><br><span class="line">                System.out.println(a);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(modifiers.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                System.out.print(modifiers + <span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(type.getName() + <span class="string">" "</span> + name + <span class="string">";"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printMethods</span><span class="params">(Class&lt;?&gt; cl)</span> </span>&#123;</span><br><span class="line">        Method[] methods = cl.getDeclaredMethods();</span><br><span class="line">        <span class="keyword">for</span> (Method m : methods) &#123;</span><br><span class="line">            Annotation[] annotations = m.getAnnotations();  <span class="comment">//方法注解</span></span><br><span class="line">            <span class="keyword">for</span> (Annotation a : annotations) &#123;</span><br><span class="line">                System.out.println(a);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(m.isBridge()) &#123;</span><br><span class="line">                System.out.print(<span class="string">"a bridge method ----&gt;  "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            Class&lt;?&gt; returnType = m.getReturnType();</span><br><span class="line">            String modifiers = Modifier.toString(m.getModifiers());</span><br><span class="line">            <span class="keyword">if</span>(modifiers.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                System.out.print(modifiers + <span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.print(returnType.getName() + <span class="string">" "</span> + m.getName() + <span class="string">"("</span>);</span><br><span class="line">            Class&lt;?&gt;[] parameterTypes = m.getParameterTypes();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; parameterTypes.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(i &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    System.out.print(<span class="string">", "</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.printf(parameterTypes[i].getName());</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">");"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">printConstructor</span><span class="params">(Class&lt;?&gt; cl)</span> </span>&#123;</span><br><span class="line">        Constructor&lt;?&gt;[] constructors = cl.getDeclaredConstructors();</span><br><span class="line">        <span class="keyword">for</span> (Constructor&lt;?&gt; c : constructors) &#123;</span><br><span class="line">            <span class="comment">// 方法名</span></span><br><span class="line">            String name = c.getName();</span><br><span class="line">            String modifiers = Modifier.toString(c.getModifiers());</span><br><span class="line">            <span class="keyword">if</span>(modifiers.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                System.out.print(modifiers + <span class="string">" "</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.print(name + <span class="string">"("</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//参数</span></span><br><span class="line">            Class&lt;?&gt;[] parameterTypes = c.getParameterTypes();</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; parameterTypes.length; i++) &#123;</span><br><span class="line">                 <span class="keyword">if</span>(i &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                     System.out.print(<span class="string">", "</span>);</span><br><span class="line">                 &#125;</span><br><span class="line">                System.out.print(parameterTypes[i].getName());</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="string">");"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h1 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h1><p>总结来自《Java核心技术 卷Ⅰ》</p>
@@ -482,19 +482,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">秋招</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">秋招</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -506,11 +502,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">AQS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SpringSecurity</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">面经</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -522,15 +534,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -542,7 +550,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -551,6 +559,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
               </li>
             
             <div class="clearfix"></div>
@@ -687,21 +699,5 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
 </body>
 </html>

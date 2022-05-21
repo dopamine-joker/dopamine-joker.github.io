@@ -15,17 +15,17 @@
 <meta property="og:site_name" content="Dopaminer">
 <meta property="og:description" content="SpringCloud-gateway-nacos-swaggergateway聚合各服务模块，以及遇到的坑。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220412144842381.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220414104040492.png">
-<meta property="og:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220414104459837.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220412144842381.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220414104040492.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220414104459837.png">
 <meta property="article:published_time" content="2022-04-12T06:46:13.000Z">
-<meta property="article:modified_time" content="2022-04-14T07:46:40.721Z">
+<meta property="article:modified_time" content="2022-05-19T02:45:11.024Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="SpringBoot">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="SpringCloud">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220412144842381.png">
+<meta name="twitter:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220412144842381.png">
   
     <link rel="alternative" href="/atom.xml" title="Dopaminer" type="application/atom+xml">
   
@@ -171,7 +171,7 @@
       
         <h1 id="SpringCloud-gateway-nacos-swagger"><a href="#SpringCloud-gateway-nacos-swagger" class="headerlink" title="SpringCloud-gateway-nacos-swagger"></a>SpringCloud-gateway-nacos-swagger</h1><p>gateway聚合各服务模块，以及遇到的坑。</p>
 <a id="more"></a>
-<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220412144842381.png" alt="image-20220412144842381"></p>
+<h1 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h1><p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220412144842381.png" alt="image-20220412144842381"></p>
 <p>​        在gateway中集成各个模块，然后接入swagger方便测试各模块接口，其中<code>sunshine-common</code>是放入一些通用组件和配置的，<code>swagger</code>的配置就在这里面。<code>sunshine-gateway</code>即网关模块，在网关通过<code>nacos</code>服务注册发现，将请求路由到各个模块中。</p>
 <h1 id="2-具体代码"><a href="#2-具体代码" class="headerlink" title="2. 具体代码"></a>2. 具体代码</h1><h2 id="2-1-swagger的配置"><a href="#2-1-swagger的配置" class="headerlink" title="2.1. swagger的配置"></a>2.1. swagger的配置</h2><p>​        <code>swagger</code>的配置放在<code>common</code>模块中了，这里只是参考了一般的配置，并且加了Token的认证Header，之后各个模块只要引入了<code>common</code>模块并扫描就默认配置了<code>swagger</code>，具体如下:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Swagger2API文档的配置</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2Config</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Docket <span class="title">createRestApi</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> ParameterBuilder().name(<span class="string">"real_source_ip"</span>).description(<span class="string">"本机局域网IP"</span>).</span><br><span class="line">                modelRef(<span class="keyword">new</span> ModelRef(<span class="string">"string"</span>)).parameterType(<span class="string">"header"</span>).required(<span class="keyword">false</span>).build();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Docket(DocumentationType.SWAGGER_2)</span><br><span class="line">                .apiInfo(apiInfo())</span><br><span class="line">                .select()</span><br><span class="line">                <span class="comment">//为当前包下controller生成API文档</span></span><br><span class="line">                .apis(RequestHandlerSelectors.basePackage(<span class="string">"com.huashi.sunshine"</span>))</span><br><span class="line">                <span class="comment">//为有@Api注解的Controller生成API文档</span></span><br><span class="line">                .apis(RequestHandlerSelectors.withClassAnnotation(Api<span class="class">.<span class="keyword">class</span>))</span></span><br><span class="line"><span class="class">                //为有@<span class="title">ApiOperation</span>注解的方法生成<span class="title">API</span>文档</span></span><br><span class="line"><span class="class">                .<span class="title">apis</span>(<span class="title">RequestHandlerSelectors</span>.<span class="title">withMethodAnnotation</span>(<span class="title">ApiOperation</span>.<span class="title">class</span>))</span></span><br><span class="line"><span class="class">                .<span class="title">paths</span>(<span class="title">PathSelectors</span>.<span class="title">any</span>())</span></span><br><span class="line"><span class="class">                .<span class="title">build</span>()</span></span><br><span class="line"><span class="class">                .<span class="title">securitySchemes</span>(<span class="title">securitySchemes</span>())</span></span><br><span class="line"><span class="class">                .<span class="title">securityContexts</span>(<span class="title">securityContexts</span>())</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> ApiInfo <span class="title">apiInfo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ApiInfoBuilder()</span><br><span class="line">                .title(<span class="string">"sunshine"</span>)</span><br><span class="line">                .description(<span class="string">"阳光影院接口文档"</span>)</span><br><span class="line">                .contact(<span class="string">"xxy"</span>)</span><br><span class="line">                .version(<span class="string">"1.0.0"</span>)</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> List&lt;ApiKey&gt; <span class="title">securitySchemes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 设置请求头信息</span></span><br><span class="line">        <span class="comment">// 这里是为了在测试请求中添加认证token用的，这里可不管</span></span><br><span class="line">        List&lt;ApiKey&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        ApiKey apiKey = <span class="keyword">new</span> ApiKey(<span class="string">"Authorization"</span>, <span class="string">"Authorization"</span>, <span class="string">"header"</span>);</span><br><span class="line">        result.add(apiKey);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> List&lt;SecurityContext&gt; <span class="title">securityContexts</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//设置需要登录认证的路径</span></span><br><span class="line">        List&lt;SecurityContext&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        result.add(getContextByPath(<span class="string">"/api/user/.*"</span>));</span><br><span class="line">        result.add(getContextByPath(<span class="string">"/auth/.*"</span>));</span><br><span class="line">        result.add(getContextByPath(<span class="string">"/sunshine-movie-comment/.*"</span>));</span><br><span class="line">        result.add(getContextByPath(<span class="string">"/sunshine-cinema-comment/.*"</span>));</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> SecurityContext <span class="title">getContextByPath</span><span class="params">(String pathRegex)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SecurityContext.builder()</span><br><span class="line">                .securityReferences(defaultAuth())</span><br><span class="line">                .forPaths(PathSelectors.regex(pathRegex))</span><br><span class="line">                .build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> List&lt;SecurityReference&gt; <span class="title">defaultAuth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;SecurityReference&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        AuthorizationScope authorizationScope = <span class="keyword">new</span> AuthorizationScope(<span class="string">"global"</span>, <span class="string">"accessEverything"</span>);</span><br><span class="line">        AuthorizationScope[] authorizationScopes = <span class="keyword">new</span> AuthorizationScope[<span class="number">1</span>];</span><br><span class="line">        authorizationScopes[<span class="number">0</span>] = authorizationScope;</span><br><span class="line">        result.add(<span class="keyword">new</span> SecurityReference(<span class="string">"Authorization"</span>, authorizationScopes));</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -182,9 +182,9 @@
 <h2 id="2-3-gateway路由配置"><a href="#2-3-gateway路由配置" class="headerlink" title="2.3. gateway路由配置"></a>2.3. gateway路由配置</h2><p>​        系统中会对接口进行<code>token</code>认证，但有些接口是不需要Header Token的，比如用户登陆注册，还有就是本文中的<code>swagger</code>接口。在<code>2.2</code>中看到每个服务模块的暴露<code>swagger</code>接口都为<code>{服务名}/v2/api-docs</code>的格式，这些路径都必须走自定义的不认证Token过滤器。具体的相关配置代码如下</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="comment">#放行swagger配置,匹配具体路径，因为swagger发请求会把/&#123;服务名&#125;带上，这样子会走了swagger的过滤配置从而跳过了token鉴权</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">sunshine-user-swagger-ui</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://sunshine-user</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/sunshine-user/v2/api-docs</span>		<span class="comment"># user模块的接口信息</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line"><span class="comment"># 访问时跳过第一部分，即真实路径是user模块里面的'/v2/api-docs'，因为注册时加了服务名作为标识，防止各个服务的api信息都为'/v2/api-docs'冲突</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span>							</span><br><span class="line">            <span class="bullet">-</span> <span class="string">IgnoreGlobalFilter</span></span><br><span class="line">       </span><br><span class="line">        <span class="comment"># 用户不需要权限api</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">sunshine-user-public</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://sunshine-user</span></span><br><span class="line">          <span class="attr">predicates:</span> <span class="comment"># 路由断言</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/user/**</span>			<span class="comment"># 不需要token认证的路径</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">IgnoreGlobalFilter</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">sunshine-user-public</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://sunshine-user</span></span><br><span class="line">          <span class="attr">predicates:</span> <span class="comment"># 路由断言</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/sunshine-user/user/**</span>	<span class="comment"># 同样是不需要token认证的路径，为了兼容swagger的接口测试添加的</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">IgnoreGlobalFilter</span></span><br><span class="line">        <span class="comment"># 用户需要权限api</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">sunshine-user-auth</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://sunshine-user</span></span><br><span class="line">          <span class="attr">predicates:</span> <span class="comment"># 路由断言</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/api/user/**</span>		<span class="comment"># 需要token认证的路径</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">sunshine-user-auth</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://sunshine-user</span></span><br><span class="line">          <span class="attr">predicates:</span> <span class="comment"># 路由断言</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/sunshine-user/api/user/**</span>	<span class="comment"># 同样是需要token认证的路径，为了兼容swagger的接口测试添加的</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span></span><br></pre></td></tr></table></figure>
 <p>​        上面只列出了<code>user</code>模块的配置，实际配置文件还有其他模块的配置，但整体大同小异，具体效果如下:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220414104040492.png" alt="image-20220414104040492"></p>
+<p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220414104040492.png" alt="image-20220414104040492"></p>
 <h1 id="3-一些小坑"><a href="#3-一些小坑" class="headerlink" title="3. 一些小坑"></a>3. 一些小坑</h1><p>​        以<code>user</code>模块为例，在实际的业务代码中，需要认证的请求路径为<code>/api/user/**</code>，但实际在<code>swagger</code>测试这些请求时都会默认在路径前面带上服务名，这里即变为<code>/sunshine-user/api/user/**</code>。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/dopamine-joker/image-host/image/image-20220414104459837.png" alt="image-20220414104459837"></p>
+<p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220414104459837.png" alt="image-20220414104459837"></p>
 <p>​        但在一开始为了能够各个模块的<code>swagger-api</code>信息不被全局过滤器过滤，这里以<code>user</code>模块为例，配置了如下信息:</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">gateway:</span></span><br><span class="line">      <span class="attr">routes:</span></span><br><span class="line">        <span class="comment">#放行swagger配置,匹配具体路径，因为swagger发请求会把/&#123;服务名&#125;带上，这样子会走了swagger的过滤配置从而跳过了token鉴权</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">sunshine-user-swagger-ui</span></span><br><span class="line">          <span class="attr">uri:</span> <span class="string">lb://sunshine-user</span></span><br><span class="line">          <span class="attr">predicates:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">Path=/sunshine-user/**</span>		<span class="comment"># user模块的接口信息</span></span><br><span class="line">          <span class="attr">filters:</span></span><br><span class="line">            <span class="bullet">-</span> <span class="string">StripPrefix=1</span>							</span><br><span class="line">            <span class="bullet">-</span> <span class="string">IgnoreGlobalFilter</span></span><br></pre></td></tr></table></figure>
 <p>​        这就导致了在<code>swagger</code>中测试接口时<strong>所有的请求都走了上面这个路由配置</strong>，实际能运行，因此这里还配置了<code>- StripPrefix=1</code>，只是每次请求都跳过了全局过滤器，即跳过token认证。因此后面为了解决这个问题，修改配置文件的修改如下:</p>
@@ -475,19 +475,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">秋招</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">SpringBoot</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Java</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">秋招</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -499,11 +495,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">AQS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SpringSecurity</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">面经</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -515,15 +527,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">服务器</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -535,7 +543,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -544,6 +552,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
               </li>
             
             <div class="clearfix"></div>
@@ -680,21 +692,5 @@ MathJax.Hub.Queue(function() {
 
 </div>
   </div>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
 </body>
 </html>
