@@ -16,14 +16,14 @@
 <meta property="og:description" content="ElasticSearch 数据结构Elasticsearch(简称ES)是基于Lucene库实现的开源搜索引擎，其是作为Elastic Stack的核心的分布式搜索和分析引擎，可对所有数据提供近实时的搜索和分析。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://fdv.github.io/running-elasticsearch-fun-profit/003-about-lucene/images/image2.svg">
-<meta property="og:image" content="https://images2015.cnblogs.com/blog/613455/201602/613455-20160229144719611-1983692652.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220521235444784.png">
 <meta property="og:image" content="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/20/171981d0b44a8c44~tplv-t2oaga2asx-image.image">
-<meta property="og:image" content="https://2.bp.blogspot.com/_4pUbN9gxhUI/TPk21wErb9I/AAAAAAAAAFM/dhPcsyo3KV4/s400/FSTExample.png">
+<meta property="og:image" content="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/FSTExample.png">
 <meta property="og:image" content="https://api.contentstack.io/v2/assets/575e4d88d8edd48f7693888c/download?uid=blt42bcd2cef05d6634?uid=blt42bcd2cef05d6634">
 <meta property="og:image" content="https://api.contentstack.io/v2/assets/575e4d8843e9adc5387164fa/download?uid=bltec702aef46d747d4?uid=bltec702aef46d747d4">
 <meta property="og:image" content="https://api.contentstack.io/v2/assets/575e4d8843e9adc538716505/download?uid=blt8932f5963a5a42fc?uid=blt8932f5963a5a42fc">
 <meta property="article:published_time" content="2021-08-05T15:32:50.000Z">
-<meta property="article:modified_time" content="2021-08-05T15:40:03.053Z">
+<meta property="article:modified_time" content="2022-05-23T02:10:17.773Z">
 <meta property="article:author" content="Dopaminer">
 <meta property="article:tag" content="ElasticSearch">
 <meta name="twitter:card" content="summary">
@@ -254,13 +254,13 @@
 <p>(2) <strong>Posting Lists</strong></p>
 <p>上面提到ES是基于Lucene库实现的，在ES中索引中的数据会被分成多个分片，而ES<strong>分片(shared)</strong>的底层是Lucene索引，即分片本质上是个<strong>Lucene索引(Lucene Index)</strong>。Lucene中索引文件会被拆分多个子文件，每个子文件是一个<strong>段(segment)</strong>，段都是独立可被搜索的数据集，里面存储着文档，倒排索引等信息，并且会定期合并成一个新的大段(段不变性导致合并，<a href="https://fdv.github.io/running-elasticsearch-fun-profit/003-about-lucene/003-about-lucene.html" target="_blank" rel="noopener">具体见这</a>)。在每个段中最多可以存储$2^{31}$个文档，并且每个文档都用一个范围在 [0,段中文档数(最大$2^{31}-1$)] 的数字来唯一标识，即文档ID。</p>
 <p><img src="https://fdv.github.io/running-elasticsearch-fun-profit/003-about-lucene/images/image2.svg" alt="Inside an Elasticsearch index"></p>
-<p><img src="https://images2015.cnblogs.com/blog/613455/201602/613455-20160229144719611-1983692652.png" alt="img"></p>
+<p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/image-20220521235444784.png" alt="image-20220521235444784"></p>
 <p>在倒排索引中每个词都对应着一个文档列表，而文档又有其对应的文档ID。每个分词对应的<strong>文档ID列表</strong>叫做<code>Posting Lists</code>.建立了倒排索引后，当需要查询某个单词的时候，就可以直接在<strong>排序</strong>后的term decitionary中<strong>二分查找</strong>，然后再从它的posting list找到想要的文档。这里在posting list中为了快速查找文档ID，posting list中的ID是有序存储的，并且lucene底层采用了<strong>跳表（skiplist）</strong>数据结构进行维护。在联合查询时，就可以遍历多个term的posting list然后利用跳表进行并集操作。</p>
 <p>(3) <strong>Term Index</strong></p>
-<p>在ES中，若要提高检索速度，就需要把term dicionary搬入内存中，可是当词条数量很多时，将其全部搬进内存将会耗费太多空间。因此ES中对term dicionary建立<code>term index</code>词条索引放入内存中，term index会存储单词的<strong>部分前缀</strong>，利用term index可以快速定位到term dictionary中的对应磁盘block位置，然后再顺序查找。内存中存储term index的数据结构则是<strong>FST(Finite State Transducers) 有限状态转换器</strong></p>
+<p>在ES中，若要提高检索速度，就需要把term dicionary(即上图中的terms dict)搬入内存中，可是当词条数量很多时，将其全部搬进内存将会耗费太多空间。因此ES中对term dicionary建立<code>term index</code>词条索引放入内存中，term index会存储单词的<strong>部分前缀</strong>，利用term index可以快速定位到term dictionary中的对应磁盘block位置，然后再顺序查找。内存中存储term index的数据结构则是<strong>FST(Finite State Transducers) 有限状态转换器</strong></p>
 <p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2020/4/20/171981d0b44a8c44~tplv-t2oaga2asx-image.image" alt="index-arch.png"></p>
-<h2 id="2-Finite-State-Transducers-FST"><a href="#2-Finite-State-Transducers-FST" class="headerlink" title="2. Finite State Transducers(FST)"></a>2. Finite State Transducers(FST)</h2><p>FST是一种有限状态机，可以将term(字节序)映射到任意输出，即当它读取读取输入时可以产生对应的输出。它的结构如下:</p>
-<p><img src="https://2.bp.blogspot.com/_4pUbN9gxhUI/TPk21wErb9I/AAAAAAAAAFM/dhPcsyo3KV4/s400/FSTExample.png" alt="img"></p>
+<h2 id="2-Finite-State-Transducers-FST"><a href="#2-Finite-State-Transducers-FST" class="headerlink" title="2. Finite State Transducers(FST)"></a>2. Finite State Transducers(FST)</h2><p>FST是一种有限状态机，可以将term(字节序)映射到<strong>任意输出</strong>(如数字)，即当它读取读取输入时可以产生对应的输出。它的结构如下:</p>
+<p><img src="https://image-host-1300511225.cos.ap-shanghai.myqcloud.com/image/FSTExample.png" alt="FSTExample"></p>
 <p>在上图中的这个FST中，它将<strong>排序</strong>后的单词<code>mop</code>,<code>moth</code>,<code>pop</code>,<code>stat</code>,<code>stop</code>和<code>top</code>分别映射到序数0,1,2,3,4,5。当沿着途中箭头遍历时，就可以将路径上的数字进行求和，从而得到对应的序数。举例，当我们遍历stop时，在<code>s</code>箭头中得到3，在<code>o</code>箭头中得到1，而其他字母没有标识数字，即0。这样就可以得到stop的排序结果$3+0+1+0=4$​​​。</p>
 <p>利用这种数据结构，就可以以O(len(key))的时间复杂度去查找一个term对应的值，实现term-value映射。上面提到，这种结构只保存了词典中每个词条的前缀。实际查找时是根据这个前缀快速定位到磁盘block，然后再在这个block查找posting list。</p>
 <p><a href="http://examples.mikemccandless.com/fst.py?terms=&amp;cmd=Build+it%21" target="_blank" rel="noopener">[FST演示工具]</a></p>
@@ -570,47 +570,7 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">面经</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">STL</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">算法</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">go</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ElasticSearch</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,15 +586,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Mybatis</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">AQS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">SpringSecurity</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -650,7 +610,47 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">SpringSecurity</a>
+                <a href="javascript:void(0)" class="js-tag color3">面经</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">go</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">c/c++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">算法</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">opentelemetry</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">服务器</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ElasticSearch</a>
               </li>
             
             <div class="clearfix"></div>
